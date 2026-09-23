@@ -15,15 +15,15 @@ function check() {
 }
 
 
+const oldPref = "OLD-"
+var current = null;
+
 function printPos() {
   if (!check()) return;
   const playr = main.players.get(main.localPlayerId)
-  console.log("x:", playr.renderX, "z:", playr.renderZ)
+  console.log("x:", playr.renderX, "z:", playr.renderZ, "lvl:", current??(oldPref+localStorage.getItem("lastLevelId")))
 }
 
-
-const oldPref = "OLD-"
-var current = null;
 export function getCurrentLvl() {
   if (!check()) return {};
   var ld = main.assetManager.levelDataCache;

@@ -1,5 +1,5 @@
-# MoreMorp
-A browser extension to add more to Morp!
+# MoreTerra
+A browser extension to add more to Terra!
 
 ## Building
 You must have `minify` installed, then run `build.sh`

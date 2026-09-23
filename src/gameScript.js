@@ -3,12 +3,12 @@ var outsky = null;
 var insky = [0, 0, 0];
 function setMain(nmain) {
   main = nmain;
-  console.log("[MoreMorp] Injected the GameCanvas!")
+  console.log("[MoreTerra] Injected the GameCanvas!")
   console.log(main)
 }
 function check() {
   if (main === null) {
-    console.error("[MoreMorp] Not ready!");
+    console.error("[MoreTerra] Not ready!");
     return false;
   }
   return true;
@@ -32,12 +32,12 @@ export function getCurrentLvl() {
   }
   return [ld.get(current), current.startsWith(oldPref)];
 }
-export function inMoreMorp() {
+export function inMoreTerra() {
   return !getCurrentLvl()[1]
 }
 
 function networkMove() {
-  return !inMoreMorp();
+  return !inMoreTerra();
 }
 
 
@@ -97,7 +97,7 @@ export async function teleport(to, spawn) {
   const lvlId = localStorage.getItem("lastLevelId")
   if (to === "") { to = lvlId; }
   await main.assetManager.ensureEssential(to)
-  console.log("[MoreMorp] Teleporting to", to, spawn)
+  console.log("[MoreTerra] Teleporting to", to, spawn)
   if (main.assetManager.levelDataCache.get(oldPref+to)) { to = oldPref+to; }
   var ld = main.assetManager.levelDataCache;
   ld.set(lvlId, ld.get(to))
@@ -143,7 +143,7 @@ function nxtNpcDialog(npc, id) {
           nxtNpcDialog(npc, d.choices[idx].nextNodeId)
         })
       } else {
-        console.warn("[MoreMorp] Unknown npc action: "+nt)
+        console.warn("[MoreTerra] Unknown npc action: "+nt)
       }
       break;
     }
@@ -165,7 +165,7 @@ function checkApply(obj) {
     } else if (spl[0] == "npc") {
       runNpc(obj.action.data)
     } else {
-      console.warn("[MoreMorp] Unknown object action: "+spl[0])
+      console.warn("[MoreTerra] Unknown object action: "+spl[0])
     }
     return "everythings_fine"
   }
@@ -177,13 +177,13 @@ function handleEZaction(type, params) {
   if (type == "exit_level") {
     teleport(params.targetLevelId, params.targetSpawnTag)
   } else {
-    console.warn("[MoreMorp] Unknown exit zone action: "+type)
+    console.warn("[MoreTerra] Unknown exit zone action: "+type)
   }
 }
 function wrapExitZone(handl) {
   if (!handl) return handl
   function out(ext) {
-    if (inMoreMorp()) {
+    if (inMoreTerra()) {
       ext.actions.forEach(a=>{ handleEZaction(a.type, a.params) })
       return true
     }

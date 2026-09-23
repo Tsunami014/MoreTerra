@@ -4,7 +4,7 @@ const MANIF = {
         [portal]: {
             anchor: { x: 0.5, y: 0 },
             height: 2.2,
-            path: "/moremorp/assets/portal.webp",
+            path: "/moreterra/assets/portal.webp",
             width: 0.8
         }
     }
@@ -18,6 +18,6 @@ fetch("/manif.json").then(out=>{
                 MANIF[key] = js[key]
             }
         }
-        console.log("[MoreMorp] Updated manifest!")
+        console.log("[MoreTerra] Updated manifest!")
     })
 })

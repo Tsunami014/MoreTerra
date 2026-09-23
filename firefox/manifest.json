@@ -1,15 +1,15 @@
 {
   "manifest_version": 3,
-  "name": "MoreMorp",
+  "name": "MoreTerra",
   "version": "1.0",
   "permissions": ["webRequest", "webRequestBlocking", "webRequestFilterResponse"],
-  "host_permissions": ["*://morp.hackclub.com/*"],
+  "host_permissions": ["*://terra.hackclub.com/*"],
   "background": {
     "scripts": ["redirect.js"]
   },
   "content_scripts": [
     {
-      "matches": ["*://morp.hackclub.com/*"],
+      "matches": ["*://terra.hackclub.com/*"],
       "js": ["out.js"],
       "run_at": "document_start",
       "world": "MAIN"
@@ -18,7 +18,7 @@
   "web_accessible_resources": [
     {
       "resources": ["images/*", "levels*", "manif.json"],
-      "matches": ["*://morp.hackclub.com/*"]
+      "matches": ["*://terra.hackclub.com/*"]
     }
   ]
 }

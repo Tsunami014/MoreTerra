@@ -17,4 +17,4 @@ window.fetch = async function (...args) {
 };
 
 hook()
-console.log("[MoreMorp] Loaded successfully!")
+console.log("[MoreTerra] Loaded successfully!")

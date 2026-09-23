@@ -43,7 +43,7 @@ function btn(num) {
 }
 
 
-function el({ tag, cls, text, src, alt, fn } = {}, children = []) {
+function elem({ tag, cls, text, src, alt, fn } = {}, children = []) {
     const e = document.createElement(tag||"div");
     if (cls) e.className = cls;
     if (text) e.innerText = text;
@@ -73,21 +73,21 @@ function buildUI(thn, childr, xtracls = "") {
 
 function NpcDialog({name, img}, txt, thn) {
     buildUI(thn, [
-        el({ cls: LABLS.dialogueWrapper }, [
-            el({ cls: LABLS.portraitContainer }, [
-                el({
+        elem({ cls: LABLS.dialogueWrapper }, [
+            elem({ cls: LABLS.portraitContainer }, [
+                elem({
                     tag: "img",
                     cls: LABLS.portrait,
                     src: img,
                     alt: name
                 })
             ]),
-            el({ cls: LABLS.container }, [
-                el({ cls: LABLS.nameTag, text: name }),
-                el({ cls: LABLS.textBox }, [
-                    el({ cls: LABLS.text, fn: slowread(txt) }),
-                    el({ cls: LABLS.actions }, [
-                        el({ cls: LABLS.prompt, text: "Press Space or click to continue" })
+            elem({ cls: LABLS.container }, [
+                elem({ cls: LABLS.nameTag, text: name }),
+                elem({ cls: LABLS.textBox }, [
+                    elem({ cls: LABLS.text, fn: slowread(txt) }),
+                    elem({ cls: LABLS.actions }, [
+                        elem({ cls: LABLS.prompt, text: "Press Space or click to continue" })
                     ])
                 ])
             ])
@@ -97,15 +97,15 @@ function NpcDialog({name, img}, txt, thn) {
 
 function Choices(choices, thn) {
     buildUI(thn, [
-        el({ cls: LABLS.dialogueWrapper+" "+LABLS.playerSpeaking }, [
-            el({ cls: LABLS.container }, [
-                el({ cls: LABLS.nameTag, text: "Player" }),
-                el({ cls: LABLS.choicesContainer }, choices.map((choice, idx)=>{
-                    return el({ tag: "button", cls: LABLS.choiceButton, text: choice, fn: btn(idx) });
+        elem({ cls: LABLS.dialogueWrapper+" "+LABLS.playerSpeaking }, [
+            elem({ cls: LABLS.container }, [
+                elem({ cls: LABLS.nameTag, text: "Player" }),
+                elem({ cls: LABLS.choicesContainer }, choices.map((choice, idx)=>{
+                    return elem({ tag: "button", cls: LABLS.choiceButton, text: choice, fn: btn(idx) });
                 }))
             ]),
-            el({ cls: LABLS.playerPortraitContainer }, [
-                el({
+            elem({ cls: LABLS.playerPortraitContainer }, [
+                elem({
                     tag: "img",
                     cls: LABLS.portrait,
                     src: "/assets/sprites/ui/player.webp",

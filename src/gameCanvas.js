@@ -1,10 +1,17 @@
 function patchData(data) {
     var pref = "";
-    // Copy the labels for my usage
-    pref += "const LABLS = {" + data.match(/[^{]+textBox:[^}]+/g).join(",").replace(/,\s*,/g, ",") + "};"
+
+    // Safely copy the labels for your usage
+    const lablsMatch = data.match(/[^{]+textBox:[^}]+/g);
+    if (lablsMatch) {
+        pref += "const LABLS = {" + lablsMatch.join(",").replace(/,\s*,/g, ",") + "};";
+    } else {
+        console.warn("[MoreTerra] Failed to match LABLS regex. The game code may have updated.");
+    }
+
     // Copy the teleport function
     pref += "const tele = "+data.match(/(?<=onMessage\(.forceTeleport., *)([^{]+{(?:[^{}]+)})/)[0].replaceAll("this", "main") + ";"
-    return pref+dataPref+data
+    return pref + dataPref + data
         // Pick up the main class when networkClient is created
         .replace(/(?<=this\.networkClient ?= ?)/, "setMain(this)||")
         // Add a new keybind
@@ -21,8 +28,5 @@ function patchData(data) {
         // Override get nearby sprite to send out our sprites too
         .replace(/(getNearbySprite.+?\()(.+?)(?=\.action\.type\))/, "$1checkApply($2)||$2")
         // Override to add an object action that does nothing
-        .replace(/(?=open_devlog_terminal:)/, `
-everythings_fine: () => {},
-`)
-;
+        .replace(/(?=open_devlog_terminal:)/, ` everythings_fine: () => {}, `);
 }

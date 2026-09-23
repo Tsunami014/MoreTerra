@@ -32,6 +32,6 @@ browser.webRequest.onBeforeRequest.addListener(
       }
     }
   },
-  { urls: ["*://morp.hackclub.com/*"], types: ["image", "script", "xmlhttprequest", "other"] },
+  { urls: ["*://terra.hackclub.com/*"], types: ["image", "script", "xmlhttprequest", "other"] },
   ["blocking"]
 );

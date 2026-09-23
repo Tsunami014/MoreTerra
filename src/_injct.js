@@ -81,17 +81,17 @@ function hook() {
                                 try {
                                     this.textures.set(nam, await this.getOrLoadTexture(conts.path));
                                 } catch (t) {
-                                    console.warn(`[MoreMorp] [deferred] Failed to load sprite "${nam}":`, t),
+                                    console.warn(`[MoreTerra] [deferred] Failed to load sprite "${nam}":`, t),
                                     this.textures.set(nam, this.createFallbackTexture("MM"+nam));
                                 }
                             }
                         }
                     }
-                    console.log("[MoreMorp] Successfully injected custom objects!")
+                    console.log("[MoreTerra] Successfully injected custom objects!")
                     return;
                 }
             }
-            console.error("[MoreMorp] Unable to find an instanceable object in the module!")
+            console.error("[MoreTerra] Unable to find an instanceable object in the module!")
         });
         if (CSS) {
             const style = document.createElement('style');

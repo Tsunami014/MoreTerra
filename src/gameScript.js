@@ -191,22 +191,3 @@ function wrapExitZone(handl) {
   }
   return out;
 }
-
-var berries = 0
-function get_berries(bs) {
-  if (bs > berries) berries = bs;
-  console.log("berries", berries)
-  return berries.toString()
-}
-var acorns = 0
-function get_acorns(as) {
-  if (as > acorns) acorns = bs;
-  console.log("acorns", acorns)
-  return acorns.toString()
-}
-var stamps = 0
-function get_stamps(ss) {
-  if (ss > stamps) stamps = ss;
-  console.log("stamps", stamps)
-  return stamps.toString()
-}

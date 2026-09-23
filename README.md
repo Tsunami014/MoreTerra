@@ -1,6 +1,13 @@
 # MoreTerra
 A browser extension to add more to Terra!
 
+## Features
+- **A whole new world to explore!**
+- Hold ctrl to run as well as shift (stops from highlighting everything all the time)
+
+### Dev features
+- Press P to log your position
+
 ## Building
 Run `build.sh`
 

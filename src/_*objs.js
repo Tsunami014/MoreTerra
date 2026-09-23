@@ -18,6 +18,13 @@ fetch("/manif.json").then(out=>{
                 MANIF[key] = js[key]
             }
         }
+        for (const group of Object.values(MANIF)) {
+            for (const obj of Object.values(group)) {
+                if (obj.path && !obj.path.startsWith("/")) {
+                    obj.path = "/" + obj.path;
+                }
+            }
+        }
         console.log("[MoreTerra] Updated manifest!")
     })
 })

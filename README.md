@@ -6,7 +6,8 @@ A browser extension to add more to Terra!
 - Hold ctrl to run as well as shift (stops from highlighting everything all the time)
 
 ### Dev features
-- Press P to log your position
+- The popup on hold 'V' now has more info in it
+- Press 'P' to get position info
 
 ## Building
 Run `build.sh`

@@ -23,6 +23,14 @@ function printPos() {
   const playr = main.players.get(main.localPlayerId)
   console.log("x:", playr.renderX, "z:", playr.renderZ, "lvl:", current??(oldPref+localStorage.getItem("lastLevelId")))
 }
+function getExtraInfo(t) {
+  if (!check()) return Math.round(t)+"ms - MoreTerra error!";
+  const playr = main.players.get(main.localPlayerId)
+  return Math.round(t)+"ms," +
+    " x: "+playr.renderX.toFixed(4) +
+    " z: "+playr.renderZ.toFixed(4) +
+    ", "+(current??(oldPref+localStorage.getItem("lastLevelId")))
+}
 
 export function getCurrentLvl() {
   if (!check()) return {};
@@ -89,7 +97,7 @@ async function loadLevel(lvlId, spawn) {
     await new Promise(resolve => setTimeout(resolve, 200));
   }
 
-  main.onAfterLevelTransition()
+  main.emit("afterLevelTransition")
 }
 
 export async function teleport(to, spawn) {

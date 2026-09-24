@@ -8,17 +8,17 @@ function patchData(data) {
     return pref + dataPref + data
         // Pick up the main class when networkClient is created
         .replace(/(?<=this\.networkClient ?=)/, "setMain(this)||")
-        // Add a new keybind
-        .replace(/(?<={)\s*(?=if ?\(([^=]+)===? ?.KeyF)/, "if ($1 === 'KeyP') { printPos() }")
-        // Allow ctrl to sprint as well as shift
-        .replace(/(?<=([a-zA-Z0-9_.]+)\(.Shift([a-zA-Z]+).\))/, "||$1('Control$2')")
+        // Change keybinds; adding a new sprint and P
+        .replace(/(,\s*sprint: ?\[)([^\]]+\],)/, "$1`ControlLeft`,`ControlRight`,$2mm_printpos:[`KeyP`],")
+        // Implement handler for P keybind
+        .replace(/if ?\(([a-zA-Z0-9]+\()(?=.interact)/, "if ($1`mm_printpos`)){printPos()}if($1")
         // Wrap setting the exit zone handler
         .replace(/(?<=onExitZoneIntercept ?=) ?(.+?)(?=[,)};])/g, "wrapExitZone($1)")
         // Override sending movement to the network
         .replace(/(?=this\.networkClient\.sendMove)/, "networkMove()&&")
-        // Override get nearby sprite to send out our sprites too
-        .replace(/(?<=getNearbySprite\(\)\s?{\s*return )(.+?)(?=;|})/, "checkApply($1)||$1")
-        // Override to add an object action that does nothing
+        // Override reading the object's action
+        .replace(/([a-zA-Z0-9_]+)(\.action\.type),/, "checkApply($1)||$1$2,")
+        // Add an action type that does nothing
         .replace(/(?=open_devlog_terminal:)/, ` everythings_fine: () => {}, `)
     + suff;
 }

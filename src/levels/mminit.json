@@ -261,16 +261,8 @@
       "z": -6.535836589278503,
       "width": 4,
       "depth": 6.5,
-      "rotation": -0.3490658503988659,
-      "actions": [
-        {
-          "type": "exit_level",
-          "params": {
-            "targetLevelId": "moletown",
-            "targetSpawnTag": "intro"
-          }
-        }
-      ]
+      "targetLevelId": "moletown",
+      "targetSpawnTag": "intro"
     }
   ],
   "terrain": {

@@ -105,16 +105,8 @@
       "z": 1,
       "width": 2,
       "depth": 4,
-      "rotation": 0,
-      "actions": [
-        {
-          "type": "exit_level",
-          "params": {
-            "targetLevelId": "mminit",
-            "targetSpawnTag": "town"
-          }
-        }
-      ]
+      "targetLevelId": "mminit",
+      "targetSpawnTag": "town"
     }
   ],
   "terrain": {

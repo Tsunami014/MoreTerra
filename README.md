@@ -9,6 +9,11 @@ A browser extension to add more to Terra!
 - The popup on hold 'V' now has more info in it
 - Press 'P' to get position info
 
+## Extra info for developers
+- Terra likes loading every level that exists on startup, so in the Network tab if you filter for 'json' you should be able to see all levels (and also some extras like the manifest)
+    - Note that all the Terra image assets need to be prefixed with `assets/`
+    - Also note that Terra ground tiles need to be in the format `assets/sprites/terrain/$$.webp` (meaning some images end up being suffixed with `.webp.webp`, funly enough)
+
 ## Building
 Run `build.sh`
 

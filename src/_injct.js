@@ -5,12 +5,12 @@ function modifyJSON(url, js) {
             const pos = PORTAL_LOCATIONS[nam]
             js.objects.push({
                 id: portal,
-                action: { label: "Travel", type: "mm_enter" },
-                rotation: pos[2]||0,
-                scale: 1.2,
                 type: portal,
                 x: pos[0],
                 z: pos[1],
+                rotation: pos[2]||0,
+                scale: 1.2,
+                action: { label: "Travel", type: "mm_enter" },
             })
             break
         }

@@ -65,6 +65,7 @@ async function loadLevel(lvlId, spawn) {
     outsky = [bg.r, bg.g, bg.b]
   }
   await clearLevel()
+  localStorage.setItem("lastLevelId", lvlId)
   await main.loadLevel(lvlId, spawn)
 
   const [lvl, isTown] = getCurrentLvl()

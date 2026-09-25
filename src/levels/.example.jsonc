@@ -1,0 +1,119 @@
+{
+  "id": "mminit",
+  "name": "mminit",
+  "width": 20,
+  "height": 20,
+  "boundsPolygon": [
+    {
+      "x": -3,
+      "z": -9
+    }
+    // ...
+    // Automatically makes a closed loop, no need to include the start point again
+  ],
+  "levelType": "outdoor", // Or "indoor"
+  "cameraZoom": 1,
+  "instanced": false, // Optional - makes there be one room per owner, e.g. farms
+  "music": "town", // Ill get to this later
+  "spawn": { // Default spawn location, probably just mirror the primary spawn location
+    "x": -7.8644,
+    "z": -1.4681
+  },
+  "spawns": [ // Specified spawn locations
+    {
+      "id": "1776290095610_gxzpr9s",
+      "tag": "default", // The tag is referenced when teleporting to spawn here
+      "x": -7.8644,
+      "z": -1.4681,
+      "isPrimary": true // There can only be one primary spawn
+    },
+    {
+      "id": "1776904750253_fznd7if",
+      "tag": "town",
+      "x": 4.1519,
+      "z": -5.4171,
+      "isPrimary": false
+    }
+  ],
+  "objects": [
+    {
+      "id": "1776908551433_6539txf", // This is optional..?
+      "type": "1776908449364_2k7hklt", // Type of object - key in manifest (overridden in _*objs.js)
+      "x": -6,
+      "z": -6,
+      // Optional
+      "rotation": 0,
+      "scale": 1,
+      "flipX": false,
+      "flipY": false,
+      "baseFade": false, // Whether to fade the object at its base
+      "action": { // Press F to interact
+        "type": "mm_dosomething", // The action to perform. MoreTerra actions are prefixed with mm_ and are used in gameScript.js's checkApply function
+        "label": "Do Something" // The label that's shown to the user
+      }
+    }
+    // ...
+  ],
+  "colliders": [], // Dunno what to fill this one with, it's unused
+  "npcs": [
+    // I have no clue where the sprites come from
+    { "sprite": "1789017655388_qag9pdp" }
+    // ...
+  ],
+  "exitZones": [ // Rectangle areas where when stepped on causes the user to teleport somewhere else
+    {
+      "id": "1776904603928_i7j1w6j",
+      "x": 7.8900,
+      "z": -6.5358,
+      "width": 4,
+      "depth": 6.5,
+      "rotation": 0, // Optional
+      // The level ID (at top of file) and spawn tag (from "tag" in "spawns" key) to spawn into
+      "targetLevelId": "moletown",
+      "targetSpawnTag": "intro",
+      // Optional for blocking the user for quests
+      "blocking": true,
+      "lockedMessage": "I can't leave yet!",
+      "requiredQuest": {
+        "questId": "1789150019600_7a64bzi",
+        "stepId": "" // The step in the quest you must be... up to? Past?
+      }
+    }
+  ],
+  "terrain": {
+    "gridCols": 1,
+    "gridRows": 2,
+    "cellSize": 20,
+    "tiles": [ // A 2D grid of tiles that make up the floor
+      // Each image is in the format `/assets/sprites/terrain/$$.webp` (yes the .webp is added for you)
+      [ "1776899749834_jppll7d" ]
+    ],
+    "groundTiles": [ // No clue what differs this from before, maybe this has more attributes?
+      [ null ]
+    ]
+  },
+  "lights": [
+    {
+      "type": "ambient",
+      "color": "#deddda",
+      "intensity": 2.8
+    },
+    {
+      "type": "sun",
+      "color": "#b5835a",
+      "intensity": 1
+    },
+    {
+      "id": "1776899793395_rlxhwn0",
+      "type": "point",
+      "color": "#ffaa44",
+      "intensity": 5,
+      "x": -5,
+      "y": 2,
+      "z": -2,
+      "radius": 5,
+      "softness": 0.5 // 0 - hard, 0.5 - medium, 1 - soft
+    }
+    // ... (more point lights)
+  ]
+}

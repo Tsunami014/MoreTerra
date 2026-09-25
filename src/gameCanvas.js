@@ -9,9 +9,9 @@ function patchData(data) {
         // Pick up the main class when networkClient is created
         .replace(/(?<=this\.networkClient ?=)/, "setMain(this)||")
         // Make ctrl keys also sprint, and added a P keybind
-        .replace(/(?<=,\s*sprint: ?\[)([^\]]+\]),?/, "`ControlLeft`,`ControlRight`,$1,mm_printpos:[`KeyT`],")
+        .replace(/(?<=,\s*sprint: ?\[)([^\]]+\]),?/, "`ControlLeft`,`ControlRight`,$1,mm_printpos:[`KeyP`],")
         // Implement handler for P keybind
-        .replace(/if ?\(([a-zA-Z0-9]+\()(?=.interact)/, "if ($1`mm_printpos`)){printPos()}if($1")
+        .replace(/if ?\(([a-zA-Z0-9]+\()(.interact.,?)([^)]*)/, "if ($1`mm_printpos`,$3)){printPos()}$&")
         // Make the information popup also have other interesting info
         .replace(/(?<=renderInfoDisplayCanvas\(([^,) ]+).*?\) ?{)([^}]*?)`\${Math\.round\(\1\)}ms`/, "$2getExtraInfo($1)")
         // Wrap setting the exit zone handler

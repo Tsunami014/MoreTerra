@@ -21,15 +21,14 @@ var current = null;
 function printPos() {
   if (!check()) return;
   const playr = main.players.get(main.localPlayerId)
-  console.log("x:", playr.renderX, "z:", playr.renderZ, "lvl:", current??(oldPref+localStorage.getItem("lastLevelId")))
+  console.log("x:", playr.renderX.toFixed(4), "z:", playr.renderZ.toFixed(4), "lvl:", current??(oldPref+localStorage.getItem("lastLevelId")))
 }
 function getExtraInfo(t) {
   if (!check()) return Math.round(t)+"ms - MoreTerra error!";
   const playr = main.players.get(main.localPlayerId)
   return Math.round(t)+"ms," +
-    " x: "+playr.renderX.toFixed(4) +
-    " z: "+playr.renderZ.toFixed(4) +
-    ", "+(current??(oldPref+localStorage.getItem("lastLevelId")))
+    " x: "+playr.renderX.toFixed(2) +
+    " z: "+playr.renderZ.toFixed(2)
 }
 
 export function getCurrentLvl() {

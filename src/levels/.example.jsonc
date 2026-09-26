@@ -54,7 +54,7 @@
     }
     // ...
   ],
-  "colliders": [], // Dunno what to fill this one with, it's unused
+  "colliders": [], // Assumedly, these are extra colliders probably in the same format as object colliders
   "npcs": [
     // I have no clue where the sprites come from
     { "sprite": "1789017655388_qag9pdp" }
@@ -76,7 +76,7 @@
       "lockedMessage": "I can't leave yet!",
       "requiredQuest": {
         "questId": "1789150019600_7a64bzi",
-        "stepId": "" // The step in the quest you must be... up to? Past?
+        "stepId": "" // The step in the quest you must be... up to? past? for this to let you through
       }
     }
   ],

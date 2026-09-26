@@ -143,7 +143,7 @@ async function LvlEditOverlay() {
     }
 
     const pages = [
-        mktab("Level Info", "Some changes here won't apply unless you press Apply", ()=>{
+        mktab("Level Info", "Some changes here won't apply unless you press ->", ()=>{
             const dat = main.levelLoader.getCurrentLevel()
             if (!dat) {
                 console.error("Failed to get current level!")
@@ -186,7 +186,7 @@ async function LvlEditOverlay() {
                 ]),
             ])
         }),
-        mktab("Level JSON", "Changes here won't save unless you press Apply", ()=>{
+        mktab("Level JSON", "Changes here won't save unless you press ->", ()=>{
             const dat = JSON.stringify(main.levelLoader.getCurrentLevel(), null, 2)
             if (!dat) {
                 console.error("Failed to stringify current level!")

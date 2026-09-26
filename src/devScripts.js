@@ -120,6 +120,8 @@ window.dev.addBoundPoint = function() {
 
 var useColls = true
 window.dev.setUseColliders = function(use) { useColls = use }
+var useExits = true
+window.dev.setUseExits = function(use) { useExits = use }
 
 
 //// -- Debug drawing overlays --

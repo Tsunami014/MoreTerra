@@ -112,7 +112,8 @@ window.dev.rmBounds = function() {
 window.dev.addBoundPoint = function() {
     const playr = main.players.get(main.localPlayerId)
     main.levelLoader.getCurrentLevel().boundsPolygon.push({
-        x: playr.renderX.toFixed(4), z: playr.renderZ.toFixed(4)
+        x: parseFloat(playr.renderX.toFixed(4)),
+        z: parseFloat(playr.renderZ.toFixed(4))
     })
     dev.refreshDebugOverlays()
 }

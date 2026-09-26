@@ -1,3 +1,5 @@
+//// -- Load custom testing levels --
+
 const testWorldId = 'mm_test'
 
 window.testWorld = async function(base, spawn) {
@@ -97,10 +99,29 @@ window.openEditLvlOverlay = function() {
 }
 
 
+//// -- Bounds polygon tools --
 
-window.setAllDebugOverlays = function (visible) {
+window.rmBounds = function() {
+    main.levelLoader.getCurrentLevel().boundsPolygon = []
+    refreshDebugOverlays()
+}
+window.addBoundPoint = function() {
+    const playr = main.players.get(main.localPlayerId)
+    main.levelLoader.getCurrentLevel().boundsPolygon.push({ x: playr.renderX, z: playr.renderZ })
+    refreshDebugOverlays()
+}
+
+
+//// -- Debug drawing overlays --
+
+window.setAllDebugOverlays = function(visible) {
     document.querySelectorAll('#devopts .dbcb').forEach(cb => {
         cb.checked = visible;
+        cb.dispatchEvent(new Event('change'));
+    });
+};
+window.refreshDebugOverlays = function() {
+    document.querySelectorAll('#devopts .dbcb').forEach(cb => {
         cb.dispatchEvent(new Event('change'));
     });
 };

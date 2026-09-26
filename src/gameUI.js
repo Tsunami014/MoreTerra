@@ -118,12 +118,9 @@ function Choices(choices, thn) {
 
 async function LvlEditOverlay() {
     forceHideDbug()
-    var lvl = localStorage.getItem("lastLevelId")
-    await main.assetManager.ensureEssential(lvl)
-    if (main.assetManager.levelDataCache.get(oldPref+lvl)) { lvl = oldPref+lvl; }
-    const dat = JSON.stringify(main.assetManager.levelDataCache.get(lvl), null, 2)
+    const dat = JSON.stringify(main.levelLoader.getCurrentLevel(), null, 2)
     if (!dat) {
-      console.error("Unknown level id:", lvl)
+      console.error("Failed to stringify current level!")
       return;
     }
 

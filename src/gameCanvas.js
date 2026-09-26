@@ -11,7 +11,7 @@ function patchData(data) {
     // Grab these for later
     const bagClasses = data.match(/[a-zA-Z0-9_]+(?=\.bagIcon)/)[0]
 
-    return pref + dataPref + data
+    const out = pref + dataPref + data
         // Pick up the main class when networkClient is created
         .replace(/(?<=this\.networkClient ?=)/, "setMain(this)||")
         // Make ctrl keys also sprint, and add a P and ` keybind
@@ -39,4 +39,6 @@ function patchData(data) {
             </button>
         `)
     + suff;
+    //console.log(out)
+    return out
 }

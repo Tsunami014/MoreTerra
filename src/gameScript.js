@@ -3,6 +3,11 @@ var outsky = null;
 var insky = [0, 0, 0];
 function setMain(nmain) {
   main = nmain;
+  const oem = main.emit
+  main.emit = function(e, ...args) {
+    oem.call(this, e, ...args)
+    if (e == "afterLevelTransition") dev.refreshDebugOverlays()
+  }
   console.log("[MoreTerra] Injected the GameCanvas!")
   console.log(main)
 }
@@ -24,7 +29,7 @@ function printPos() {
   console.log("x:", playr.renderX.toFixed(4), "z:", playr.renderZ.toFixed(4), "lvl:", current??(oldPref+localStorage.getItem("lastLevelId")))
 }
 function getExtraInfo(t) {
-  if (!check()) return Math.round(t)+"ms - MoreTerra error!";
+  if (!check()) return Math.round(t)+"ms, MoreTerra error!";
   const playr = main.players.get(main.localPlayerId)
   return Math.round(t)+"ms," +
     " x: "+playr.renderX.toFixed(2) +

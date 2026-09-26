@@ -12,6 +12,11 @@
         <br><br>
         <button onclick="dev.rmBounds()">Remove bounds</button>
         <button onclick="dev.addBoundPoint()">Add bound point</button>
+        <br>
+        <label>
+            <input type="checkbox" onchange="dev.setUseBounds(this.checked)" checked>
+            Collide with bounds
+        </label>
     </div><div>
         <button onclick="dev.setAllDebugOverlays(true)">All on</button>
         <button onclick="dev.setAllDebugOverlays(false)">All off</button>

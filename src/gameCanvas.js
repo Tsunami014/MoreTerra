@@ -24,6 +24,8 @@ function patchData(data) {
         "$&")
         // Make the information popup also have other interesting info
         .replace(/(?<=renderInfoDisplayCanvas\(([^,) ]+).*?\) ?{)([^}]*?)`\${Math\.round\(\1\)}ms`/, "$2getExtraInfo($1)")
+        // Override bounds polygon
+        .replace(/[a-zA-Z0-9_]\?\.boundsPolygon/g, "(useBounds&&$&)")
         // Wrap setting the exit zone handler
         .replace(/(?<=onExitZoneIntercept ?=) ?(.+?)(?=[,)};])/g, "wrapExitZone($1)")
         // Override sending movement to the network

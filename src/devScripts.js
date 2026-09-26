@@ -7,7 +7,7 @@ const testWorldId = 'mm_test'
 window.dev.testWorld = async function(base, spawn) {
     if (!check()) return;
     current = testWorldId
-    var load
+    var load;
     if (base !== undefined) {
         if (base === "") { base = localStorage.getItem("lastLevelId"); }
         await main.assetManager.ensureEssential(base)
@@ -103,13 +103,19 @@ window.dev.openEditLvlOverlay = function() {
 
 //// -- Bounds polygon tools --
 
+var useBounds = true
+window.dev.setUseBounds = function(use) {
+    useBounds = use
+}
 window.dev.rmBounds = function() {
     main.levelLoader.getCurrentLevel().boundsPolygon = []
     dev.refreshDebugOverlays()
 }
 window.dev.addBoundPoint = function() {
     const playr = main.players.get(main.localPlayerId)
-    main.levelLoader.getCurrentLevel().boundsPolygon.push({ x: playr.renderX, z: playr.renderZ })
+    main.levelLoader.getCurrentLevel().boundsPolygon.push({
+        x: playr.renderX.toFixed(4), z: playr.renderZ.toFixed(4)
+    })
     dev.refreshDebugOverlays()
 }
 

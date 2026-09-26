@@ -15,6 +15,8 @@ A browser extension to add more to Terra!
     - Note that all the Terra image assets need to be prefixed with `assets/`
     - Also note that Terra ground tiles need to be in the format `assets/sprites/terrain/$$.webp` (meaning some images end up being suffixed with `.webp.webp`, funly enough)
 
+- Please note that the display for the world border is offset by the player's radius, and I'm not bothered to fix that.
+
 ## Building
 Run `build.sh`
 

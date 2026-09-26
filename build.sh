@@ -38,7 +38,7 @@ cp firefox/manifest.json dist/firefox
 cat src/replace.js <(
     {
         echo 'const dataPref = `'
-        cat src/gameUI.js src/gameScript.js
+        cat src/gameUI.js src/devScripts.js src/gameScript.js
         echo '`;'
         file2const DEVMENU src/devMenu.html
     }

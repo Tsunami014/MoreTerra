@@ -33,6 +33,8 @@ function getExtraInfo(t) {
 }
 
 function toggleDbug() {
+  const active = document.activeElement
+  if (active && active != document.body) {return}
   const dbuginf = document.getElementById('devopts')
   dbuginf.style.display = dbuginf.style.display == ""? "none" : ""
 }

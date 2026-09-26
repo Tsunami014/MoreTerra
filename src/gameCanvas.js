@@ -29,7 +29,13 @@ function patchData(data) {
         // Add an action type that does nothing
         .replace(/(?=open_devlog_terminal:)/, ` everythings_fine: () => {}, `)
         // Add a UI element to quickly open devlogs
-        .replace(/`[^`]+\/assets\/sprites\/ui\/bag\.svg[^`]+(?=`)/,
-            '$&</div></div><button style="display: block;" onclick="window.actions[\'open_devlog_terminal\']()" class="${'+bagClasses+'.bag}"><img class="${'+bagClasses+'.bagIcon}" src=/images/devlogs.webp alt=Devlogs></button>')
+        .replace(/`[^`]+\/assets\/sprites\/ui\/bag\.svg[^`]+(?=`)/, `$&</div></div>
+            <button style="display: block;" onclick="window.actions['open_devlog_terminal']()" class="\${${bagClasses}.bag}">
+                <img class="\${${bagClasses}.bagIcon}" src=/images/devlogs.webp alt=Devlogs>
+            </button>
+            <div id="devopts">
+                <p>Hello!</p>
+            </div>
+        `)
     + suff;
 }

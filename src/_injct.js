@@ -93,9 +93,9 @@ function hook() {
             }
             console.error("[MoreTerra] Unable to find an instanceable object in the module!")
         });
-        if (CSS) {
+        if (XTRACSS) {
             const style = document.createElement('style');
-            style.textContent = CSS;
+            style.textContent = XTRACSS;
             document.head.appendChild(style)
         }
     })

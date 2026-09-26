@@ -24,8 +24,10 @@ rm -rf dist
 } > src/replace.js
 echo "Generated replace file"
 
+
 # All
-OUT=$(cat src/_*.js)
+OUT="const XTRACSS = '$(  sed -e 's/\\/\\\\/g' -e "s/'/\\\\'/g" src/extra.css | paste -sd' ' - | tr -s ' ')';
+$(cat src/_*.js)"
 
 # Firefox
 mkdir -p dist/firefox
@@ -39,6 +41,5 @@ cat src/replace.js <(
 ) src/gameCanvas.js firefox/redirect.js > dist/firefox/redirect.js
 echo "$OUT" > dist/firefox/out.js
 cp -r src/images dist/firefox/images
-cp src/portal.webp dist/firefox/images/portal.webp
 cp -r src/levels dist/firefox/levels
 echo "Built firefox extension at dist/firefox"

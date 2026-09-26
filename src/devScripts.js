@@ -12,7 +12,7 @@ window.dev.testWorld = async function(base, spawn) {
         if (base === "") { base = localStorage.getItem("lastLevelId"); }
         await main.assetManager.ensureEssential(base)
         if (main.assetManager.levelDataCache.get(oldPref+base)) { base = oldPref+base; }
-        load = main.assetManager.levelDataCache.get(base)
+        load = structuredClone(main.assetManager.levelDataCache.get(base))
         if (!load) {
             console.error("Unknown level id:", base)
             return;
@@ -104,9 +104,7 @@ window.dev.openEditLvlOverlay = function() {
 //// -- Bounds polygon tools --
 
 var useBounds = true
-window.dev.setUseBounds = function(use) {
-    useBounds = use
-}
+window.dev.setUseBounds = function(use) { useBounds = use }
 window.dev.rmBounds = function() {
     main.levelLoader.getCurrentLevel().boundsPolygon = []
     dev.refreshDebugOverlays()
@@ -118,6 +116,9 @@ window.dev.addBoundPoint = function() {
     })
     dev.refreshDebugOverlays()
 }
+
+var useColls = true
+window.dev.setUseColliders = function(use) { useColls = use }
 
 
 //// -- Debug drawing overlays --

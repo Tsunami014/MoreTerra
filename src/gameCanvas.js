@@ -1,15 +1,15 @@
 function patchData(data) {
     // Load the labels with an external function
-    var suff = ";const LABLS = " + data.match(/[a-zA-Z0-9_]+(?=\.textBox)/)
+    var suff = ";const LABLS = " + data.match(/\w+(?=\.textBox)/)
 
     // Copy the teleport function
     var pref = "const tele = "+data.match(/(?<=onMessage\(.forceTeleport., *)([^{]+{(?:[^{}]+)})/)[0].replaceAll("this", "main") + ";"
 
     // Store the list of actions globally
-    suff += ";window.actions = " + data.match(/[a-zA-Z0-9_]+(?= ?= ?{\s*open_devlog_terminal:)/)
+    suff += ";window.actions = " + data.match(/\w+(?= ?= ?{\s*open_devlog_terminal:)/)
 
     // Grab these for later
-    const bagClasses = data.match(/[a-zA-Z0-9_]+(?=\.bagIcon)/)[0]
+    const bagClasses = data.match(/\w+(?=\.bagIcon)/)[0]
 
     const out = pref + dataPref + data
         // Pick up the main class when networkClient is created
@@ -17,21 +17,23 @@ function patchData(data) {
         // Make ctrl keys also sprint, and add a P and ` keybind
         .replace(/(?<=,\s*sprint: ?\[)([^\]]+\]),?/, "`ControlLeft`,`ControlRight`,$1,mm_printpos:[`KeyP`],mm_dbug:[`KeyT`],")
         // Implement handler for P and ` keybinds
-        .replace(/(if ?\([a-zA-Z0-9]+\()(?:.interact.,?)([^{]*)/,
+        .replace(/(if ?\(\w+\()(?:.interact.,?)([^{]*)/,
             "if (document.activeElement?.classList.contains(`hogfocus`)) {return}"+
             "$1`mm_printpos`,$2{printPos()}"+
             "$1`mm_dbug`,$2{toggleDbug()}"+
         "$&")
         // Make the information popup also have other interesting info
         .replace(/(?<=renderInfoDisplayCanvas\(([^,) ]+).*?\) ?{)([^}]*?)`\${Math\.round\(\1\)}ms`/, "$2getExtraInfo($1)")
-        // Override bounds polygon
-        .replace(/[a-zA-Z0-9_]\?\.boundsPolygon/g, "(useBounds&&$&)")
+        // Override getting the bounds polygon
+        .replace(/(\w+\??\.)+boundsPolygon(?!(\??\.\w+)* ?=)/g, "(useBounds&&$&)")
+        // Override getting the colliders
+        .replace(/(\w+\??\.)+colliders(?!(\??\.\w+)* ?=)/g, "(useColls&&$&||[])")
         // Wrap setting the exit zone handler
         .replace(/(?<=onExitZoneIntercept ?=) ?(.+?)(?=[,)};])/g, "wrapExitZone($1)")
         // Override sending movement to the network
         .replace(/(?=this\.networkClient\.sendMove)/, "networkMove()&&")
         // Override reading the object's action
-        .replace(/([a-zA-Z0-9_]+)(\.action\.type),/, "checkApply($1)||$1$2,")
+        .replace(/(\w+)(\.action\.type),/, "checkApply($1)||$1$2,")
         // Add an action type that does nothing
         .replace(/(?=open_devlog_terminal:)/, ` everythings_fine: () => {}, `)
         // Add a UI element to quickly open devlogs
@@ -41,6 +43,6 @@ function patchData(data) {
             </button>
         `)
     + suff;
-    //console.log(out)
+    console.log(out)
     return out
 }

@@ -32,6 +32,11 @@ function getExtraInfo(t) {
     " z: "+playr.renderZ.toFixed(2)
 }
 
+function toggleDbug() {
+  const dbuginf = document.getElementById('devopts')
+  dbuginf.style.display = dbuginf.style.display == ""? "none" : ""
+}
+
 export function getCurrentLvl() {
   if (!check()) return {};
   var ld = main.assetManager.levelDataCache;

@@ -8,9 +8,7 @@ A browser extension to add more to Terra!
 ### Dev features
 - The popup on hold 'V' now has more info in it
 - Press 'P' to print position info in the console
-- In the console, run `testWorld()` to create a test world with features to help creating new worlds!
-    - The first argument is the name of the level to copy, "" for current, leave blank for a blank test world
-    - If the first argument is specified, the second is the spawn tag to start at, or leave blank to use the default
+- Press 'T' to toggle a developer panel!
 
 ## Extra info for developers
 - Terra likes loading every level that exists on startup, so in the Network tab if you filter for 'json' you should be able to see all levels (and also some extras like the manifest)

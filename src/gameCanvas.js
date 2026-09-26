@@ -14,10 +14,13 @@ function patchData(data) {
     return pref + dataPref + data
         // Pick up the main class when networkClient is created
         .replace(/(?<=this\.networkClient ?=)/, "setMain(this)||")
-        // Make ctrl keys also sprint, and added a P keybind
-        .replace(/(?<=,\s*sprint: ?\[)([^\]]+\]),?/, "`ControlLeft`,`ControlRight`,$1,mm_printpos:[`KeyP`],")
-        // Implement handler for P keybind
-        .replace(/if ?\(([a-zA-Z0-9]+\()(.interact.,?)([^)]*)/, "if ($1`mm_printpos`,$3)){printPos()}$&")
+        // Make ctrl keys also sprint, and add a P and ` keybind
+        .replace(/(?<=,\s*sprint: ?\[)([^\]]+\]),?/, "`ControlLeft`,`ControlRight`,$1,mm_printpos:[`KeyP`],mm_dbug:[`KeyT`],")
+        // Implement handler for P and ` keybinds
+        .replace(/if ?\(([a-zA-Z0-9]+\()(.interact.,?)([^)]*)/,
+            "if ($1`mm_printpos`,$3)){printPos()}"+
+            "if ($1`mm_dbug`,$3)){toggleDbug()}"+
+        "$&")
         // Make the information popup also have other interesting info
         .replace(/(?<=renderInfoDisplayCanvas\(([^,) ]+).*?\) ?{)([^}]*?)`\${Math\.round\(\1\)}ms`/, "$2getExtraInfo($1)")
         // Wrap setting the exit zone handler
@@ -33,9 +36,6 @@ function patchData(data) {
             <button style="display: block;" onclick="window.actions['open_devlog_terminal']()" class="\${${bagClasses}.bag}">
                 <img class="\${${bagClasses}.bagIcon}" src=/images/devlogs.webp alt=Devlogs>
             </button>
-            <div id="devopts">
-                <p>Hello!</p>
-            </div>
-        `)
+        `+DEVMENU)
     + suff;
 }

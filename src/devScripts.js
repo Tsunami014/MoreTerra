@@ -1,3 +1,92 @@
+window.testWorld = async function(base, spawn) {
+  if (!check()) return;
+  current = testWorld
+  var load
+  if (base !== undefined) {
+    if (base === "") { base = localStorage.getItem("lastLevelId"); }
+    await main.assetManager.ensureEssential(base)
+    if (main.assetManager.levelDataCache.get(oldPref+base)) { base = oldPref+base; }
+    load = main.assetManager.levelDataCache.get(base)
+    if (!load) {
+      console.error("Unknown level id:", base)
+      return;
+    }
+  } else {
+    load = {
+      width: 20,
+      height: 20,
+      boundsPolygon: [
+        { "x": -10, "z": -10 },
+        { "x": 10, "z": -10 },
+        { "x": 10, "z": 10 },
+        { "x": -10, "z": 10 },
+      ],
+      levelType: "outdoor",
+      cameraZoom: 1,
+      spawn: { x: 0, z: 0 },
+      spawns: [
+        {
+          id: "1776290095610_gxzpr9s",
+          tag: "default",
+          x: 0,
+          z: 0,
+          isPrimary: true
+        },
+      ],
+      objects: [],
+      colliders: [],
+      npcs: [],
+      exitZones: [],
+      terrain: {
+        gridCols: 1,
+        gridRows: 2,
+        cellSize: 20,
+        tiles: [
+          [ "ground" ],
+        ],
+        groundTiles: [
+          [ null ],
+        ]
+      },
+      lights: [
+        {
+          type: "ambient",
+          color: "#deddda",
+          intensity: 2.8
+        },
+        {
+          type: "sun",
+          color: "#b5835a",
+          intensity: 1
+        },
+      ]
+    }
+  }
+  load.id = testWorld
+  load.name = "Test world"
+  main.assetManager.levelDataCache.set(testWorld, load)
+
+  console.log("[MoreTerra] Teleporting to test world"+(base? " replicating "+base : ""))
+  let player = main.players.get(main.localPlayerId);
+  let n = player.mesh.position.clone().project(main.camera),
+    r = (n.x + 1) / 2,
+    i = (-n.y + 1) / 2;
+  main.setInputEnabled(!1);
+  let c = main.sceneTransition,
+    l = main.onTransitionStateChange;
+  c.play(
+    r, i,
+    async () => {
+        l?.(!0), await loadLevel(testWorld, spawn??''), main.inputEnabled = true;
+    },
+    () => {
+        l?.(!1);
+    }
+  )
+}
+
+
+
 window.setAllDebugOverlays = function (visible) {
     document.querySelectorAll('#devopts .dbcb').forEach(cb => {
         cb.checked = visible;

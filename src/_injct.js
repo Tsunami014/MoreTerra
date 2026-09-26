@@ -4,8 +4,8 @@ function modifyJSON(url, js) {
         if (url.includes(nam)) {
             const pos = PORTAL_LOCATIONS[nam]
             js.objects.push({
-                id: portal,
-                type: portal,
+                id: "portal",
+                type: "portal",
                 x: pos[0],
                 z: pos[1],
                 rotation: pos[2]||0,

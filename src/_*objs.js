@@ -1,4 +1,3 @@
-const portal = "9999999999999_portall"
 const mtpth = "/moreterra/assets/"
 const MANIF = {
     sprites: {
@@ -27,7 +26,7 @@ const MANIF = {
             ],
         }
         */
-        [portal]: {
+        portal: {
             path: mtpth+"portal.webp",
             width: 0.8,
             height: 2.2,

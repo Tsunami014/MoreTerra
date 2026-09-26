@@ -149,22 +149,23 @@ async function LvlEditOverlay() {
                 console.error("Failed to get current level!")
                 return;
             }
-            function mkInp(key, name, type, xtra={}) {
+            function mkInp(key, name, type, deflt, xtra={}) {
                 return [
                     elem({ tag: "label", text: name }),
                     elem({
                         tag: "input",
                         type: type,
                         value: dat[key],
-                        oninput: function() { dat[key] = this.value },
+                        oninput: function() { dat[key] = this.value||deflt },
                         ...xtra
                     }),
-                    elem({ tag: "br" })
+                    elem({ tag: "br" }), elem({ tag: "br" })
                 ]
             }
             return elem({ cls: UILABLS.content }, [
-                ...mkInp("width", "Level width ", "number"),
-                ...mkInp("height", "Level height ", "number"),
+                ...mkInp("width", "Level width ", "number", 20),
+                ...mkInp("height", "Level height ", "number", 20),
+                ...mkInp("cameraZoom", "Camera zoom ", "number", 1.2, { step: 0.1, min: 0.1 }),
             ])
         }),
         mktab("Level JSON", "Changes here won't save unless you press Apply", ()=>{

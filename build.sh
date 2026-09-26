@@ -27,9 +27,10 @@ echo "Generated replace file"
 
 # All
 file2const() {
-    echo "const $1 = '$(sed -e 's/\\/\\\\/g' -e "s/'/\\\\'/g" "$2" | paste -sd' ' - | tr -s ' ')'"
+    echo "const $1 = '$(sed -e 's/\\/\\\\/g' -e "s/'/\\\\'/g" "$2" | awk '{i=/^[ \t]/;sub(/^[ \t]+/,"");printf "%s%s",(NR>1?(i?"":" "):""),$0} END{print ""}')'"
 }
 OUT="$(file2const XTRACSS src/extra.css)
+$(file2const DEVMENU src/devMenu.html)
 $(cat src/_*.js)"
 
 # Firefox
@@ -40,7 +41,6 @@ cat src/replace.js <(
         echo 'const dataPref = `'
         cat src/gameUI.js src/devScripts.js src/gameScript.js
         echo '`;'
-        file2const DEVMENU src/devMenu.html
     }
 ) src/gameCanvas.js firefox/redirect.js > dist/firefox/redirect.js
 echo "$OUT" > dist/firefox/out.js

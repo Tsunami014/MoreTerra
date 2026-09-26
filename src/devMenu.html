@@ -1,44 +1,44 @@
 <div id="devopts" style="display: none">
-    <button onclick="openEditLvlOverlay()" style="width: 100%">
-        Edit level
-    </button>
+    <div>
+        <button onclick="openEditLvlOverlay()" style="width: 100%">
+            Edit level
+        </button>
 
-    <input id="worldInput" class="hogfocus" type="text" placeholder="Current">
-    <button onclick="testWorld(document.getElementById('worldInput').value)">
-        Test level
-    </button>
-    <button onclick="testWorld()">
-        Test sample
-    </button>
+        <input id="worldInput" class="hogfocus" type="text" placeholder="Current">
+        <button onclick="testWorld(document.getElementById('worldInput').value)">
+            Test level
+        </button>
+        <button onclick="testWorld()">
+            Test sample
+        </button>
+    </div><div>
+        <button onclick="setAllDebugOverlays(true)">All on</button>
+        <button onclick="setAllDebugOverlays(false)">All off</button>
 
-    <br><br>
-
-    <button onclick="setAllDebugOverlays(true)">All on</button>
-    <button onclick="setAllDebugOverlays(false)">All off</button>
-
-    <br>
-    <label>
-        <input type="checkbox" class="dbcb" onchange="setBoundsPolygonVisible(this.checked)">
-        Show bounds polygon
-    </label>
-    <br>
-    <label>
-        <input type="checkbox" class="dbcb" onchange="setCollidersVisible(this.checked)">
-        Show colliders
-    </label>
-    <br>
-    <label>
-        <input type="checkbox" class="dbcb" onchange="setExitZonesVisible(this.checked)">
-        Show exit zones
-    </label>
-    <br>
-    <label>
-        <input type="checkbox" class="dbcb" onchange="setSpawnPointsVisible(this.checked)">
-        Show spawn points
-    </label>
-    <br>
-    <label>
-        <input type="checkbox" class="dbcb" onchange="setBuildGridVisible(this.checked)">
-        Show build grid
-    </label>
+        <br>
+        <label>
+            <input type="checkbox" class="dbcb" onchange="setBoundsPolygonVisible(this.checked)">
+            Show bounds polygon
+        </label>
+        <br>
+        <label>
+            <input type="checkbox" class="dbcb" onchange="setCollidersVisible(this.checked)">
+            Show colliders
+        </label>
+        <br>
+        <label>
+            <input type="checkbox" class="dbcb" onchange="setExitZonesVisible(this.checked)">
+            Show exit zones
+        </label>
+        <br>
+        <label>
+            <input type="checkbox" class="dbcb" onchange="setSpawnPointsVisible(this.checked)">
+            Show spawn points
+        </label>
+        <br>
+        <label>
+            <input type="checkbox" class="dbcb" onchange="setBuildGridVisible(this.checked)">
+            Show build grid
+        </label>
+    </div>
 </div>

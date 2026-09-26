@@ -41,9 +41,16 @@ function hook() {
         idx = document.head.innerHTML.indexOf("index")
         file = document.head.innerHTML.slice(idx,document.head.innerHTML.indexOf(".", idx)) + ".js"
         import('/assets/'+file).then(module => {
+            document.getElementById('root').insertAdjacentHTML('beforeend', DEVMENU)
+
             indxclsFound = false
             for (o in module) {
                 ob = module[o]
+                try {
+                    "test" in ob
+                } catch (e) {
+                    continue;
+                }
                 if ("header" in ob) {
                     if (UILABLS) console.warn("[MoreTerra] Found multiple candidates for UI labels..?")
                     UILABLS = ob
@@ -52,7 +59,6 @@ function hook() {
                     if (indxclsFound) console.warn("[MoreTerra] Found multiple candidates for index class..?")
                     indxclsFound = true
                     proto = ob.prototype
-                    console.log(proto)
 
                     oldgsi = proto.getSpriteIds
                     proto.getSpriteIds = function () {

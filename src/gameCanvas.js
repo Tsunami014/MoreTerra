@@ -37,6 +37,6 @@ function patchData(data) {
             <button style="display: block;" onclick="window.actions['open_devlog_terminal']()" class="\${${bagClasses}.bag}">
                 <img class="\${${bagClasses}.bagIcon}" src=/images/devlogs.webp alt=Devlogs>
             </button>
-        `+DEVMENU)
+        `)
     + suff;
 }

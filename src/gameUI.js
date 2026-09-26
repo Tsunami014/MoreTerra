@@ -57,7 +57,7 @@ function buildUI(thn, childr, cls) {
     if (document.getElementsByClassName("OVERLAY").length > 0) return;
     const parent = document.getElementById("root").firstElementChild;
     const container = document.createElement("div");
-    container.className = cls??LABLS.overlay;
+    container.className = "OVERLAY " + (cls??LABLS.overlay);
     main.inputEnabled = false
     then = (out)=>{
         main.inputEnabled = true
@@ -120,7 +120,7 @@ function Choices(choices, thn) {
 
 function LvlEditOverlay() {
     buildUI(()=>{}, [
-        elem({ cls: UILABLS.panelContainer }, [
+        elem({ cls: UILABLS.panelContainer+' noanim' }, [
             elem({ cls: UILABLS.tabBar }, [
                 elem({ cls: UILABLS.tabSpacer }),
                 elem({ tag: "button", cls: UILABLS.tab }, [

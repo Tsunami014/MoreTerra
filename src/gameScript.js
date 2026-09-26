@@ -213,6 +213,74 @@ window.testWorld = async function(base, spawn) {
   )
 }
 
+window.setBoundsPolygonVisible = function(visible) {
+    if (main._boundsPolygonSegments) {
+        for (const seg of main._boundsPolygonSegments) {
+            main.scene.remove(seg);
+            seg.geometry.dispose();
+            seg.material.dispose();
+        }
+        main._boundsPolygonSegments = null;
+    }
+
+    if (!visible) return;
+
+    const level = main.levelLoader.getCurrentLevel();
+    const poly = level?.boundsPolygon;
+
+    if (!poly || poly.length < 2) return;
+
+    const localPlayer = main.players.get(main.localPlayerId);
+    if (!localPlayer) {
+        console.warn('[MoreTerra] No local player yet');
+        return;
+    }
+
+    const Mesh = localPlayer.accessoryMesh.constructor;
+    const PlaneGeometry = localPlayer.accessoryMesh.geometry.constructor;
+    const MeshBasicMaterial = localPlayer.accessoryMesh.material.constructor;
+
+    const THICKNESS = 0.08;
+    const Y_OFFSET  = 0.06;
+
+    const material = new MeshBasicMaterial({
+        color: 0xff3333,
+        transparent: true,
+        opacity: 0.85,
+        depthWrite: false,
+        side: 2, // Some magic used everywhere aparently
+    });
+
+    const segments = [];
+    const n = poly.length;
+
+    for (let i = 0; i < n; i++) {
+        const a = poly[i];
+        const b = poly[(i + 1) % n];
+
+        const dx = b.x - a.x;
+        const dz = b.z - a.z;
+        const length = Math.sqrt(dx * dx + dz * dz);
+        if (length < 1e-4) continue;
+
+        const midX = (a.x + b.x) / 2;
+        const midZ = (a.z + b.z) / 2;
+        const angle = Math.atan2(dz, dx); // Rotation around Y needed to align with this edge
+
+        const geometry = new PlaneGeometry(length, THICKNESS);
+        const mesh = new Mesh(geometry, material);
+
+        mesh.rotation.x = -Math.PI / 2; // Lay flat on the ground
+        mesh.rotation.z = -angle;
+        mesh.position.set(midX, Y_OFFSET, midZ);
+        mesh.renderOrder = 4;
+
+        main.scene.add(mesh);
+        segments.push(mesh);
+    }
+
+    main._boundsPolygonSegments = segments;
+}
 
 function nxtNpcDialog(npc, id) {
   if (id == "") return;

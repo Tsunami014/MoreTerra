@@ -8,7 +8,7 @@ A browser extension to add more to Terra!
 ### Dev features
 - The popup on hold 'V' now has more info in it
 - Press 'P' to print position info in the console
-- Press 'T' to toggle a developer panel!
+- Press 'T' to toggle a developer panel with very useful things in it!
 
 ## Extra info for developers
 - Terra likes loading every level that exists on startup, so in the Network tab if you filter for 'json' you should be able to see all levels (and also some extras like the manifest)

@@ -144,6 +144,10 @@ window.testWorld = async function(base, spawn) {
     await main.assetManager.ensureEssential(base)
     if (main.assetManager.levelDataCache.get(oldPref+base)) { base = oldPref+base; }
     load = main.assetManager.levelDataCache.get(base)
+    if (!load) {
+      console.error("Unknown level id:", base)
+      return;
+    }
   } else {
     load = {
       width: 20,

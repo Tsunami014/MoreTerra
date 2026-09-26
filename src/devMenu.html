@@ -1,3 +1,15 @@
 <div id="devopts" style="display: none">
-    <p>Hello!</p>
+    <input id="worldInput" class="hogfocus" type="text" placeholder="Current">
+    <button onclick="testWorld(document.getElementById('worldInput').value)">
+        Test level
+    </button>
+    <button onclick="testWorld()">
+        Test sample
+    </button>
+
+    <br>
+    <label>
+        <input type="checkbox" onchange="setBoundsPolygonVisible(this.checked)">
+        Show bounds polygon
+    </label>
 </div>

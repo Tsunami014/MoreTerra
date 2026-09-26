@@ -42,12 +42,10 @@ function btn(num) {
 }
 
 
-function elem({ tag, cls, text, src, alt, fn } = {}, children = []) {
-    const e = document.createElement(tag||"div");
+function elem({ tag = "div", cls, text, fn, ...props }, children = []) {
+    const e = Object.assign(document.createElement(tag), props);
     if (cls) e.className = cls;
     if (text) e.innerText = text;
-    if (src) e.src = src;
-    if (alt) e.alt = alt;
     children.forEach(child => e.appendChild(child));
     if (fn) fn(e);
     return e;
@@ -118,13 +116,24 @@ function Choices(choices, thn) {
     ], LABLS.overlay+" "+LABLS.hasChoices)
 }
 
-function LvlEditOverlay() {
-    buildUI(()=>{}, [
+async function LvlEditOverlay() {
+    forceHideDbug()
+    var lvl = localStorage.getItem("lastLevelId")
+    await main.assetManager.ensureEssential(lvl)
+    if (main.assetManager.levelDataCache.get(oldPref+lvl)) { lvl = oldPref+lvl; }
+    const dat = JSON.stringify(main.assetManager.levelDataCache.get(lvl), null, 2)
+    if (!dat) {
+      console.error("Unknown level id:", lvl)
+      return;
+    }
+
+    buildUI(toggleDbug, [
         elem({ cls: UILABLS.panelContainer+' noanim' }, [
             elem({ cls: UILABLS.tabBar }, [
                 elem({ cls: UILABLS.tabSpacer }),
                 elem({ tag: "button", cls: UILABLS.tab }, [
                     elem({
+                        id: "closebtn",
                         cls: UILABLS.closeIcon+' closebtn',
                         tag: "img",
                         src: "/assets/sprites/ui/exit.webp",
@@ -135,13 +144,28 @@ function LvlEditOverlay() {
             elem({ cls: UILABLS.backing }, [
                 elem({ cls: UILABLS.header }, [
                     elem({ cls: UILABLS.headerInset }, [
-                        elem({ tag: "span", cls: UILABLS.title, text: "Level editor" })
+                        elem({ tag: "span", cls: UILABLS.title, text: "Level editor" }),
+                        elem({
+                            tag: "button",
+                            cls: "bigbtn",
+                            text: "Load this",
+                            onclick: ()=>{
+                                const dat = JSON.parse(document.getElementById("lvledit").value)
+                                window.execWorld(dat)
+                                document.getElementById("closebtn").onclick()
+                            }
+                        }),
                     ])
                 ]),
                 elem({ cls: UILABLS.backingInset }, [
                     elem({ cls: UILABLS.contentWrapper }, [
                         elem({ cls: UILABLS.paper+' '+UILABLS.paperAsContent }, [
-                            elem({ cls: UILABLS.content, text: "This will be the level editor!" })
+                            elem({
+                                tag: "textarea",
+                                id: "lvledit",
+                                cls: UILABLS.content+" contentTxtArea",
+                                value: dat
+                            })
                         ])
                     ])
                 ])

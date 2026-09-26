@@ -15,7 +15,6 @@ function check() {
 }
 
 
-const testWorld = 'mm_test'
 const oldPref = "OLD-"
 var current = null;
 
@@ -32,6 +31,9 @@ function getExtraInfo(t) {
     " z: "+playr.renderZ.toFixed(2)
 }
 
+function forceHideDbug() {
+  document.getElementById('devopts').style.display = "none"
+}
 function toggleDbug() {
   const active = document.activeElement
   if (active && active != document.body) {return}

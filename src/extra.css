@@ -1,5 +1,16 @@
 .ontop { z-index: 999; }
-.noanim { animation: none; }
+.noanim { animation: none !important; }
+
+.bigbtn {
+    padding: 8px;
+    border-radius: 12px;
+}
+.contentTxtArea {
+    width: 100%;
+    height: 100%;
+    margin-top: 5px;
+    resize: none;
+}
 
 #devopts {
     display: flex;

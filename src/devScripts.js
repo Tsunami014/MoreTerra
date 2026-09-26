@@ -1,6 +1,8 @@
+const testWorldId = 'mm_test'
+
 window.testWorld = async function(base, spawn) {
   if (!check()) return;
-  current = testWorld
+  current = testWorldId
   var load
   if (base !== undefined) {
     if (base === "") { base = localStorage.getItem("lastLevelId"); }
@@ -62,9 +64,9 @@ window.testWorld = async function(base, spawn) {
       ]
     }
   }
-  load.id = testWorld
+  load.id = testWorldId
   load.name = "Test world"
-  main.assetManager.levelDataCache.set(testWorld, load)
+  main.assetManager.levelDataCache.set(testWorldId, load)
 
   console.log("[MoreTerra] Teleporting to test world"+(base? " replicating "+base : ""))
   let player = main.players.get(main.localPlayerId);
@@ -77,12 +79,16 @@ window.testWorld = async function(base, spawn) {
   c.play(
     r, i,
     async () => {
-        l?.(!0), await loadLevel(testWorld, spawn??''), main.inputEnabled = true;
+        l?.(!0), await loadLevel(testWorldId, spawn??''), main.inputEnabled = true;
     },
     () => {
         l?.(!1);
     }
   )
+}
+window.execWorld = async function(data, spawn) {
+  main.assetManager.levelDataCache.set(testWorldId, data)
+  testWorld(testWorldId, spawn)
 }
 
 

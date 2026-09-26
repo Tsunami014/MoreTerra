@@ -17,10 +17,10 @@ function patchData(data) {
         // Make ctrl keys also sprint, and add a P and ` keybind
         .replace(/(?<=,\s*sprint: ?\[)([^\]]+\]),?/, "`ControlLeft`,`ControlRight`,$1,mm_printpos:[`KeyP`],mm_dbug:[`KeyT`],")
         // Implement handler for P and ` keybinds
-        .replace(/if ?\(([a-zA-Z0-9]+\()(.interact.,?)([^)]*)/,
+        .replace(/(if ?\([a-zA-Z0-9]+\()(?:.interact.,?)([^{]*)/,
             "if (document.activeElement?.classList.contains(`hogfocus`)) {return}"+
-            "if ($1`mm_printpos`,$3)) {printPos()}"+
-            "if ($1`mm_dbug`,$3)) {toggleDbug()}"+
+            "$1`mm_printpos`,$2{printPos()}"+
+            "$1`mm_dbug`,$2{toggleDbug()}"+
         "$&")
         // Make the information popup also have other interesting info
         .replace(/(?<=renderInfoDisplayCanvas\(([^,) ]+).*?\) ?{)([^}]*?)`\${Math\.round\(\1\)}ms`/, "$2getExtraInfo($1)")

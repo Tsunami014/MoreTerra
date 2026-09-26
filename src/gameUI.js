@@ -118,15 +118,52 @@ function Choices(choices, thn) {
 
 async function LvlEditOverlay() {
     forceHideDbug()
-    const dat = JSON.stringify(main.levelLoader.getCurrentLevel(), null, 2)
-    if (!dat) {
-      console.error("Failed to stringify current level!")
-      return;
+
+    function mktab(txt, elms) {
+        const nelm = elem({ tag: "button", cls: UILABLS.tab }, [
+            elem({
+                cls: 'txttab',
+                tag: "span",
+                text: txt
+            })
+        ])
+        nelm.onclick = ()=>{
+            document.querySelectorAll('.'+UILABLS.active).forEach(e => {
+                e.classList.remove(UILABLS.active)
+            })
+            nelm.classList.add(UILABLS.active)
+            document.getElementById('leohtitle').innerText = txt
+            const conts = document.getElementById('leopagecontents')
+            const nes = elms()
+            if (nes) conts.replaceChildren(nes)
+            else conts.replaceChildren()
+        }
+        return nelm
     }
+
+    const pages = [
+        mktab("Level Info", ()=>{
+
+        }),
+        mktab("Level JSON", ()=>{
+            const dat = JSON.stringify(main.levelLoader.getCurrentLevel(), null, 2)
+            if (!dat) {
+                console.error("Failed to stringify current level!")
+                return;
+            }
+            return elem({
+                tag: "textarea",
+                id: "lvledit",
+                cls: UILABLS.content+" contentTxtArea",
+                value: dat
+            })
+        }),
+    ]
 
     buildUI(toggleDbug, [
         elem({ cls: UILABLS.panelContainer+' noanim' }, [
             elem({ cls: UILABLS.tabBar }, [
+                ...pages,
                 elem({ cls: UILABLS.tabSpacer }),
                 elem({ tag: "button", cls: UILABLS.tab }, [
                     elem({
@@ -141,7 +178,7 @@ async function LvlEditOverlay() {
             elem({ cls: UILABLS.backing }, [
                 elem({ cls: UILABLS.header }, [
                     elem({ cls: UILABLS.headerInset }, [
-                        elem({ tag: "span", cls: UILABLS.title, text: "Level editor" }),
+                        elem({ id: "leohtitle", tag: "span", cls: UILABLS.title, text: "Level editor" }),
                         elem({
                             tag: "button",
                             cls: "bigbtn",
@@ -156,17 +193,12 @@ async function LvlEditOverlay() {
                 ]),
                 elem({ cls: UILABLS.backingInset }, [
                     elem({ cls: UILABLS.contentWrapper }, [
-                        elem({ cls: UILABLS.paper+' '+UILABLS.paperAsContent }, [
-                            elem({
-                                tag: "textarea",
-                                id: "lvledit",
-                                cls: UILABLS.content+" contentTxtArea",
-                                value: dat
-                            })
-                        ])
+                        elem({ id: "leopagecontents", cls: UILABLS.paper+' '+UILABLS.paperAsContent }, [])
                     ])
                 ])
             ])
         ])
     ], UILABLS.overlay+" ontop")
+
+    pages[0].onclick()
 }

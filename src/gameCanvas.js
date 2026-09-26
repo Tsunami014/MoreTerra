@@ -45,6 +45,6 @@ function patchData(data) {
             </button>
         `)
     + suff;
-    console.log(out)
+    // console.log(out)
     return out
 }

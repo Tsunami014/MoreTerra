@@ -167,7 +167,7 @@ function checkApply(obj) {
   if (obj.action.type.startsWith("mm_")) {
     let spl = obj.action.type.split("_").slice(1)
     if (spl[0] == "enter") {
-      teleport("mminit", "")
+      teleport("catacombs", "")
     } else if (spl[0] == "exit") {
       teleport("", "")
     } else if (spl[0] == "npc") {

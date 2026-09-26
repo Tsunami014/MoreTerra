@@ -19,10 +19,6 @@ browser.webRequest.onBeforeRequest.addListener(
       };
     }
 
-    if (url.pathname.endsWith("manif.json")) {
-      const redirectUrl = browser.runtime.getURL("manif.json");
-      return { redirectUrl };
-    }
     for (const name of Object.keys(PATCH)) {
       for (const pth of PATCH[name].data) {
         if (url.pathname.endsWith(pth)) {

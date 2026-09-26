@@ -2,17 +2,33 @@
 const PATCH = {
   IMGS: {
   prefix: "images/", data: [
-    "1776899749834_jppll7d.webp",
-    "1776899750304_q4qsn5a.webp",
-    "1776899750607_1v2yasx.webp",
-    "1776908449364_2k7hklt.webp",
-    "1776908589495_g3q8l7e.webp",
-    "1776908622945_9pp2pso.webp",
+    "blueFlower.webp",
     "devlogs.webp",
+    "ground.webp",
+    "meeple-blue.png",
+    "meeple-cyan.png",
+    "meeple-green.png",
+    "meeple-orange.png",
+    "meeple-pink.png",
+    "meeple-purple.png",
+    "meeple-red.png",
+    "meeple-yellow.png",
+    "mercenary.png",
+    "merchant.png",
+    "mystereeple.webp",
+    "orangeTree2.webp",
+    "orangeTree3.webp",
+    "orangeTree.webp",
+    "portal.webp",
+    "rock1.webp",
+    "rock2.webp",
+    "rock3.webp",
+    "rock4.webp",
+    "royal-advisor.png",
+    "waterfall.webp",
   ]},
   LEVELS: {
   prefix: "levels/", data: [
-    "mminit.json",
-    "moletown.json",
+    "catacombs.json",
 ]}}
 PATCH.IMGS.data.push('portal.webp')

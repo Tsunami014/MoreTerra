@@ -18,4 +18,4 @@ A browser extension to add more to Terra!
 Run `build.sh`
 
 ### Firefox
-Go to `about:debugging#/runtime/this-firefox` and load the temporary addon of the `dist/firefox/manifest.json` (**MAKE SURE YOU DON'T ACCIDENTALLY PRESS `manif.json` AND ALSO MAKE SURE YOU USE `dist/firefox` AND NOT `firefox/`**). I suggest pressing 'Inspect' for an easy window to refresh and see logs in.
+Go to `about:debugging#/runtime/this-firefox` and load the temporary addon of the `dist/firefox/manifest.json` (**MAKE SURE YOU ARE IN `dist/firefox` AND NOT `firefox/`**). I suggest pressing 'Inspect' for an easy window to refresh and see logs in.

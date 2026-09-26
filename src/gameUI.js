@@ -149,16 +149,21 @@ async function LvlEditOverlay() {
                 console.error("Failed to get current level!")
                 return;
             }
-            function mkInp(key, name, type, deflt, xtra={}) {
+            function mkInp(key, name, type, deflt=null, xtra={}) {
                 return [
-                    elem({ tag: "label", text: name }),
-                    elem({
-                        tag: "input",
-                        type: type,
-                        value: dat[key],
-                        oninput: function() { dat[key] = this.value||deflt },
-                        ...xtra
-                    }),
+                    elem({ tag: "label", text: name }, [
+                        elem({
+                            tag: "input",
+                            type: type,
+                            value: dat[key],
+                            oninput: function() {
+                                if (!this.value && deflt !== null) {
+                                    dat[key] = deflt
+                                } else { dat[key] = this.value }
+                            },
+                            ...xtra
+                        })
+                    ]),
                     elem({ tag: "br" }), elem({ tag: "br" })
                 ]
             }
@@ -166,6 +171,19 @@ async function LvlEditOverlay() {
                 ...mkInp("width", "Level width ", "number", 20),
                 ...mkInp("height", "Level height ", "number", 20),
                 ...mkInp("cameraZoom", "Camera zoom ", "number", 1.2, { step: 0.1, min: 0.1 }),
+                ...mkInp("instanced", "Instanced (one room per owner, e.g. farms) ", "checkbox"),
+                elem({ tag: "label", text: "Level type " }, [
+                    elem({
+                        tag: "select",
+                        value: dat.levelType,
+                        onchange: function() {
+                            dat.levelType = this.value
+                        },
+                    }, [
+                        elem({ tag: "option", value: "outdoor", text: "Outdoor" }),
+                        elem({ tag: "option", value: "indoor", text: "Indoor" }),
+                    ])
+                ]),
             ])
         }),
         mktab("Level JSON", "Changes here won't save unless you press Apply", ()=>{

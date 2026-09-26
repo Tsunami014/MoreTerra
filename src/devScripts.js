@@ -1,126 +1,128 @@
+window.dev = {}
+
 //// -- Load custom testing levels --
 
 const testWorldId = 'mm_test'
 
-window.testWorld = async function(base, spawn) {
-  if (!check()) return;
-  current = testWorldId
-  var load
-  if (base !== undefined) {
-    if (base === "") { base = localStorage.getItem("lastLevelId"); }
-    await main.assetManager.ensureEssential(base)
-    if (main.assetManager.levelDataCache.get(oldPref+base)) { base = oldPref+base; }
-    load = main.assetManager.levelDataCache.get(base)
-    if (!load) {
-      console.error("Unknown level id:", base)
-      return;
+window.dev.testWorld = async function(base, spawn) {
+    if (!check()) return;
+    current = testWorldId
+    var load
+    if (base !== undefined) {
+        if (base === "") { base = localStorage.getItem("lastLevelId"); }
+        await main.assetManager.ensureEssential(base)
+        if (main.assetManager.levelDataCache.get(oldPref+base)) { base = oldPref+base; }
+        load = main.assetManager.levelDataCache.get(base)
+        if (!load) {
+            console.error("Unknown level id:", base)
+            return;
+        }
+    } else {
+        load = {
+            width: 20,
+            height: 20,
+            boundsPolygon: [
+                { "x": -10, "z": -10 },
+                { "x": 10, "z": -10 },
+                { "x": 10, "z": 10 },
+                { "x": -10, "z": 10 },
+            ],
+            levelType: "outdoor",
+            cameraZoom: 1,
+            spawn: { x: 0, z: 0 },
+            spawns: [
+                {
+                    id: "1776290095610_gxzpr9s",
+                    tag: "default",
+                    x: 0,
+                    z: 0,
+                    isPrimary: true
+                },
+            ],
+            objects: [],
+            colliders: [],
+            npcs: [],
+            exitZones: [],
+            terrain: {
+                gridCols: 1,
+                gridRows: 2,
+                cellSize: 20,
+                tiles: [
+                    [ "ground" ],
+                ],
+                groundTiles: [
+                    [ null ],
+                ]
+            },
+            lights: [
+                {
+                    type: "ambient",
+                    color: "#deddda",
+                    intensity: 2.8
+                },
+                {
+                    type: "sun",
+                    color: "#b5835a",
+                    intensity: 1
+                },
+            ]
+        }
     }
-  } else {
-    load = {
-      width: 20,
-      height: 20,
-      boundsPolygon: [
-        { "x": -10, "z": -10 },
-        { "x": 10, "z": -10 },
-        { "x": 10, "z": 10 },
-        { "x": -10, "z": 10 },
-      ],
-      levelType: "outdoor",
-      cameraZoom: 1,
-      spawn: { x: 0, z: 0 },
-      spawns: [
-        {
-          id: "1776290095610_gxzpr9s",
-          tag: "default",
-          x: 0,
-          z: 0,
-          isPrimary: true
-        },
-      ],
-      objects: [],
-      colliders: [],
-      npcs: [],
-      exitZones: [],
-      terrain: {
-        gridCols: 1,
-        gridRows: 2,
-        cellSize: 20,
-        tiles: [
-          [ "ground" ],
-        ],
-        groundTiles: [
-          [ null ],
-        ]
-      },
-      lights: [
-        {
-          type: "ambient",
-          color: "#deddda",
-          intensity: 2.8
-        },
-        {
-          type: "sun",
-          color: "#b5835a",
-          intensity: 1
-        },
-      ]
-    }
-  }
-  load.id = testWorldId
-  load.name = "Test world"
-  main.assetManager.levelDataCache.set(testWorldId, load)
+    load.id = testWorldId
+    load.name = "Test world"
+    main.assetManager.levelDataCache.set(testWorldId, load)
 
-  console.log("[MoreTerra] Teleporting to test world"+(base? " replicating "+base : ""))
-  let player = main.players.get(main.localPlayerId);
-  let n = player.mesh.position.clone().project(main.camera),
-    r = (n.x + 1) / 2,
-    i = (-n.y + 1) / 2;
-  main.setInputEnabled(!1);
-  let c = main.sceneTransition,
-    l = main.onTransitionStateChange;
-  c.play(
-    r, i,
-    async () => {
-        l?.(!0), await loadLevel(testWorldId, spawn??''), main.inputEnabled = true;
-    },
-    () => {
-        l?.(!1);
-    }
-  )
+    console.log("[MoreTerra] Teleporting to test world"+(base? " replicating "+base : ""))
+    let player = main.players.get(main.localPlayerId);
+    let n = player.mesh.position.clone().project(main.camera),
+        r = (n.x + 1) / 2,
+        i = (-n.y + 1) / 2;
+    main.setInputEnabled(!1);
+    let c = main.sceneTransition,
+        l = main.onTransitionStateChange;
+    c.play(
+        r, i,
+        async () => {
+            l?.(!0), await loadLevel(testWorldId, spawn??''), main.inputEnabled = true;
+        },
+        () => {
+            l?.(!1);
+        }
+    )
 }
-window.execWorld = async function(data, spawn) {
-  main.assetManager.levelDataCache.set(testWorldId, data)
-  testWorld(testWorldId, spawn)
+window.dev.execWorld = async function(data, spawn) {
+    main.assetManager.levelDataCache.set(testWorldId, data)
+    dev.testWorld(testWorldId, spawn)
 }
 
 
-window.openEditLvlOverlay = function() {
+window.dev.openEditLvlOverlay = function() {
     LvlEditOverlay()
 }
 
 
 //// -- Bounds polygon tools --
 
-window.rmBounds = function() {
+window.dev.rmBounds = function() {
     main.levelLoader.getCurrentLevel().boundsPolygon = []
-    refreshDebugOverlays()
+    dev.refreshDebugOverlays()
 }
-window.addBoundPoint = function() {
+window.dev.addBoundPoint = function() {
     const playr = main.players.get(main.localPlayerId)
     main.levelLoader.getCurrentLevel().boundsPolygon.push({ x: playr.renderX, z: playr.renderZ })
-    refreshDebugOverlays()
+    dev.refreshDebugOverlays()
 }
 
 
 //// -- Debug drawing overlays --
 
-window.setAllDebugOverlays = function(visible) {
+window.dev.setAllDebugOverlays = function(visible) {
     document.querySelectorAll('#devopts .dbcb').forEach(cb => {
         cb.checked = visible;
         cb.dispatchEvent(new Event('change'));
     });
 };
-window.refreshDebugOverlays = function() {
+window.dev.refreshDebugOverlays = function() {
     document.querySelectorAll('#devopts .dbcb').forEach(cb => {
         cb.dispatchEvent(new Event('change'));
     });
@@ -190,7 +192,7 @@ function _rectCorners(cx, cz, width, depth, rotation = 0) {
     }));
 }
 
-window.setBoundsPolygonVisible = function(visible) {
+window.dev.setBoundsPolygonVisible = function(visible) {
     _clearDebugGroup('_boundsPolygonGroup');
     if (!visible) return;
 
@@ -210,7 +212,7 @@ window.setBoundsPolygonVisible = function(visible) {
     main._boundsPolygonGroup = { meshes, materials: [material] };
 };
 
-window.setCollidersVisible = function(visible) {
+window.dev.setCollidersVisible = function(visible) {
     _clearDebugGroup('_colliderGroup');
     if (!visible) return;
 
@@ -235,7 +237,7 @@ window.setCollidersVisible = function(visible) {
     main._colliderGroup = { meshes: allMeshes, materials: [material] };
 };
 
-window.setExitZonesVisible = function(visible) {
+window.dev.setExitZonesVisible = function(visible) {
     _clearDebugGroup('_exitZoneGroup');
     if (!visible) return;
 
@@ -260,7 +262,7 @@ window.setExitZonesVisible = function(visible) {
     main._exitZoneGroup = { meshes: allMeshes, materials: [material] };
 };
 
-window.setSpawnPointsVisible = function(visible) {
+window.dev.setSpawnPointsVisible = function(visible) {
     _clearDebugGroup('_spawnPointGroup');
     if (!visible) return;
 
@@ -286,6 +288,6 @@ window.setSpawnPointsVisible = function(visible) {
     main._spawnPointGroup = { meshes: allMeshes, materials: [material] };
 };
 
-window.setBuildGridVisible = function(visible) {
+window.dev.setBuildGridVisible = function(visible) {
     main.setBuildGridVisible(visible);
 };

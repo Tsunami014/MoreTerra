@@ -119,12 +119,12 @@ function Choices(choices, thn) {
 async function LvlEditOverlay() {
     forceHideDbug()
 
-    function mktab(txt, elms) {
+    function mktab(titl, desc, elms) {
         const nelm = elem({ tag: "button", cls: UILABLS.tab }, [
             elem({
                 cls: 'txttab',
                 tag: "span",
-                text: txt
+                text: titl
             })
         ])
         nelm.onclick = ()=>{
@@ -132,7 +132,8 @@ async function LvlEditOverlay() {
                 e.classList.remove(UILABLS.active)
             })
             nelm.classList.add(UILABLS.active)
-            document.getElementById('leohtitle').innerText = txt
+            document.getElementById('leohtitle').innerText = titl
+            document.getElementById('leohconts').innerText = desc
             const conts = document.getElementById('leopagecontents')
             const nes = elms()
             if (nes) conts.replaceChildren(nes)
@@ -142,10 +143,31 @@ async function LvlEditOverlay() {
     }
 
     const pages = [
-        mktab("Level Info", ()=>{
-
+        mktab("Level Info", "Some changes here won't apply unless you press Apply", ()=>{
+            const dat = main.levelLoader.getCurrentLevel()
+            if (!dat) {
+                console.error("Failed to get current level!")
+                return;
+            }
+            function mkInp(key, name, type, xtra={}) {
+                return [
+                    elem({ tag: "label", text: name }),
+                    elem({
+                        tag: "input",
+                        type: type,
+                        value: dat[key],
+                        oninput: function() { dat[key] = this.value },
+                        ...xtra
+                    }),
+                    elem({ tag: "br" })
+                ]
+            }
+            return elem({ cls: UILABLS.content }, [
+                ...mkInp("width", "Level width ", "number"),
+                ...mkInp("height", "Level height ", "number"),
+            ])
         }),
-        mktab("Level JSON", ()=>{
+        mktab("Level JSON", "Changes here won't save unless you press Apply", ()=>{
             const dat = JSON.stringify(main.levelLoader.getCurrentLevel(), null, 2)
             if (!dat) {
                 console.error("Failed to stringify current level!")
@@ -179,13 +201,18 @@ async function LvlEditOverlay() {
                 elem({ cls: UILABLS.header }, [
                     elem({ cls: UILABLS.headerInset }, [
                         elem({ id: "leohtitle", tag: "span", cls: UILABLS.title, text: "Level editor" }),
+                        elem({ id: "leohconts", tag: "span" }),
                         elem({
                             tag: "button",
                             cls: "bigbtn",
-                            text: "Load this",
+                            text: "Apply",
                             onclick: ()=>{
-                                const dat = JSON.parse(document.getElementById("lvledit").value)
-                                window.execWorld(dat)
+                                var dat;
+                                const lvled = document.getElementById("lvledit")
+                                if (lvled) dat = JSON.parse(lvled.value)
+                                else dat = main.levelLoader.getCurrentLevel()
+                                if (!dat) console.error("Unable to parse level data!")
+                                window.dev.execWorld(dat)
                                 document.getElementById("closebtn").onclick()
                             }
                         }),

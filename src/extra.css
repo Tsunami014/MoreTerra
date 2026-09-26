@@ -19,6 +19,8 @@
     overflow-y: clip !important;
 }
 
+#leohconts { color: wheat; }
+
 #devopts {
     display: flex;
     gap: 10px;

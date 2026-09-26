@@ -1,9 +1,15 @@
 function patchData(data) {
     // Load the labels with an external function
-    const suff = ";const LABLS = " + data.match(/[a-zA-Z0-9_]+(?=\.textBox)/)
+    var suff = ";const LABLS = " + data.match(/[a-zA-Z0-9_]+(?=\.textBox)/)
 
     // Copy the teleport function
-    const pref = "const tele = "+data.match(/(?<=onMessage\(.forceTeleport., *)([^{]+{(?:[^{}]+)})/)[0].replaceAll("this", "main") + ";"
+    var pref = "const tele = "+data.match(/(?<=onMessage\(.forceTeleport., *)([^{]+{(?:[^{}]+)})/)[0].replaceAll("this", "main") + ";"
+
+    // Store the list of actions globally
+    suff += ";window.actions = " + data.match(/[a-zA-Z0-9_]+(?= ?= ?{\s*open_devlog_terminal:)/)
+
+    // Grab these for later
+    const bagClasses = data.match(/[a-zA-Z0-9_]+(?=\.bagIcon)/)[0]
 
     return pref + dataPref + data
         // Pick up the main class when networkClient is created
@@ -22,5 +28,8 @@ function patchData(data) {
         .replace(/([a-zA-Z0-9_]+)(\.action\.type),/, "checkApply($1)||$1$2,")
         // Add an action type that does nothing
         .replace(/(?=open_devlog_terminal:)/, ` everythings_fine: () => {}, `)
+        // Add a UI element to quickly open devlogs
+        .replace(/`[^`]+\/assets\/sprites\/ui\/bag\.svg[^`]+(?=`)/,
+            '$&</div></div><button style="display: block;" onclick="window.actions[\'open_devlog_terminal\']()" class="${'+bagClasses+'.bag}"><img class="${'+bagClasses+'.bagIcon}" src=/images/devlogs.webp alt=Devlogs></button>')
     + suff;
 }

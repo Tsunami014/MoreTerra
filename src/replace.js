@@ -8,6 +8,7 @@ const PATCH = {
     "1776908449364_2k7hklt.webp",
     "1776908589495_g3q8l7e.webp",
     "1776908622945_9pp2pso.webp",
+    "devlogs.webp",
   ]},
   LEVELS: {
   prefix: "levels/", data: [

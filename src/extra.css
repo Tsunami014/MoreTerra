@@ -1,3 +1,5 @@
+.ontop { z-index: 999 }
+
 #devopts {
     display: block;
     background: #EEE;

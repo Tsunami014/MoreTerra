@@ -34,16 +34,25 @@ function modifyJSON(url, js) {
 
 const oldPref = "OLD-"
 inst = null
+var UILABLS;
 function hook() {
     document.addEventListener("DOMContentLoaded", () => {
         // Do stuff with the index file
         idx = document.head.innerHTML.indexOf("index")
         file = document.head.innerHTML.slice(idx,document.head.innerHTML.indexOf(".", idx)) + ".js"
         import('/assets/'+file).then(module => {
+            indxclsFound = false
             for (o in module) {
                 ob = module[o]
+                if ("header" in ob) {
+                    if (UILABLS) console.warn("[MoreTerra] Found multiple candidates for UI labels..?")
+                    UILABLS = ob
+                }
                 if ("getInstance" in ob) {
+                    if (indxclsFound) console.warn("[MoreTerra] Found multiple candidates for index class..?")
+                    indxclsFound = true
                     proto = ob.prototype
+                    console.log(proto)
 
                     oldgsi = proto.getSpriteIds
                     proto.getSpriteIds = function () {
@@ -88,10 +97,14 @@ function hook() {
                         }
                     }
                     console.log("[MoreTerra] Successfully injected custom objects!")
-                    return;
                 }
             }
-            console.error("[MoreTerra] Unable to find an instanceable object in the module!")
+            if (!UILABLS) {
+                console.error("[MoreTerra] Unable to find UI labels!")
+            }
+            if (!indxclsFound) {
+                console.error("[MoreTerra] Unable to find an instanceable object in the module!")
+            }
         });
         if (XTRACSS) {
             const style = document.createElement('style');

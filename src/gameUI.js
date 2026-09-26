@@ -53,11 +53,11 @@ function elem({ tag, cls, text, src, alt, fn } = {}, children = []) {
     return e;
 }
 
-function buildUI(thn, childr, xtracls = "") {
+function buildUI(thn, childr, cls) {
     if (document.getElementsByClassName("OVERLAY").length > 0) return;
     const parent = document.getElementById("root").firstElementChild;
     const container = document.createElement("div");
-    container.className = LABLS.overlay + " OVERLAY" + xtracls;
+    container.className = cls??LABLS.overlay;
     main.inputEnabled = false
     then = (out)=>{
         main.inputEnabled = true
@@ -66,6 +66,9 @@ function buildUI(thn, childr, xtracls = "") {
     }
 
     childr.forEach(child => container.appendChild(child));
+    container.querySelectorAll('.closebtn').forEach(c=>{
+        c.onclick = then
+    })
 
     parent.insertBefore(container, parent.lastElementChild)
 }
@@ -112,5 +115,37 @@ function Choices(choices, thn) {
                 })
             ])
         ])
-    ], " "+LABLS.hasChoices)
+    ], LABLS.overlay+" "+LABLS.hasChoices)
+}
+
+function LvlEditOverlay() {
+    buildUI(()=>{}, [
+        elem({ cls: UILABLS.panelContainer }, [
+            elem({ cls: UILABLS.tabBar }, [
+                elem({ cls: UILABLS.tabSpacer }),
+                elem({ tag: "button", cls: UILABLS.tab }, [
+                    elem({
+                        cls: UILABLS.closeIcon+' closebtn',
+                        tag: "img",
+                        src: "/assets/sprites/ui/exit.webp",
+                        alt: "Close"
+                    })
+                ])
+            ]),
+            elem({ cls: UILABLS.backing }, [
+                elem({ cls: UILABLS.header }, [
+                    elem({ cls: UILABLS.headerInset }, [
+                        elem({ tag: "span", cls: UILABLS.title, text: "Level editor" })
+                    ])
+                ]),
+                elem({ cls: UILABLS.backingInset }, [
+                    elem({ cls: UILABLS.contentWrapper }, [
+                        elem({ cls: UILABLS.paper+' '+UILABLS.paperAsContent }, [
+                            elem({ cls: UILABLS.content, text: "This will be the level editor!" })
+                        ])
+                    ])
+                ])
+            ])
+        ])
+    ], UILABLS.overlay+" ontop")
 }

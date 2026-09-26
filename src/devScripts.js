@@ -86,6 +86,11 @@ window.testWorld = async function(base, spawn) {
 }
 
 
+window.openEditLvlOverlay = function() {
+    LvlEditOverlay()
+}
+
+
 
 window.setAllDebugOverlays = function (visible) {
     document.querySelectorAll('#devopts .dbcb').forEach(cb => {

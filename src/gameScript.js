@@ -24,6 +24,17 @@ function check() {
 }
 
 
+function syncPos() {
+  const playr = main.players.get(main.localPlayerId)
+  playr.state.velX = 0
+  playr.state.velZ = 0
+  playr.errorX = 0
+  playr.errorZ = 0
+  playr.pendingInputs = []
+  tele({ x: playr.serverX, z: playr.serverZ })
+}
+
+
 const oldPref = "OLD-"
 var current = null;
 

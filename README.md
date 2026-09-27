@@ -8,6 +8,7 @@ A browser extension to add more to Terra!
 ### Dev features
 - The popup on hold 'V' now has more info in it
 - Press 'P' to print position info in the console
+- Press 'M' to (attempt to, may need to press multiple times) sync your position if you are rubber banding all over the place
 - Press 'T' to toggle a developer panel with very useful things in it! Features in this panel include:
     - A popup with a text input to edit the level directly as json with a button to load it!
     - Load any level by id or a sample level

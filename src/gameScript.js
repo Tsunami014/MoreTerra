@@ -5,9 +5,13 @@ function setMain(nmain) {
   main = nmain;
   const oem = main.emit
   main.emit = function(e, ...args) {
-    oem.call(this, e, ...args)
-    if (e == "afterLevelTransition") dev.refreshDebugOverlays()
-  }
+    const out = oem.call(this, e, ...args)
+    if (e == "afterLevelTransition") {
+      console.log(out)
+      return out.then(dev.refreshDebugOverlays)
+    }
+    return out
+  };
   console.log("[MoreTerra] Injected the GameCanvas!")
   console.log(main)
 }
@@ -68,6 +72,12 @@ async function clearLevel() {
     main.scene.remove(e.mesh), main.disposeObject(e.mesh);
   })
   main.npcs.clear()
+  main.npcColliders.clear()
+  main.farmItems.forEach((e) => {
+    main.scene.remove(e.mesh), main.disposeObject(e.mesh);
+  });
+  main.farmItems.clear();
+  main.farmColliders.clear();
   main.interactableSprites.clear()
   main.nearbySprite = null
   main.onNearbySpriteChange?.(null)
@@ -112,7 +122,7 @@ async function loadLevel(lvlId, spawn) {
     await new Promise(resolve => setTimeout(resolve, 200));
   }
 
-  main.emit("afterLevelTransition")
+  dev.refreshDebugOverlays()
 }
 
 export async function teleport(to, spawn) {

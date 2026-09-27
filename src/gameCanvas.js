@@ -27,9 +27,9 @@ function patchData(data) {
         // Override getting the bounds polygon
         .replace(/(\w+\??\.)+boundsPolygon(?!(\??\.\w+)* ?=)/g, "(useBounds&&$&)")
         // Override getting the colliders
-        .replace(/(\w+\??\.)+colliders(?!(\??\.\w+)* ?=)/g, "(useColls&&$&||[])")
+        .replace(/(\w+\??\.)+colliders(?!(\??\.\w+)* ?=)/g, "checkColls($&)")
         // Override getting the exit zones
-        .replace(/(\w+\??\.)+exitZones(?!(\??\.\w+)* ?=)/g, "(useExits&&$&||[])")
+        .replace(/(\w+\??\.)+exitZones(?!(\??\.\w+)* ?=)/g, "checkExits($&)")
         // Wrap setting the exit zone handler
         .replace(/(?<=onExitZoneIntercept ?=) ?(.+?)(?=[,)};])/g, "wrapExitZone($1)")
         // Override sending movement to the network

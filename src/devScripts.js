@@ -134,6 +134,61 @@ function checkExits(xits) {
 
 //// -- Debug drawing overlays --
 
+
+window.tmpobj = {}
+window.tmpobj.obj = null
+window.tmpobj.permanentise = function() {
+    window.tmpobj.obj = null
+}
+
+window.tmpobj.create = function(type="template") {
+    window.tmpobj.remove()
+    const mesh = main.assetManager.createSprite(type)
+    if (!mesh) {
+        console.warn('[MoreTerra] Sprite type '+type+' does not exist or failed to instantiate!')
+        return
+    }
+    const obj = { id: 'temp_' + Date.now(), type, x: 0, z: 0, rotation: 0, scale: 1, flipX: false }
+    main.scene.add(mesh)
+    main.levelLoader.getLevelObjects().set(obj.id, mesh)
+    main.levelLoader.getCurrentLevel().objects.push(obj)
+    window.tmpobj.obj = { obj, mesh }
+
+    window.tmpobj.teleport() // Also reloads colliders
+}
+
+window.tmpobj.update = function(patch) {
+    const { obj, mesh } = window.tmpobj.obj
+    Object.assign(obj, patch)
+    mesh.position.x = obj.x
+    mesh.position.z = obj.z
+    mesh.rotation.y = obj.rotation || 0
+    mesh.scale.setScalar(obj.scale ?? 1)
+    if (obj.flipX) mesh.scale.x = -Math.abs(mesh.scale.x)
+
+    main.colliders = main.levelLoader.getColliders();
+}
+window.tmpobj.teleport = function() {
+    const p = main.players.get(main.localPlayerId);
+    window.tmpobj.update({ x: p.renderX, z: p.renderZ });
+}
+
+window.tmpobj.remove = function() {
+    if (!window.tmpobj.obj) return;
+    const { obj, mesh } = window.tmpobj.obj
+    const objs = main.levelLoader.getCurrentLevel().objects
+    objs.splice(objs.indexOf(obj), 1)
+    main.levelLoader.getLevelObjects().delete(obj.id)
+    main.scene.remove(mesh)
+    main.disposeObject(mesh)
+    window.tmpobj.obj = null
+
+    main.colliders = main.levelLoader.getColliders();
+}
+
+
+//// -- Debug drawing overlays --
+
 window.dev.setAllDebugOverlays = function(visible) {
     document.querySelectorAll('#devopts .dbcb'+(visible? "":", #pointlightcb")).forEach(cb => {
         cb.checked = visible;

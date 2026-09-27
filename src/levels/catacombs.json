@@ -62,6 +62,15 @@
   ],
   "objects": [
     {
+      "id": "portal",
+      "type": "portal",
+      "x": -7.6414,
+      "z": -2.4199,
+      "scale": 1.2,
+      "rotation": 0,
+      "action": { "label": "Travel", "type": "mm_exit" }
+    },
+    {
       "id": "1776908551433_6539txf",
       "type": "rock1",
       "x": -6.099995760293661,
@@ -200,27 +209,6 @@
   ],
   "colliders": [],
   "npcs": [
-    {
-      "id": "1776899957553_5fwz059",
-      "name": "~Travel",
-      "sprite": "portal",
-      "x": -7.641468302328759,
-      "z": -2.419943120946618,
-      "rotation": 0,
-      "scale": 1,
-      "dialogue": [
-        "Hello!"
-      ],
-      "battleDeck": [
-        "warrior"
-      ],
-      "dialogueTree": [
-        {
-          "id": "1776899957553_vaca8gn",
-          "text": "~~ACTION\n~mm_exit"
-        }
-      ]
-    },
     {
       "id": "1776900297351_drtkcfh",
       "name": "Mystereeple",

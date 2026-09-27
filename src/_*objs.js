@@ -26,6 +26,12 @@ const MANIF = {
             ],
         }
         */
+        template: {
+            path: mtpth+"rock1.webp",
+            width: 1,
+            height: 2,
+            anchor: { x: 0.5, y: 0 },
+        },
         portal: {
             path: mtpth+"portal.webp",
             width: 0.8,

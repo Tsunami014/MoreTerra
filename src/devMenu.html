@@ -61,5 +61,17 @@
             <input type="checkbox" id="pointlightcb" onchange="dev.setPointLightsVisible(this.checked)">
             Show point lights
         </label>
+    </div><div>
+        <span>Debug element</span>
+        <button onclick="tmpobj.remove()">Remove</button>
+        <br>
+        <input id="elmIdInp" class="hogfocus" type="text" placeholder="Element to copy">
+        <button onclick="tmpobj.create(document.getElementById('elmIdInp').value)">
+            Copy
+        </button>
+        <button onclick="tmpobj.create()">Use sample</button>
+        <br>
+        <button onclick="tmpobj.teleport()">Warp</button>
+        <button onclick="tmpobj.permanentise()">Permanent</button>
     </div>
 </div>

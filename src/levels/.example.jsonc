@@ -45,7 +45,6 @@
       "rotation": 0,
       "scale": 1,
       "flipX": false,
-      "flipY": false,
       "baseFade": false, // Whether to fade the object at its base
       "action": { // Press F to interact
         "type": "mm_dosomething", // The action to perform. MoreTerra actions are prefixed with mm_ and are used in gameScript.js's checkApply function
@@ -55,11 +54,7 @@
     // ...
   ],
   "colliders": [], // Assumedly, these are extra colliders probably in the same format as object colliders
-  "npcs": [
-    // I have no clue where the sprites come from
-    { "sprite": "1789017655388_qag9pdp" }
-    // ...
-  ],
+  "npcs": [], // NPCs come from the server unfortunately, so you need to use objects instead to replicate the functionality.
   "exitZones": [ // Rectangle areas where when stepped on causes the user to teleport somewhere else
     {
       "id": "1776904603928_i7j1w6j",

@@ -186,6 +186,10 @@ window.tmpobj.remove = function() {
     main.colliders = main.levelLoader.getColliders();
 }
 
+{ // The html for the objMenu should exist by now
+    console.log(document.getElementById("objopts"))
+}
+
 
 //// -- Debug drawing overlays --
 

@@ -1,3 +1,58 @@
 <div id="objopts" style="display: none">
-    <p>Hello, world!</p>
+    <label>Image path
+        <input type="text" class="ooinp lvlattr" data-dat="path">
+    </label>
+    <label>X
+        <input type="number" class="ooinp lvlattr" data-dat="x">
+    </label>
+    <label>Z
+        <input type="number" class="ooinp lvlattr" data-dat="z">
+    </label>
+    <label>Rotation
+        <input type="number" class="ooinp lvlattr" data-dat="rotation">
+    </label>
+    <label>Scale
+        <input type="number" class="ooinp lvlattr" data-dat="scale">
+    </label>
+    <label>Flip X
+        <input type="checkbox" class="ooinp lvlattr" data-dat="flipX">
+    </label>
+    <label>Width
+        <input type="number" class="ooinp manifattr" data-dat="width">
+    </label>
+    <label>Height
+        <input type="number" class="ooinp manifattr" data-dat="height">
+    </label>
+    <label>Z-Offset
+        <input type="number" class="ooinp manifattr" data-dat="zOffset">
+    </label>
+    <label>Fade at base
+        <input type="checkbox" class="ooinp manifattr" data-dat="baseFade">
+    </label>
+    <label>Fade at base (override)
+        <input type="checkbox" class="ooinp lvlattr" data-dat="baseFade">
+    </label>
+    <label>Sway when walk over
+        <input type="checkbox" class="ooinp manifattr" data-dat="sway">
+    </label>
+    <label>Render mode
+        <select class="ooinp manifattr" data-dat="renderMode">
+            <option value=""></option>
+            <option value="flat">Flat on ground</option>
+        </select>
+    </label>
+    <span>Anchor: The normalised (0-1) point in the<br>image which is placed on the centre</span>
+    <label>Anchor X
+        <input type="number" class="ooinp manifattr" data-dat="anchor.x">
+    </label>
+    <label>Anchor Y
+        <input type="number" class="ooinp manifattr" data-dat="anchor.y">
+    </label>
+    <textarea disabled rows="10" style="resize: none;">$$COLLIDEREXAMPLES$$</textarea>
+    <button style="width: 100%;">Apply below colliders</button>
+    <textarea style="resize: vertical; flex: none;">Collider code here</textarea>
+    <div>
+        <button style="width: 50%;">Copy Manifest js</button>
+        <button style="width: 50%;">Copy level json</button>
+    </div>
 </div>

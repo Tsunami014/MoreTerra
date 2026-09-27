@@ -43,7 +43,20 @@ function hook() {
         import('/assets/'+file).then(module => {
             const root = document.getElementById('root')
             root.insertAdjacentHTML('beforeend', DEVMENU)
-            root.insertAdjacentHTML('beforeend', OBJMENU)
+            root.insertAdjacentHTML('beforeend', OBJMENU.replace('$$COLLIDEREXAMPLES$$',
+'Colliders examples:\n'+
+'{ // Rectangle collider if no type set\n'+
+'    width: 1,\n'+
+'    depth: 1,\n'+
+'    offsetX: 0,\n'+
+'    offsetY: 0,\n'+
+'}, {\n'+
+'    type: "cylinder",\n'+
+'    radius: 1,\n'+
+'    offsetX: 0,\n'+
+'    offsetY: 0,\n'+
+'}'
+            ))
 
             indxclsFound = false
             for (o in module) {

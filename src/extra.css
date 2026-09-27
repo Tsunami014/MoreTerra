@@ -21,6 +21,8 @@
 
 #leohconts { color: wheat; }
 
+#objopts > * { display: block; }
+
 #devopts, #objopts {
     display: flex;
     gap: 10px;
@@ -30,17 +32,21 @@
     position: absolute;
 }
 #devopts {
-    background: #EEE;
     left: 50%;
     top: calc(100% - 8px);
     z-index: 998;
     translate: -50% -100%;
+
+    background: #EEE;
 }
 #objopts {
-    background: #FFF;
-    flex-direction: column;
     left: 0;
     top: 50%;
     z-index: 999;
     translate: 0 -50%;
+
+    background: #FFF;
+    flex-direction: column;
+    max-height: 75vh;
+    overflow-y: auto;
 }

@@ -41,7 +41,9 @@ function hook() {
         idx = document.head.innerHTML.indexOf("index")
         file = document.head.innerHTML.slice(idx,document.head.innerHTML.indexOf(".", idx)) + ".js"
         import('/assets/'+file).then(module => {
-            document.getElementById('root').insertAdjacentHTML('beforeend', DEVMENU)
+            const root = document.getElementById('root')
+            root.insertAdjacentHTML('beforeend', DEVMENU)
+            root.insertAdjacentHTML('beforeend', OBJMENU)
 
             indxclsFound = false
             for (o in module) {

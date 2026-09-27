@@ -22,11 +22,6 @@
             <input type="checkbox" onchange="dev.setUseColliders(this.checked)" checked>
             Collide with colliders
         </label>
-        <br>
-        <label>
-            <input type="checkbox" onchange="dev.setUseExits(this.checked)" checked>
-            Exit zones active
-        </label>
     </div><div style="white-space: pre;">
         <button class="bigbtn" onclick="dev.setAllDebugOverlays(true)">All on</button>
         <button class="bigbtn" onclick="dev.setAllDebugOverlays(false)">All off</button>
@@ -73,5 +68,14 @@
         <br>
         <button onclick="tmpobj.teleport()">Warp</button>
         <button onclick="tmpobj.permanentise()">Permanent</button>
+        <br>
+        <button class="bigbtn" onclick="toggleObjOpts()" style="width: 100%">
+            Edit temp object
+        </button>
+        <br><br>
+        <label>
+            <input type="checkbox" onchange="dev.setUseExits(this.checked)" checked>
+            Exit zones active
+        </label>
     </div>
 </div>

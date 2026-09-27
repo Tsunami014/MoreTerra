@@ -31,6 +31,7 @@ file2const() {
 }
 OUT="$(file2const XTRACSS src/extra.css)
 $(file2const DEVMENU src/devMenu.html)
+$(file2const OBJMENU src/objMenu.html)
 $(cat src/_*.js)"
 
 # Firefox

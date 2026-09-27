@@ -53,12 +53,18 @@ function getExtraInfo(t) {
 
 function forceHideDbug() {
   document.getElementById('devopts').style.display = "none"
+  document.getElementById('objopts').style.display = "none"
 }
 function toggleDbug() {
   const active = document.activeElement
   if (active && active != document.body) {return}
   const dbuginf = document.getElementById('devopts')
   dbuginf.style.display = dbuginf.style.display == ""? "none" : ""
+  document.getElementById('objopts').style.display = "none"
+}
+window.toggleObjOpts = function() {
+  const objopts = document.getElementById('objopts')
+  objopts.style.display = objopts.style.display == ""? "none" : ""
 }
 
 export function getCurrentLvl() {

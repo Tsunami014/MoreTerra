@@ -1,6 +1,6 @@
 <div id="devopts" style="display: none">
     <div>
-        <button onclick="dev.openEditLvlOverlay()" style="width: 100%">
+        <button class="bigbtn" onclick="dev.openEditLvlOverlay()" style="width: 100%">
             Edit level
         </button>
 
@@ -48,11 +48,6 @@
         </label>
         <br>
         <label>
-            <input type="checkbox" class="dbcb" onchange="dev.setPointLightsVisible(this.checked)">
-            Show point lights
-        </label>
-        <br>
-        <label>
             <input type="checkbox" class="dbcb" onchange="dev.setSpawnPointsVisible(this.checked)">
             Show spawn points
         </label>
@@ -60,6 +55,11 @@
         <label>
             <input type="checkbox" class="dbcb" onchange="dev.setBuildGridVisible(this.checked)">
             Show build grid
+        </label>
+        <br><br>
+        <label>
+            <input type="checkbox" id="pointlightcb" onchange="dev.setPointLightsVisible(this.checked)">
+            Show point lights
         </label>
     </div>
 </div>

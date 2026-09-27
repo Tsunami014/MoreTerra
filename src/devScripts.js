@@ -28,7 +28,7 @@ window.dev.testWorld = async function(base, spawn) {
                 { "x": -10, "z": 10 },
             ],
             levelType: "outdoor",
-            cameraZoom: 1,
+            cameraZoom: 0.9,
             spawn: { x: 0, z: 0 },
             spawns: [
                 {
@@ -45,7 +45,7 @@ window.dev.testWorld = async function(base, spawn) {
             exitZones: [],
             terrain: {
                 gridCols: 1,
-                gridRows: 2,
+                gridRows: 1,
                 cellSize: 20,
                 tiles: [
                     [ "ground" ],
@@ -127,13 +127,13 @@ window.dev.setUseExits = function(use) { useExits = use }
 //// -- Debug drawing overlays --
 
 window.dev.setAllDebugOverlays = function(visible) {
-    document.querySelectorAll('#devopts .dbcb').forEach(cb => {
+    document.querySelectorAll('#devopts .dbcb'+(visible? "":", #pointlightcb")).forEach(cb => {
         cb.checked = visible;
         cb.dispatchEvent(new Event('change'));
     });
 };
 window.dev.refreshDebugOverlays = function() {
-    document.querySelectorAll('#devopts .dbcb').forEach(cb => {
+    document.querySelectorAll('#devopts .dbcb, #pointlightcb').forEach(cb => {
         cb.dispatchEvent(new Event('change'));
     });
 };

@@ -116,10 +116,11 @@ function Choices(choices, thn) {
     ], LABLS.overlay+" "+LABLS.hasChoices)
 }
 
+var lastleopage = 0;
 async function LvlEditOverlay() {
     forceHideDbug()
 
-    function mktab(titl, desc, elms) {
+    function mktab(idx, titl, desc, elms) {
         const nelm = elem({ tag: "button", cls: UILABLS.tab }, [
             elem({
                 cls: 'txttab',
@@ -128,6 +129,7 @@ async function LvlEditOverlay() {
             })
         ])
         nelm.onclick = ()=>{
+            lastleopage = idx
             document.querySelectorAll('.'+UILABLS.active).forEach(e => {
                 e.classList.remove(UILABLS.active)
             })
@@ -143,7 +145,7 @@ async function LvlEditOverlay() {
     }
 
     const pages = [
-        mktab("Level Info", "Some changes here won't apply unless you press ->", ()=>{
+        mktab(0, "Level Info", "Some changes here won't apply unless you press ->", ()=>{
             const dat = main.levelLoader.getCurrentLevel()
             if (!dat) {
                 console.error("Failed to get current level!")
@@ -186,7 +188,7 @@ async function LvlEditOverlay() {
                 ]),
             ])
         }),
-        mktab("Level JSON", "Changes here won't save unless you press ->", ()=>{
+        mktab(1, "Level JSON", "Changes here won't save unless you press ->", ()=>{
             const dat = JSON.stringify(main.levelLoader.getCurrentLevel(), null, 2)
             if (!dat) {
                 console.error("Failed to stringify current level!")
@@ -246,5 +248,5 @@ async function LvlEditOverlay() {
         ])
     ], UILABLS.overlay+" ontop")
 
-    pages[0].onclick()
+    pages[lastleopage].onclick()
 }

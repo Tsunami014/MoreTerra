@@ -23,6 +23,9 @@
 
 #objopts > * { display: block; }
 
+label:has(> .lvlattr), span.lvlattr { color: green; }
+label:has(> .manifattr), span.manifattr { color: red; }
+
 #devopts, #objopts {
     display: flex;
     gap: 10px;

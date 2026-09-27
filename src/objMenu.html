@@ -41,16 +41,19 @@
             <option value="flat">Flat on ground</option>
         </select>
     </label>
-    <span>Anchor: The normalised (0-1) point in the<br>image which is placed on the centre</span>
+    <span class="manifattr">Anchor: The normalised (0-1) point in the<br>image which is placed on the centre</span>
     <label>Anchor X
         <input type="number" class="ooinp manifattr" data-dat="anchor.x">
     </label>
     <label>Anchor Y
         <input type="number" class="ooinp manifattr" data-dat="anchor.y">
     </label>
+    <span class="manifattr">Colliders</span>
     <textarea disabled rows="10" style="resize: none;">$$COLLIDEREXAMPLES$$</textarea>
     <button style="width: 100%;">Apply below colliders</button>
-    <textarea style="resize: vertical; flex: none;">Collider code here</textarea>
+    <textarea class="manifattr" style="resize: vertical; flex: none; height: 150px;">Collider code here</textarea>
+    <br>
+    <span>Result</span>
     <div>
         <button style="width: 50%;">Copy Manifest js</button>
         <button style="width: 50%;">Copy level json</button>

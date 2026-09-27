@@ -202,6 +202,8 @@ function _rectCorners(cx, cz, width, depth, rotation = 0) {
     }));
 }
 
+const DOT_RADIUS = 0.35;
+
 window.dev.setBoundsPolygonVisible = function(visible) {
     _clearDebugGroup('_boundsPolygonGroup');
     if (!visible) return;
@@ -236,7 +238,7 @@ window.dev.setCollidersVisible = function(visible) {
 
     for (const c of main.colliders) {
         const points = c.type === 'cylinder'
-            ? _circlePoints(c.x, c.z, c.radius, 20)
+            ? _circlePoints(c.x, c.z, c.radius)
             : _rectCorners(c.x, c.z, c.width, c.depth, c.rotation || 0);
 
         allMeshes.push(..._drawEdgeLoop(THREE.Mesh, THREE.PlaneGeometry, material, points, {
@@ -272,6 +274,45 @@ window.dev.setExitZonesVisible = function(visible) {
     main._exitZoneGroup = { meshes: allMeshes, materials: [material] };
 };
 
+window.dev.setPointLightsVisible = function(visible) {
+    _clearDebugGroup('_pointLightGroup');
+    if (!visible) return;
+
+    const lights = main.levelLoader.getCurrentLevel()?.lights;
+    if (!lights) return;
+    const pointls = lights.filter(i=>i.type === "point")
+    if (pointls.length === 0) return;
+
+    const THREE = _getDebugThreeClasses();
+    if (!THREE) return console.warn('[MoreTerra] No local player yet');
+
+    const allMats = {};
+    const allMeshes = [];
+
+    for (const l of pointls) {
+        const points = _circlePoints(l.x, l.z, l.radius, 35);
+        var mat;
+        if (l.color in allMats) {
+            mat = allMats[l.color]
+        } else {
+            mat = new THREE.MeshBasicMaterial({
+                color: l.color, transparent: true, opacity: 0.8, depthWrite: false, side: 2,
+            });
+            allMats[l.color] = mat
+        }
+        allMeshes.push(..._drawEdgeLoop(THREE.Mesh, THREE.PlaneGeometry, mat, points, {
+            thickness: 0.06, y: l.y,
+        }));
+
+        const points2 = _circlePoints(l.x, l.z, DOT_RADIUS, 8);
+        allMeshes.push(..._drawEdgeLoop(THREE.Mesh, THREE.PlaneGeometry, mat, points2, {
+            thickness: DOT_RADIUS * 2, y: l.y,
+        }));
+    }
+
+    main._pointLightGroup = { meshes: allMeshes, materials: Object.values(allMats) };
+};
+
 window.dev.setSpawnPointsVisible = function(visible) {
     _clearDebugGroup('_spawnPointGroup');
     if (!visible) return;
@@ -285,17 +326,19 @@ window.dev.setSpawnPointsVisible = function(visible) {
     const material = new THREE.MeshBasicMaterial({
         color: 0x33ff77, transparent: true, opacity: 0.9, depthWrite: false, side: 2,
     });
+    const primmaterial = new THREE.MeshBasicMaterial({
+        color: 0x22bbaa, transparent: true, opacity: 0.9, depthWrite: false, side: 2,
+    });
     const allMeshes = [];
-    const DOT_RADIUS = 0.35;
 
     for (const spawn of spawns) {
         const points = _circlePoints(spawn.x, spawn.z, DOT_RADIUS, 16);
-        allMeshes.push(..._drawEdgeLoop(THREE.Mesh, THREE.PlaneGeometry, material, points, {
+        allMeshes.push(..._drawEdgeLoop(THREE.Mesh, THREE.PlaneGeometry, spawn.isPrimary? primmaterial:material, points, {
             thickness: DOT_RADIUS * 2, y: 0.08,
         }));
     }
 
-    main._spawnPointGroup = { meshes: allMeshes, materials: [material] };
+    main._spawnPointGroup = { meshes: allMeshes, materials: [material, primmaterial] };
 };
 
 window.dev.setBuildGridVisible = function(visible) {

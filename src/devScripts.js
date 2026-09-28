@@ -122,14 +122,11 @@ var useColls = true
 window.dev.setUseColliders = function(use) { useColls = use }
 function checkColls(colls) {
     if (colls == null || useColls) return colls
-    return []
+    // If there isn't at least one collider, it will clamp the position for no reason..?
+    return [{ type: "cylinder", x: 1e9, z: 1e9, radius: 0 }]
 }
 var useExits = true
 window.dev.setUseExits = function(use) { useExits = use }
-function checkExits(xits) {
-    if (xits == null || useExits) return xits
-    return []
-}
 
 
 //// -- Temporary object --

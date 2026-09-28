@@ -26,11 +26,11 @@ function patchData(data) {
         // Make the information popup also have other interesting info
         .replace(/(?<=renderInfoDisplayCanvas\(([^,) ]+).*?\) ?{)([^}]*?)`\${Math\.round\(\1\)}ms`/, "$2getExtraInfo($1)")
         // Override getting the bounds polygon
-        .replace(/(\w+\??\.)+boundsPolygon(?!(\??\.\w+)* ?=)/g, "(useBounds&&$&)")
+        .replace(/(\w+\??\.)+boundsPolygon/g, "(useBounds&&$&)")
         // Override getting the colliders
-        .replace(/(\w+\??\.)+colliders(?!(\??\.\w+)* ?=)/g, "checkColls($&)")
+        .replace(/this\.colliders,/g, "checkColls($&),")
         // Override getting the exit zones
-        .replace(/(\w+\??\.)+exitZones(?!(\??\.\w+)* ?=)/g, "checkExits($&)")
+        .replace(/getExitZones\(\) ?{/g, "$&if(!useExits) { return []; }")
         // Wrap setting the exit zone handler
         .replace(/(?<=onExitZoneIntercept ?=) ?(.+?)(?=[,)};])/g, "wrapExitZone($1)")
         // Override sending movement to the network

@@ -175,9 +175,17 @@ function updateMesh(obj, mesh) {
     mesh.scale.setScalar(obj.scale ?? 1)
     if (obj.flipX) mesh.scale.x = -Math.abs(mesh.scale.x)
 }
-function updatelvl(patch) {
+function patch(obj, p) {
+    for (const [path, value] of Object.entries(p)) {
+        const keys = path.split(".");
+        const last = keys.pop();
+        const target = keys.reduce((o, k) => o[k], obj);
+        target[last] = value;
+    }
+}
+function updatelvl(p) {
     const { obj, mesh } = window.tmpobj.obj
-    Object.assign(obj, patch)
+    patch(obj, p)
     updateMesh(obj, mesh)
     main.colliders = main.levelLoader.getColliders();
 }
@@ -186,15 +194,15 @@ window.tmpobj.teleport = function() {
     const p = main.players.get(main.localPlayerId);
     updatelvl({ x: p.renderX, z: p.renderZ });
 }
-function updatemanif(patch) {
+function updatemanif(p) {
     const { obj, mesh } = window.tmpobj.obj
-    Object.assign(MANIF.sprites[obj.type], patch)
+    patch(MANIF.sprites[obj.type], p)
     window.tmpobj.create(obj.type, obj)
 }
-function updateboth(patch) {
+function updateboth(p) {
     const { obj, _ } = window.tmpobj.obj
-    Object.assign(obj, patch)
-    Object.assign(MANIF.sprites[obj.type], patch)
+    patch(obj, p)
+    patch(MANIF.sprites[obj.type], p)
     window.tmpobj.create(obj.type, obj)
 }
 

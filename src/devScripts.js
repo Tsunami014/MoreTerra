@@ -143,7 +143,7 @@ window.tmpobj.permanentise = function() {
 window.tmpobj.create = function(type="template", obj) {
     const tmptyp = 'temptyp_' + Date.now()
     MANIF.sprites[tmptyp] = structuredClone(MANIF.sprites[type])
-    window.tmpobj.remove()
+    window.tmpobj.remove(false)
     main.assetManager.loadManifSprite(tmptyp)
     const mesh = main.assetManager.createSprite(tmptyp)
     if (!mesh) {
@@ -165,6 +165,7 @@ window.tmpobj.create = function(type="template", obj) {
     else {
         updateMesh(obj, mesh)
         main.colliders = main.levelLoader.getColliders()
+        window.tmpobj.updinps()
     }
 }
 
@@ -187,12 +188,14 @@ function updatelvl(p) {
     const { obj, mesh } = window.tmpobj.obj
     patch(obj, p)
     updateMesh(obj, mesh)
+
     main.colliders = main.levelLoader.getColliders();
+    window.tmpobj.updinps()
 }
 window.tmpobj.teleport = function() {
     if (!window.tmpobj.obj) return;
     const p = main.players.get(main.localPlayerId);
-    updatelvl({ x: p.renderX, z: p.renderZ });
+    updatelvl({ x: parseFloat(p.renderX.toFixed(4)), z: parseFloat(p.renderZ.toFixed(4)) });
 }
 function updatemanif(p) {
     const { obj, mesh } = window.tmpobj.obj
@@ -200,13 +203,13 @@ function updatemanif(p) {
     window.tmpobj.create(obj.type, obj)
 }
 function updateboth(p) {
-    const { obj, _ } = window.tmpobj.obj
+    const obj = window.tmpobj.obj.obj
     patch(obj, p)
     patch(MANIF.sprites[obj.type], p)
     window.tmpobj.create(obj.type, obj)
 }
 
-window.tmpobj.remove = function() {
+window.tmpobj.remove = function(upd=true) {
     if (!window.tmpobj.obj) return;
     const { obj, mesh } = window.tmpobj.obj
     delete MANIF.sprites[obj.type]
@@ -217,7 +220,10 @@ window.tmpobj.remove = function() {
     main.disposeObject(mesh)
     window.tmpobj.obj = null
 
-    main.colliders = main.levelLoader.getColliders()
+    if (upd) {
+        main.colliders = main.levelLoader.getColliders()
+        window.tmpobj.updinps()
+    }
 }
 
 window.tmpobj.copy = function(manif) {
@@ -225,7 +231,7 @@ window.tmpobj.copy = function(manif) {
         console.warn("[MoreTerra] Cannot copy, there's no current temp object!")
         return
     }
-    const { obj, _ } = window.tmpobj.obj
+    const obj = window.tmpobj.obj.obj
     var tocopy = JSON.stringify(manif? MANIF.sprites[obj.type] : obj, null, 2)
     if (manif) {
         // Make it like a JS object instead of JSON
@@ -237,12 +243,15 @@ window.tmpobj.copy = function(manif) {
 }
 
 { // The html for the objMenu should exist by now
-    document.getElementById("objopts").querySelectorAll('input, select').forEach(e=>{
+    const inps = document.getElementById("objopts").querySelectorAll('input, select')
+
+    inps.forEach(e=>{
         const both = e.classList.contains('bothattr')
         const manif = e.classList.contains('manifattr')
         const lvl = e.classList.contains('lvlattr')
 
         const typ = e.dataset.typ
+        const pth = e.dataset.dat
         e.oninput = (event)=>{
             var val;
             if (typ === "bool") val = event.target.checked
@@ -250,12 +259,29 @@ window.tmpobj.copy = function(manif) {
                 val = event.target.value
                 if (typ === "num") val = parseFloat(val)
             }
-            const patch = { [e.dataset.dat]: val }
+            const patch = { [pth]: val }
             if (both) updateboth(patch);
             else if (lvl) updatelvl(patch);
             else if (manif) updatemanif(patch);
         }
+
+        e.updval = (obj)=>{
+            e.disabled = obj == null
+            if (obj) {
+                if (manif) obj = MANIF.sprites[obj.type]
+                e.value = pth.split(".").reduce((o, k) => o == null? null:o[k], obj)
+            } else { e.value = null }
+        }
     })
+
+    window.tmpobj.updinps = function() {
+        if (window.tmpobj.obj) {
+            inps.forEach(e=>e.updval(window.tmpobj.obj.obj))
+        } else {
+            inps.forEach(e=>e.updval(null))
+        }
+    }
+    window.tmpobj.updinps()
 }
 
 

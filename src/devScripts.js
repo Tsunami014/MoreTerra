@@ -141,7 +141,7 @@ window.tmpobj.permanentise = function() {
     window.tmpobj.obj = null
 }
 
-window.tmpobj.create = function(type="template", obj) {
+window.tmpobj.create = function(type, obj) {
     const tmptyp = 'temptyp_' + Date.now()
     var old = MANIF.sprites[type]
     if (!old) old = main.assetManager.manifest.sprites[type]

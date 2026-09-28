@@ -25,6 +25,19 @@ const MANIF = {
                 }
             ],*/
         },
+        template_ez: {
+            path: "/tf/rock2.webp",
+            width: 1,
+            height: 0.5,
+            anchor: { x: 0.5, y: 0 },
+            renderMode: "flat",
+            colliders: [
+              {
+                "width": 1.5,
+                "depth": 3,
+              }
+            ],
+        },
         portal: {
             path: "/tf/portal.webp",
             width: 0.8,

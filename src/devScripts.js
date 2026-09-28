@@ -252,7 +252,7 @@ window.tmpobj.copy = function(manif) {
 
         const typ = e.dataset.typ
         const pth = e.dataset.dat
-        e.oninput = (event)=>{
+        e.onchange = (event)=>{
             var val;
             if (typ === "bool") val = event.target.checked
             else {

@@ -15,13 +15,13 @@ function patchData(data) {
         // Pick up the main class when networkClient is created
         .replace(/(?<=this\.networkClient ?=)/, "setMain(this)||")
         // Make ctrl keys also sprint, and add more keybinds
-        .replace(/(?<=,\s*sprint: ?\[)([^\]]+\]),?/, "`ControlLeft`,`ControlRight`,$1,mm_printpos:[`KeyP`],mm_dbug:[`KeyT`],mm_updpos:[`KeyM`],")
+        .replace(/(?<=,\s*sprint: ?\[)([^\]]+\]),?/, "`ControlLeft`,`ControlRight`,$1,tf_printpos:[`KeyP`],tf_dbug:[`KeyT`],tf_updpos:[`KeyM`],")
         // Implement handler for extra keybinds
         .replace(/(if ?\(\w+\()(?:.interact.,?)([^{]*)/,
             "if (['INPUT','TEXTAREA'].includes(document.activeElement?.tagName)) {return}"+
-            "$1`mm_printpos`,$2{printPos()}"+
-            "$1`mm_dbug`,$2{toggleDbug()}"+
-            "$1`mm_updpos`,$2{syncPos()}"+
+            "$1`tf_printpos`,$2{printPos()}"+
+            "$1`tf_dbug`,$2{toggleDbug()}"+
+            "$1`tf_updpos`,$2{syncPos()}"+
         "$&")
         // Make the information popup also have other interesting info
         .replace(/(?<=renderInfoDisplayCanvas\(([^,) ]+).*?\) ?{)([^}]*?)`\${Math\.round\(\1\)}ms`/, "$2getExtraInfo($1)")

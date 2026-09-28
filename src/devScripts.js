@@ -2,7 +2,7 @@ window.dev = {}
 
 //// -- Load custom testing levels --
 
-const testWorldId = 'mm_test'
+const testWorldId = 'tf_test'
 
 window.dev.testWorld = async function(base, spawn) {
     if (!check()) return;
@@ -72,7 +72,7 @@ window.dev.testWorld = async function(base, spawn) {
     load.name = "Test world"
     main.assetManager.levelDataCache.set(testWorldId, load)
 
-    console.log("[MoreTerra] Teleporting to test world"+(base? " replicating "+base : ""))
+    console.log("[Terraformed] Teleporting to test world"+(base? " replicating "+base : ""))
     let player = main.players.get(main.localPlayerId);
     let n = player.mesh.position.clone().project(main.camera),
         r = (n.x + 1) / 2,
@@ -146,7 +146,7 @@ window.tmpobj.create = function(type="template", obj) {
     var old = MANIF.sprites[type]
     if (!old) old = main.assetManager.manifest.sprites[type]
     if (!old) {
-        console.error('[MoreTerra] Unable to create temp sprite because type "'+type+'" does not exist!')
+        console.error('[Terraformed] Unable to create temp sprite because type "'+type+'" does not exist!')
         return
     }
     MANIF.sprites[tmptyp] = structuredClone(old)
@@ -154,7 +154,7 @@ window.tmpobj.create = function(type="template", obj) {
     main.assetManager.loadManifSprite(tmptyp)
     const mesh = main.assetManager.createSprite(tmptyp)
     if (!mesh) {
-        console.warn('[MoreTerra] Temp sprite failed to instantiate!')
+        console.warn('[Terraformed] Temp sprite failed to instantiate!')
         return
     }
     var telep = false
@@ -229,7 +229,7 @@ window.tmpobj.remove = function(upd=true) {
 
 window.tmpobj.copy = function(manif) {
     if (!window.tmpobj.obj) {
-        console.warn("[MoreTerra] Cannot copy, there's no current temp object!")
+        console.warn("[Terraformed] Cannot copy, there's no current temp object!")
         return
     }
     const obj = window.tmpobj.obj.obj
@@ -240,7 +240,7 @@ window.tmpobj.copy = function(manif) {
     }
 
     navigator.clipboard.writeText(tocopy)
-    console.log("[MoreTerra] Copied!")
+    console.log("[Terraformed] Copied!")
 }
 
 { // The html for the objMenu should exist by now
@@ -407,7 +407,7 @@ window.dev.setBoundsPolygonVisible = function(visible) {
     if (!poly || poly.length < 2) return;
 
     const THREE = _getDebugThreeClasses();
-    if (!THREE) return console.warn('[MoreTerra] No local player yet');
+    if (!THREE) return console.warn('[Terraformed] No local player yet');
 
     const material = new THREE.MeshBasicMaterial({
         color: 0xff3333, transparent: true, opacity: 0.85, depthWrite: false, side: 2,
@@ -424,7 +424,7 @@ window.dev.setCollidersVisible = function(visible) {
     if (!visible) return;
 
     const THREE = _getDebugThreeClasses();
-    if (!THREE) return console.warn('[MoreTerra] No local player yet');
+    if (!THREE) return console.warn('[Terraformed] No local player yet');
 
     const material = new THREE.MeshBasicMaterial({
         color: 0x33aaff, transparent: true, opacity: 0.85, depthWrite: false, side: 2,
@@ -452,7 +452,7 @@ window.dev.setExitZonesVisible = function(visible) {
     if (!zones || zones.length === 0) return;
 
     const THREE = _getDebugThreeClasses();
-    if (!THREE) return console.warn('[MoreTerra] No local player yet');
+    if (!THREE) return console.warn('[Terraformed] No local player yet');
 
     const material = new THREE.MeshBasicMaterial({
         color: 0xffee33, transparent: true, opacity: 0.85, depthWrite: false, side: 2,
@@ -479,7 +479,7 @@ window.dev.setPointLightsVisible = function(visible) {
     if (pointls.length === 0) return;
 
     const THREE = _getDebugThreeClasses();
-    if (!THREE) return console.warn('[MoreTerra] No local player yet');
+    if (!THREE) return console.warn('[Terraformed] No local player yet');
 
     const allMats = {};
     const allMeshes = [];
@@ -516,7 +516,7 @@ window.dev.setSpawnPointsVisible = function(visible) {
     if (!spawns || spawns.length === 0) return;
 
     const THREE = _getDebugThreeClasses();
-    if (!THREE) return console.warn('[MoreTerra] No local player yet');
+    if (!THREE) return console.warn('[Terraformed] No local player yet');
 
     const material = new THREE.MeshBasicMaterial({
         color: 0x33ff77, transparent: true, opacity: 0.9, depthWrite: false, side: 2,

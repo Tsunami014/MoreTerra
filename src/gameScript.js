@@ -17,12 +17,12 @@ function setMain(nmain) {
     await oll.call(this, ...args)
     fixczinp()
   }
-  console.log("[MoreTerra] Injected the GameCanvas!")
+  console.log("[Terraformed] Injected the GameCanvas!")
   console.log(main)
 }
 function check() {
   if (main === null) {
-    console.error("[MoreTerra] Not ready!");
+    console.error("[Terraformed] Not ready!");
     return false;
   }
   return true;
@@ -58,7 +58,7 @@ function printPos() {
   ))
 }
 function getExtraInfo(t) {
-  if (!check()) return Math.round(t)+"ms, MoreTerra error!";
+  if (!check()) return Math.round(t)+"ms, Terraformed error!";
   const playr = main.players.get(main.localPlayerId)
   return Math.round(t)+"ms," +
     " x: "+playr.renderX.toFixed(2) +
@@ -89,12 +89,12 @@ export function getCurrentLvl() {
   }
   return [ld.get(current), current.startsWith(oldPref)];
 }
-export function inMoreTerra() {
+export function inTerraformed() {
   return !getCurrentLvl()[1]
 }
 
 function networkMove() {
-  return !inMoreTerra();
+  return !inTerraformed();
 }
 
 
@@ -164,7 +164,7 @@ export async function teleport(to, spawn) {
   const lvlId = localStorage.getItem("lastLevelId")
   if (to === "") { to = lvlId; }
   await main.assetManager.ensureEssential(to)
-  console.log("[MoreTerra] Teleporting to", to, spawn)
+  console.log("[Terraformed] Teleporting to", to, spawn)
   const ld = main.assetManager.levelDataCache;
   if (ld.get(oldPref+to)) { to = oldPref+to; }
   ld.set(lvlId, ld.get(to))
@@ -210,7 +210,7 @@ function nxtNpcDialog(npc, id) {
           nxtNpcDialog(npc, d.choices[idx].nextNodeId)
         })
       } else {
-        console.warn("[MoreTerra] Unknown npc action: "+nt)
+        console.warn("[Terraformed] Unknown npc action: "+nt)
       }
       break;
     }
@@ -223,7 +223,7 @@ function runNpc(npc) {
 
 
 function checkApply(obj) {
-  if (obj.action.type.startsWith("mm_")) {
+  if (obj.action.type.startsWith("tf_")) {
     let spl = obj.action.type.split("_").slice(1)
     if (spl[0] == "enter") {
       teleport("catacombs", "")
@@ -232,7 +232,7 @@ function checkApply(obj) {
     } else if (spl[0] == "npc") {
       runNpc(obj.action.data)
     } else {
-      console.warn("[MoreTerra] Unknown object action: "+spl[0])
+      console.warn("[Terraformed] Unknown object action: "+spl[0])
     }
     return "everythings_fine"
   }
@@ -244,13 +244,13 @@ function handleEZaction(type, params) {
   if (type == "exit_level") {
     teleport(params.targetLevelId, params.targetSpawnTag)
   } else {
-    console.warn("[MoreTerra] Unknown exit zone action: "+type)
+    console.warn("[Terraformed] Unknown exit zone action: "+type)
   }
 }
 function wrapExitZone(handl) {
   if (!handl) return handl
   function out(ext) {
-    if (inMoreTerra()) {
+    if (inTerraformed()) {
       ext.actions.forEach(a=>{ handleEZaction(a.type, a.params) })
       return true
     }

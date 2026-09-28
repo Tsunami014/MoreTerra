@@ -1,8 +1,7 @@
-const mtpth = "/mt/"
 const MANIF = {
     sprites: {
         template: {
-            path: mtpth+"rock1.webp",
+            path: "/tf/rock1.webp",
             width: 2,
             height: 1.5,
             anchor: { x: 0.5, y: 0 }, // The normalised (0-1) point in the image which is placed on the centre
@@ -27,14 +26,14 @@ const MANIF = {
             ],*/
         },
         portal: {
-            path: mtpth+"portal.webp",
+            path: "/tf/portal.webp",
             width: 0.8,
             height: 2.2,
             anchor: { x: 0.5, y: 0 },
         },
 
 rock1: {
-  path: "/mt/assets/rock1.webp",
+  path: "/tf/assets/rock1.webp",
   width: 2,
   height: 1.5,
   anchor: {
@@ -51,7 +50,7 @@ rock1: {
   ]
 },
 rock2: {
-  path: "/mt/assets/rock2.webp",
+  path: "/tf/assets/rock2.webp",
   width: 1.8,
   height: 1,
   anchor: {
@@ -68,7 +67,7 @@ rock2: {
   ]
 },
 rock3: {
-  path: "/mt/assets/rock3.webp",
+  path: "/tf/assets/rock3.webp",
   width: 1.8,
   height: 1,
   anchor: {
@@ -85,7 +84,7 @@ rock3: {
   ]
 },
 rock4: {
-  path: "/mt/assets/rock4.webp",
+  path: "/tf/assets/rock4.webp",
   width: 1.3,
   height: 0.8,
   anchor: {
@@ -102,7 +101,7 @@ rock4: {
   ]
 },
 mystereeple: {
-  path: "/mt/mystereeple.webp",
+  path: "/tf/mystereeple.webp",
   width: 1.5,
   height: 2,
   anchor: {

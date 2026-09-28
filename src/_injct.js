@@ -10,7 +10,7 @@ function modifyJSON(url, js) {
                 z: pos[1],
                 rotation: pos[2]||0,
                 scale: 1.2,
-                action: { label: "Travel", type: "mm_enter" },
+                action: { label: "Travel", type: "tf_enter" },
             })
             break
         }
@@ -25,7 +25,7 @@ function modifyJSON(url, js) {
             }
             js.objects.push({
                 ...npc, type: npc.sprite,
-                action: { label: labl, type: "mm_npc", data: npc },
+                action: { label: labl, type: "tf_npc", data: npc },
             })
         })
         js.npcs = []
@@ -67,11 +67,11 @@ function hook() {
                     continue;
                 }
                 if ("header" in ob) {
-                    if (UILABLS) console.warn("[MoreTerra] Found multiple candidates for UI labels..?")
+                    if (UILABLS) console.warn("[Terraformed] Found multiple candidates for UI labels..?")
                     UILABLS = ob
                 }
                 if ("getInstance" in ob) {
-                    if (indxclsFound) console.warn("[MoreTerra] Found multiple candidates for index class..?")
+                    if (indxclsFound) console.warn("[Terraformed] Found multiple candidates for index class..?")
                     indxclsFound = true
                     proto = ob.prototype
 
@@ -111,8 +111,8 @@ function hook() {
                                 try {
                                     this.textures.set(nam, await this.getOrLoadTexture(conts.path));
                                 } catch (t) {
-                                    console.warn(`[MoreTerra] Failed to load sprite "${nam}":`, t),
-                                    this.textures.set(nam, this.createFallbackTexture("MM"+nam));
+                                    console.warn(`[Terraformed] Failed to load sprite "${nam}":`, t),
+                                    this.textures.set(nam, this.createFallbackTexture("TF"+nam));
                                 }
                             }
                         }
@@ -121,19 +121,19 @@ function hook() {
                         try {
                             this.textures.set(typ, await this.getOrLoadTexture(MANIF.sprites[typ].path));
                         } catch (t) {
-                            console.warn(`[MoreTerra] Failed to load manif sprite "${typ}":`, t),
-                            this.textures.set(typ, this.createFallbackTexture("MM"+typ));
+                            console.warn(`[Terraformed] Failed to load manif sprite "${typ}":`, t),
+                            this.textures.set(typ, this.createFallbackTexture("TF"+typ));
                         }
                     }
 
-                    console.log("[MoreTerra] Successfully injected custom objects!")
+                    console.log("[Terraformed] Successfully injected custom objects!")
                 }
             }
             if (!UILABLS) {
-                console.error("[MoreTerra] Unable to find UI labels!")
+                console.error("[Terraformed] Unable to find UI labels!")
             }
             if (!indxclsFound) {
-                console.error("[MoreTerra] Unable to find an instanceable object in the module!")
+                console.error("[Terraformed] Unable to find an instanceable object in the module!")
             }
         });
         if (XTRACSS) {

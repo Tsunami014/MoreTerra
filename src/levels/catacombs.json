@@ -72,7 +72,7 @@
       "z": -2.4199,
       "scale": 1.2,
       "rotation": 0,
-      "action": { "label": "Travel", "type": "mm_exit" }
+      "action": { "label": "Travel", "type": "tf_exit" }
     },
     {
       "id": "1776908551433_6539txf",

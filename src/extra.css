@@ -25,6 +25,12 @@
 
 label:has(> .lvlattr), span.lvlattr { color: green; }
 label:has(> .manifattr), span.manifattr { color: red; }
+label:has(> .bothattr), span.bothattr { color: blue; }
+
+#collidersinp {
+    resize: vertical;
+    flex: none;
+}
 
 #devopts, #objopts {
     display: flex;

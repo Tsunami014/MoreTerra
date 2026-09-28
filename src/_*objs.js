@@ -1,12 +1,13 @@
 const mtpth = "/moreterra/assets/"
 const MANIF = {
     sprites: {
-        /* Most of these are optional
-        name: {
-            path: mtpth+"file.webp"
+        template: {
+            path: mtpth+"rock1.webp",
             width: 1,
-            height: 1,
-            anchor: { x: ..., y: ... }, // The normalised (0-1) point in the image which is placed on the centre
+            height: 2,
+            anchor: { x: 0.5, y: 0 }, // The normalised (0-1) point in the image which is placed on the centre
+            /* Optional:
+
             zOffset: 0,
             baseFade: false, // Fade the image at the base
             sway: false, // Make the asset sway when the user touches
@@ -23,14 +24,7 @@ const MANIF = {
                     offsetX: 0,
                     offsetY: 0,
                 }
-            ],
-        }
-        */
-        template: {
-            path: mtpth+"rock1.webp",
-            width: 1,
-            height: 2,
-            anchor: { x: 0.5, y: 0 },
+            ],*/
         },
         portal: {
             path: mtpth+"portal.webp",

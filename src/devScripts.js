@@ -132,8 +132,7 @@ function checkExits(xits) {
 }
 
 
-//// -- Debug drawing overlays --
-
+//// -- Temporary object --
 
 window.tmpobj = {}
 window.tmpobj.obj = null
@@ -141,41 +140,58 @@ window.tmpobj.permanentise = function() {
     window.tmpobj.obj = null
 }
 
-window.tmpobj.create = function(type="template") {
+window.tmpobj.create = function(type="template", obj) {
     window.tmpobj.remove()
-    const mesh = main.assetManager.createSprite(type)
+    const tmptyp = 'temptyp_' + Date.now()
+    MANIF.sprites[tmptyp] = structuredClone(MANIF.sprites[type])
+    main.assetManager.loadManifSprite(tmptyp)
+    const mesh = main.assetManager.createSprite(tmptyp)
     if (!mesh) {
-        console.warn('[MoreTerra] Sprite type '+type+' does not exist or failed to instantiate!')
+        console.warn('[MoreTerra] Temp sprite failed to instantiate!')
         return
     }
-    const obj = { id: 'temp_' + Date.now(), type, x: 0, z: 0, rotation: 0, scale: 1, flipX: false }
+    var telep = false
+    if (!obj) {
+        obj = { id: 'tempobj_' + Date.now(), type: tmptyp, x: 0, z: 0, rotation: 0, scale: 1, flipX: false, baseFade: false }
+        telep = true
+    }
     main.scene.add(mesh)
     main.levelLoader.getLevelObjects().set(obj.id, mesh)
     main.levelLoader.getCurrentLevel().objects.push(obj)
     window.tmpobj.obj = { obj, mesh }
 
-    window.tmpobj.teleport() // Also reloads colliders
+    if (telep) window.tmpobj.teleport() // Also reloads colliders
+    else main.colliders = main.levelLoader.getColliders()
 }
 
-window.tmpobj.update = function(patch) {
-    const { obj, mesh } = window.tmpobj.obj
-    Object.assign(obj, patch)
+function updateMesh(obj, mesh) {
     mesh.position.x = obj.x
     mesh.position.z = obj.z
     mesh.rotation.y = obj.rotation || 0
     mesh.scale.setScalar(obj.scale ?? 1)
     if (obj.flipX) mesh.scale.x = -Math.abs(mesh.scale.x)
-
+}
+function updatelvl(patch) {
+    const { obj, mesh } = window.tmpobj.obj
+    Object.assign(obj, patch)
+    updateMesh(obj, mesh)
     main.colliders = main.levelLoader.getColliders();
 }
 window.tmpobj.teleport = function() {
+    if (!window.tmpobj.obj) return;
     const p = main.players.get(main.localPlayerId);
-    window.tmpobj.update({ x: p.renderX, z: p.renderZ });
+    updatelvl({ x: p.renderX, z: p.renderZ });
+}
+function updatemanif(patch) {
+    const { obj, mesh } = window.tmpobj.obj
+    Object.assign(MANIF.sprites[obj.type], patch)
+    window.tmpobj.create(obj.type, obj)
 }
 
 window.tmpobj.remove = function() {
     if (!window.tmpobj.obj) return;
     const { obj, mesh } = window.tmpobj.obj
+    delete MANIF.sprites[obj.type]
     const objs = main.levelLoader.getCurrentLevel().objects
     objs.splice(objs.indexOf(obj), 1)
     main.levelLoader.getLevelObjects().delete(obj.id)
@@ -183,7 +199,7 @@ window.tmpobj.remove = function() {
     main.disposeObject(mesh)
     window.tmpobj.obj = null
 
-    main.colliders = main.levelLoader.getColliders();
+    main.colliders = main.levelLoader.getColliders()
 }
 
 { // The html for the objMenu should exist by now

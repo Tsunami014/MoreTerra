@@ -27,10 +27,7 @@
         <input type="number" class="ooinp manifattr" data-dat="zOffset">
     </label>
     <label>Fade at base
-        <input type="checkbox" class="ooinp manifattr" data-dat="baseFade">
-    </label>
-    <label>Fade at base (override)
-        <input type="checkbox" class="ooinp lvlattr" data-dat="baseFade">
+        <input type="checkbox" class="ooinp bothattr" data-dat="baseFade">
     </label>
     <label>Sway when walk over
         <input type="checkbox" class="ooinp manifattr" data-dat="sway">
@@ -51,7 +48,7 @@
     <span class="manifattr">Colliders</span>
     <textarea disabled rows="10" style="resize: none;">$$COLLIDEREXAMPLES$$</textarea>
     <button style="width: 100%;">Apply below colliders</button>
-    <textarea class="manifattr" style="resize: vertical; flex: none; height: 150px;">Collider code here</textarea>
+    <textarea id="collidersinp" class="manifattr" style="height: 150px;">Collider code here</textarea>
     <br>
     <span>Result</span>
     <div>

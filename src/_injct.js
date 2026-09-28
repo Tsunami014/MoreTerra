@@ -117,6 +117,15 @@ function hook() {
                             }
                         }
                     }
+                    proto.loadManifSprite = async function(typ) {
+                        try {
+                            this.textures.set(typ, await this.getOrLoadTexture(MANIF.sprites[typ].path));
+                        } catch (t) {
+                            console.warn(`[MoreTerra] [deferred] Failed to load manif sprite "${typ}":`, t),
+                            this.textures.set(typ, this.createFallbackTexture("MM"+typ));
+                        }
+                    }
+
                     console.log("[MoreTerra] Successfully injected custom objects!")
                 }
             }

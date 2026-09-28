@@ -145,7 +145,7 @@ async function LvlEditOverlay() {
     }
 
     const pages = [
-        mktab(0, "Level Info", "Some changes here won't apply unless you press ->", ()=>{
+        mktab(0, "Level Info", "Changes here won't apply unless you press ->", ()=>{
             const dat = main.levelLoader.getCurrentLevel()
             if (!dat) {
                 console.error("Failed to get current level!")
@@ -172,7 +172,6 @@ async function LvlEditOverlay() {
             return elem({ cls: UILABLS.content }, [
                 ...mkInp("width", "Level width ", "number", 20),
                 ...mkInp("height", "Level height ", "number", 20),
-                ...mkInp("cameraZoom", "Camera zoom ", "number", 1.2, { step: 0.1, min: 0.1 }),
                 ...mkInp("instanced", "Instanced (one room per owner, e.g. farms) ", "checkbox"),
                 elem({ tag: "label", text: "Level type " }, [
                     elem({
@@ -188,7 +187,7 @@ async function LvlEditOverlay() {
                 ]),
             ])
         }),
-        mktab(1, "Level JSON", "Changes here won't save unless you press ->", ()=>{
+        mktab(1, "Level JSON", "Changes here won't save or apply unless you press ->", ()=>{
             const dat = JSON.stringify(main.levelLoader.getCurrentLevel(), null, 2)
             if (!dat) {
                 console.error("Failed to stringify current level!")

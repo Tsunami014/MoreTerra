@@ -12,6 +12,11 @@ function setMain(nmain) {
     }
     return out
   };
+  const oll = main.loadLevel
+  main.loadLevel = async function(...args) {
+    oll.call(this, ...args)
+    fixczinp()
+  }
   console.log("[MoreTerra] Injected the GameCanvas!")
   console.log(main)
 }

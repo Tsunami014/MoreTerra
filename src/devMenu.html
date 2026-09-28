@@ -22,6 +22,11 @@
             <input type="checkbox" onchange="dev.setUseColliders(this.checked)" checked>
             Collide with colliders
         </label>
+        <br>
+        <label>
+            <input type="checkbox" onchange="dev.setUseExits(this.checked)" checked>
+            Exit zones active
+        </label>
     </div><div style="white-space: pre;">
         <button class="bigbtn" onclick="dev.setAllDebugOverlays(true)">All on</button>
         <button class="bigbtn" onclick="dev.setAllDebugOverlays(false)">All off</button>
@@ -73,9 +78,8 @@
             Edit temp object
         </button>
         <br><br>
-        <label>
-            <input type="checkbox" onchange="dev.setUseExits(this.checked)" checked>
-            Exit zones active
+        <label>Camera zoom
+            <input id="camzoominp" type="number" min="0.1" step="0.1" disabled>
         </label>
     </div>
 </div>

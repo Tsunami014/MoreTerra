@@ -20,5 +20,14 @@
       "resources": ["images/*", "levels*", "manif.json"],
       "matches": ["*://terra.hackclub.com/*"]
     }
-  ]
+  ],
+
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "terraformed@tsunam.net",
+      "data_collection_permissions": {
+        "required": ["none"]
+      }
+    }
+  }
 }

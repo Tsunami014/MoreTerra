@@ -1,8 +1,8 @@
 # Terraformed
-A browser extension to extend upon [Terra](terra.hackclub.com)!
+A client-side mod for [Terra](terra.hackclub.com)!
 
 ## Features
-- **A whole new world to explore!** See the well behind the cidery to travel there...
+- **A whole new world to explore!** See the well behind the cidery to travel...
 - Hold ctrl to run as well as shift (stops from highlighting everything all the time)
 - A convenient UI button to open the devlogs from anywhere
 
@@ -27,3 +27,6 @@ Run `build.sh`
 
 ### Firefox
 Go to `about:debugging#/runtime/this-firefox` and load the temporary addon of the `dist/firefox/manifest.json` (**MAKE SURE YOU ARE IN `dist/firefox` AND NOT `firefox/`**). I suggest pressing 'Inspect' for an easy window to refresh and see logs in.
+
+## Publishing
+Run `publish.sh` (**after building**), and the resultant files will be in `dist/pub/`

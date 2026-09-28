@@ -1,4 +1,4 @@
-const mtpth = "/moreterra/assets/"
+const mtpth = "/mt/assets/"
 const MANIF = {
     sprites: {
         template: {

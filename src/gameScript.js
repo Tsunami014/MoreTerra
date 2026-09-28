@@ -124,6 +124,9 @@ async function loadLevel(lvlId, spawn) {
   await main.loadLevel(lvlId, spawn)
 
   const [lvl, isTown] = getCurrentLvl()
+
+  if (isTown) await main.migrateRoom();
+
   var goto = null
   for (const spn of lvl.spawns) {
     if (spn.tag == spawn) {

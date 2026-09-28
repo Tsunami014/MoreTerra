@@ -221,28 +221,35 @@
       "z": -5.2413487807716965,
       "rotation": 0,
       "scale": 1,
-      "dialogue": [
-        "Hello!"
-      ],
-      "battleDeck": [
-        "warrior"
-      ],
       "dialogueTree": [
         {
-          "id": "1776900297351_on6m50o",
-          "text": "Hello!",
-          "nextNodeId": "1776900310379_1d5oiyl"
-        },
-        {
-          "id": "1776900310379_1d5oiyl",
+          "id": "a",
           "text": "",
           "nodeType": "player",
           "choices": [
             {
-              "label": "...ok?",
+              "label": "Who are you?",
+              "nextNodeId": "b-1"
+            },
+            {
+              "label": "Where am I?",
+              "nextNodeId": "b-2"
+            },
+            {
+              "label": "Goodbye",
               "nextNodeId": ""
             }
           ]
+        },
+        {
+          "id": "b-1",
+          "text": "I'm nobody important",
+          "nextNodeId": "a"
+        },
+        {
+          "id": "b-2",
+          "text": "We're in the catacombs, under a castle",
+          "nextNodeId": "a"
         }
       ]
     }

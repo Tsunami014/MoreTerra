@@ -37,13 +37,9 @@ inst = null
 var UILABLS;
 function hook() {
     document.addEventListener("DOMContentLoaded", () => {
-        // Do stuff with the index file
-        idx = document.head.innerHTML.indexOf("index")
-        file = document.head.innerHTML.slice(idx,document.head.innerHTML.indexOf(".", idx)) + ".js"
-        import('/assets/'+file).then(module => {
-            const root = document.getElementById('root')
-            root.insertAdjacentHTML('beforeend', DEVMENU)
-            root.insertAdjacentHTML('beforeend', OBJMENU.replace('$$COLLIDEREXAMPLES$$',
+        const root = document.getElementById('root')
+        root.insertAdjacentHTML('beforeend', DEVMENU)
+        root.insertAdjacentHTML('beforeend', OBJMENU.replace('$$COLLIDEREXAMPLES$$',
 'Colliders examples:\n'+
 '{ // Rectangle collider if no type set\n'+
 '    "width": 1,\n'+
@@ -56,8 +52,19 @@ function hook() {
 '    "offsetX": 0,\n'+
 '    "offsetY": 0\n'+
 '}'
-            ))
+        ))
 
+
+        const files = [...document.querySelectorAll('link[rel="modulepreload"]')]
+            .map(l => l.href).filter(h => h.includes('PlayerPanel.module'))
+        if (files.length == 0) {
+            console.error("[Terraformed] No player panel module found!")
+            return
+        }
+        if (files.length != 1) {
+            console.error("[Terraformed] Too many player panel modules found!")
+        }
+        import(files[0]).then(module => {
             indxclsFound = false
             for (o in module) {
                 ob = module[o]
@@ -125,8 +132,6 @@ function hook() {
                             this.textures.set(typ, this.createFallbackTexture("TF"+typ));
                         }
                     }
-
-                    console.log("[Terraformed] Successfully injected custom objects!")
                 }
             }
             if (!UILABLS) {
@@ -135,6 +140,7 @@ function hook() {
             if (!indxclsFound) {
                 console.error("[Terraformed] Unable to find an instanceable object in the module!")
             }
+            console.log("[Terraformed] Finished initial injection!")
         });
         if (XTRACSS) {
             const style = document.createElement('style');

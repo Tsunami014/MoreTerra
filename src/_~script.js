@@ -17,4 +17,4 @@ window.fetch = async function (...args) {
 };
 
 hook()
-console.log("[Terraformed] Loaded successfully!")
+console.log("[Terraformed] Loaded!")

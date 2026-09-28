@@ -13,7 +13,7 @@ browser.webRequest.onBeforeRequest.addListener(
         data += decoder.decode(event.data, { stream: true });
       };
       filter.onstop = () => {
-        const patched = patchData(data); // Included in gameCanvas.js
+        const patched = patchGameCanvas(data); // Included in gameCanvas.js
         filter.write(encoder.encode(patched));
         filter.close();
       };

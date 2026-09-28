@@ -1,4 +1,4 @@
-function patchData(data) {
+function patchGameCanvas(data) {
     // Load the labels with an external function
     var suff = ";const LABLS = " + data.match(/\w+(?=\.textBox)/)
 

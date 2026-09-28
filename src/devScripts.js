@@ -140,11 +140,16 @@ window.tmpobj.permanentise = function() {
     window.tmpobj.obj = null
 }
 
-window.tmpobj.create = function(type="template", obj) {
-    window.tmpobj.remove()
-    const tmptyp = 'temptyp_' + Date.now()
-    MANIF.sprites[tmptyp] = structuredClone(MANIF.sprites[type])
-    main.assetManager.loadManifSprite(tmptyp)
+window.tmpobj.create = function(type="template", obj, inplace=false) {
+    window.tmpobj.remove(!inplace)
+    var tmptyp;
+    if (inplace) {
+        tmptyp = obj.type
+    } else {
+        tmptyp = 'temptyp_' + Date.now()
+        MANIF.sprites[tmptyp] = structuredClone(MANIF.sprites[type])
+        main.assetManager.loadManifSprite(tmptyp)
+    }
     const mesh = main.assetManager.createSprite(tmptyp)
     if (!mesh) {
         console.warn('[MoreTerra] Temp sprite failed to instantiate!')
@@ -161,7 +166,10 @@ window.tmpobj.create = function(type="template", obj) {
     window.tmpobj.obj = { obj, mesh }
 
     if (telep) window.tmpobj.teleport() // Also reloads colliders
-    else main.colliders = main.levelLoader.getColliders()
+    else {
+        updateMesh(obj, mesh)
+        main.colliders = main.levelLoader.getColliders()
+    }
 }
 
 function updateMesh(obj, mesh) {
@@ -185,13 +193,19 @@ window.tmpobj.teleport = function() {
 function updatemanif(patch) {
     const { obj, mesh } = window.tmpobj.obj
     Object.assign(MANIF.sprites[obj.type], patch)
-    window.tmpobj.create(obj.type, obj)
+    window.tmpobj.create(obj.type, obj, true)
+}
+function updateboth(patch) {
+    const { obj, _ } = window.tmpobj.obj
+    Object.assign(obj, patch)
+    Object.assign(MANIF.sprites[obj.type], patch)
+    window.tmpobj.create(obj.type, obj, true)
 }
 
-window.tmpobj.remove = function() {
+window.tmpobj.remove = function(rmmanif=true) {
     if (!window.tmpobj.obj) return;
     const { obj, mesh } = window.tmpobj.obj
-    delete MANIF.sprites[obj.type]
+    if (rmmanif) delete MANIF.sprites[obj.type]
     const objs = main.levelLoader.getCurrentLevel().objects
     objs.splice(objs.indexOf(obj), 1)
     main.levelLoader.getLevelObjects().delete(obj.id)
@@ -221,15 +235,22 @@ window.tmpobj.copy = function(manif) {
 { // The html for the objMenu should exist by now
     document.getElementById("objopts").querySelectorAll('input, select').forEach(e=>{
         const both = e.classList.contains('bothattr')
-        var manif = both||e.classList.contains('manifattr')
-        var lvl = both||e.classList.contains('lvlattr')
+        const manif = e.classList.contains('manifattr')
+        const lvl = e.classList.contains('lvlattr')
 
+        const typ = e.dataset.typ
         e.oninput = (event)=>{
-            const patch = { [e.dataset.dat]: event.target.value }
-            if (lvl) updatelvl(patch);
-            if (manif) updatemanif(patch);
+            var val;
+            if (typ === "bool") val = event.target.checked
+            else {
+                val = event.target.value
+                if (typ === "num") val = parseFloat(val)
+            }
+            const patch = { [e.dataset.dat]: val }
+            if (both) updateboth(patch);
+            else if (lvl) updatelvl(patch);
+            else if (manif) updatemanif(patch);
         }
-        console.log(e, e.classList, e.dataset.dat)
     })
 }
 

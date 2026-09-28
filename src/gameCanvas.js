@@ -18,7 +18,7 @@ function patchData(data) {
         .replace(/(?<=,\s*sprint: ?\[)([^\]]+\]),?/, "`ControlLeft`,`ControlRight`,$1,mm_printpos:[`KeyP`],mm_dbug:[`KeyT`],mm_updpos:[`KeyM`],")
         // Implement handler for extra keybinds
         .replace(/(if ?\(\w+\()(?:.interact.,?)([^{]*)/,
-            "if (document.activeElement?.classList.contains(`hogfocus`)) {return}"+
+            "if (['INPUT','TEXTAREA'].includes(document.activeElement?.tagName)) {return}"+
             "$1`mm_printpos`,$2{printPos()}"+
             "$1`mm_dbug`,$2{toggleDbug()}"+
             "$1`mm_updpos`,$2{syncPos()}"+

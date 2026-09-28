@@ -46,15 +46,15 @@ function hook() {
             root.insertAdjacentHTML('beforeend', OBJMENU.replace('$$COLLIDEREXAMPLES$$',
 'Colliders examples:\n'+
 '{ // Rectangle collider if no type set\n'+
-'    width: 1,\n'+
-'    depth: 1,\n'+
-'    offsetX: 0,\n'+
-'    offsetY: 0,\n'+
+'    "width": 1,\n'+
+'    "depth": 1,\n'+
+'    "offsetX": 0,\n'+
+'    "offsetY": 0\n'+
 '}, {\n'+
-'    type: "cylinder",\n'+
-'    radius: 1,\n'+
-'    offsetX: 0,\n'+
-'    offsetY: 0,\n'+
+'    "type": "cylinder",\n'+
+'    "radius": 1,\n'+
+'    "offsetX": 0,\n'+
+'    "offsetY": 0\n'+
 '}'
             ))
 
@@ -111,7 +111,7 @@ function hook() {
                                 try {
                                     this.textures.set(nam, await this.getOrLoadTexture(conts.path));
                                 } catch (t) {
-                                    console.warn(`[MoreTerra] [deferred] Failed to load sprite "${nam}":`, t),
+                                    console.warn(`[MoreTerra] Failed to load sprite "${nam}":`, t),
                                     this.textures.set(nam, this.createFallbackTexture("MM"+nam));
                                 }
                             }
@@ -121,7 +121,7 @@ function hook() {
                         try {
                             this.textures.set(typ, await this.getOrLoadTexture(MANIF.sprites[typ].path));
                         } catch (t) {
-                            console.warn(`[MoreTerra] [deferred] Failed to load manif sprite "${typ}":`, t),
+                            console.warn(`[MoreTerra] Failed to load manif sprite "${typ}":`, t),
                             this.textures.set(typ, this.createFallbackTexture("MM"+typ));
                         }
                     }

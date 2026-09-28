@@ -142,7 +142,13 @@ window.tmpobj.permanentise = function() {
 
 window.tmpobj.create = function(type="template", obj) {
     const tmptyp = 'temptyp_' + Date.now()
-    MANIF.sprites[tmptyp] = structuredClone(MANIF.sprites[type])
+    var old = MANIF.sprites[type]
+    if (!old) old = main.assetManager.manifest.sprites[type]
+    if (!old) {
+        console.error('[MoreTerra] Unable to create temp sprite because type "'+type+'" does not exist!')
+        return
+    }
+    MANIF.sprites[tmptyp] = structuredClone(old)
     window.tmpobj.remove(false)
     main.assetManager.loadManifSprite(tmptyp)
     const mesh = main.assetManager.createSprite(tmptyp)
@@ -257,7 +263,7 @@ window.tmpobj.copy = function(manif) {
             if (typ === "bool") val = event.target.checked
             else {
                 val = event.target.value
-                if (typ === "num") val = parseFloat(val)
+                if (typ === "num") val = parseFloat(val)??0
             }
             const patch = { [pth]: val }
             if (both) updateboth(patch);
@@ -269,16 +275,24 @@ window.tmpobj.copy = function(manif) {
             e.disabled = obj == null
             if (obj) {
                 if (manif) obj = MANIF.sprites[obj.type]
-                e.value = pth.split(".").reduce((o, k) => o == null? null:o[k], obj)
+                const nval = pth.split(".").reduce((o, k) => o == null? null:o[k], obj)
+                if (typ === "bool") e.checked = nval
+                else e.value = nval
             } else { e.value = null }
         }
     })
 
+    const collinp = document.getElementById("collidersinp")
     window.tmpobj.updinps = function() {
         if (window.tmpobj.obj) {
-            inps.forEach(e=>e.updval(window.tmpobj.obj.obj))
+            const obj = window.tmpobj.obj.obj
+            inps.forEach(e=>e.updval(obj))
+            collinp.value = JSON.stringify(MANIF.sprites[obj.type].colliders??[], null, 2)
+            collinp.disabled = false
         } else {
             inps.forEach(e=>e.updval(null))
+            collinp.value = ""
+            collinp.disabled = true
         }
     }
     window.tmpobj.updinps()

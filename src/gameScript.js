@@ -42,6 +42,15 @@ function printPos() {
   if (!check()) return;
   const playr = main.players.get(main.localPlayerId)
   console.log("x:", playr.renderX.toFixed(4), "z:", playr.renderZ.toFixed(4), "lvl:", current??(oldPref+localStorage.getItem("lastLevelId")))
+  const aliases = Object.fromEntries(
+    Object.entries(main.assetManager.manifest.spriteAliases).map(([k, v]) => [v, k])
+  )
+
+  console.log("Object types in this level:", Object.fromEntries(
+    main.levelLoader.getCurrentLevel().objects.map(o => [
+      o.type, aliases[o.type] ?? o.type
+    ])
+  ))
 }
 function getExtraInfo(t) {
   if (!check()) return Math.round(t)+"ms, MoreTerra error!";

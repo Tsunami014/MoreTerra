@@ -254,7 +254,7 @@ window.tmpobj.copy = function(manif) {
             if (typ === "bool") val = event.target.checked
             else {
                 val = event.target.value
-                if (typ === "num") val = parseFloat(val)??0
+                if (typ === "num") val = parseFloat(val)||0
             }
             const patch = { [pth]: val }
             if (both) updateboth(patch);
@@ -289,7 +289,7 @@ window.tmpobj.copy = function(manif) {
         if (!init) dev.refreshDebugOverlays()
     }
     window.tmpobj.updcolls = function() {
-        const out = JSON.parse(collinp.value)
+        const out = JSON.parse(collinp.value||"[]")
         updatemanif({ colliders: out })
     }
     window.tmpobj.updinps(true)

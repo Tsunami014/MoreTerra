@@ -1,10 +1,10 @@
-const mtpth = "/mt/assets/"
+const mtpth = "/mt/"
 const MANIF = {
     sprites: {
         template: {
             path: mtpth+"rock1.webp",
-            width: 1,
-            height: 2,
+            width: 2,
+            height: 1.5,
             anchor: { x: 0.5, y: 0 }, // The normalised (0-1) point in the image which is placed on the centre
             /* Optional:
 
@@ -32,5 +32,84 @@ const MANIF = {
             height: 2.2,
             anchor: { x: 0.5, y: 0 },
         },
+
+rock1: {
+  path: "/mt/assets/rock1.webp",
+  width: 2,
+  height: 1.5,
+  anchor: {
+    x: 0.5,
+    y: 0
+  },
+  colliders: [
+    {
+      type: "cylinder",
+      radius: 0.5,
+      offsetX: 0,
+      offsetZ: -0.1
+    }
+  ]
+},
+rock2: {
+  path: "/mt/assets/rock2.webp",
+  width: 1.8,
+  height: 1,
+  anchor: {
+    x: 0.5,
+    y: 0
+  },
+  colliders: [
+    {
+      type: "cylinder",
+      radius: 0.4,
+      offsetX: 0,
+      offsetZ: -0.1
+    }
+  ]
+},
+rock3: {
+  path: "/mt/assets/rock3.webp",
+  width: 1.8,
+  height: 1,
+  anchor: {
+    x: 0.5,
+    y: 0
+  },
+  colliders: [
+    {
+      type: "cylinder",
+      radius: 0.4,
+      offsetX: 0,
+      offsetZ: -0.1
+    }
+  ]
+},
+rock4: {
+  path: "/mt/assets/rock4.webp",
+  width: 1.3,
+  height: 0.8,
+  anchor: {
+    x: 0.5,
+    y: 0
+  },
+  colliders: [
+    {
+      type: "cylinder",
+      radius: 0.3,
+      offsetX: 0,
+      offsetZ: -0.1
+    }
+  ]
+},
+mystereeple: {
+  path: "/mt/mystereeple.webp",
+  width: 1.5,
+  height: 2,
+  anchor: {
+    x: 0.5,
+    y: 0
+  }
+},
+
     }
 }

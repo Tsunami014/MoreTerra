@@ -40,7 +40,7 @@ cp firefox/manifest.json dist/firefox
 cat src/replace.js <(
     {
         echo 'const dataPref = `'
-        cat src/gameUI.js src/devScripts.js src/gameScript.js
+        cat src/gameUI.js src/devScripts.js src/gameScript.js | sed -e 's/\\/\\\\/g'
         echo '`;'
     }
 ) src/gameCanvas.js firefox/redirect.js > dist/firefox/redirect.js

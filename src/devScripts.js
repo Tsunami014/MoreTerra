@@ -202,8 +202,35 @@ window.tmpobj.remove = function() {
     main.colliders = main.levelLoader.getColliders()
 }
 
+window.tmpobj.copy = function(manif) {
+    if (!window.tmpobj.obj) {
+        console.warn("[MoreTerra] Cannot copy, there's no current temp object!")
+        return
+    }
+    const { obj, _ } = window.tmpobj.obj
+    var tocopy = JSON.stringify(manif? MANIF.sprites[obj.type] : obj, null, 2)
+    if (manif) {
+        // Make it like a JS object instead of JSON
+        tocopy = tocopy.replace(/"(\w+)":/g, '$1:')
+    }
+
+    navigator.clipboard.writeText(tocopy)
+    console.log("[MoreTerra] Copied!")
+}
+
 { // The html for the objMenu should exist by now
-    console.log(document.getElementById("objopts"))
+    document.getElementById("objopts").querySelectorAll('input, select').forEach(e=>{
+        const both = e.classList.contains('bothattr')
+        var manif = both||e.classList.contains('manifattr')
+        var lvl = both||e.classList.contains('lvlattr')
+
+        e.oninput = (event)=>{
+            const patch = { [e.dataset.dat]: event.target.value }
+            if (lvl) updatelvl(patch);
+            if (manif) updatemanif(patch);
+        }
+        console.log(e, e.classList, e.dataset.dat)
+    })
 }
 
 

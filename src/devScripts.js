@@ -95,6 +95,10 @@ window.dev.execWorld = async function(data, spawn) {
     dev.testWorld(testWorldId, spawn)
 }
 
+window.dev.returnToTown = async function() {
+    await teleport(oldPref+"town-square")
+}
+
 
 window.dev.openEditLvlOverlay = function() {
     LvlEditOverlay()

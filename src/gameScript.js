@@ -187,6 +187,7 @@ export async function teleport(to, spawn) {
     }
   )
 }
+window.travelTo = teleport;
 
 function nxtNpcDialog(npc, id) {
   if (id == "") return;

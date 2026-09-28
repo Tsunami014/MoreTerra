@@ -10,6 +10,7 @@ A browser extension to add more to Terra!
 - Press 'P' to print info to the console, including the player position and level and all object types currently loaded
 - Press 'M' to (attempt to, may need to press multiple times) sync your position if you are rubber banding all over the place
 - Press 'T' to toggle a developer panel with some extremely useful features for testing, debugging, and creating new levels!
+<!-- - There is a function in the console `travelTo` that can be used to travel to any level by ID. Be careful about which ones you need to prefix! -->
 
 ## Extra info for developers
 - When fiddling around with new objects, it's best to load a testing level (or even just the current, to make it into a testing level) so server weirdness don't cause rubber banding issues.

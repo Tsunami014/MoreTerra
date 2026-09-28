@@ -170,7 +170,6 @@ window.tmpobj.create = function(type="template", obj) {
     if (telep) window.tmpobj.teleport() // Also reloads colliders
     else {
         updateMesh(obj, mesh)
-        main.colliders = main.levelLoader.getColliders()
         window.tmpobj.updinps()
     }
 }
@@ -194,8 +193,6 @@ function updatelvl(p) {
     const { obj, mesh } = window.tmpobj.obj
     patch(obj, p)
     updateMesh(obj, mesh)
-
-    main.colliders = main.levelLoader.getColliders();
     window.tmpobj.updinps()
 }
 window.tmpobj.teleport = function() {
@@ -226,10 +223,7 @@ window.tmpobj.remove = function(upd=true) {
     main.disposeObject(mesh)
     window.tmpobj.obj = null
 
-    if (upd) {
-        main.colliders = main.levelLoader.getColliders()
-        window.tmpobj.updinps()
-    }
+    if (upd) window.tmpobj.updinps()
 }
 
 window.tmpobj.copy = function(manif) {
@@ -283,7 +277,8 @@ window.tmpobj.copy = function(manif) {
     })
 
     const collinp = document.getElementById("collidersinp")
-    window.tmpobj.updinps = function() {
+    window.tmpobj.updinps = function(init=false) {
+        if (!init) main.colliders = main.levelLoader.getColliders()
         if (window.tmpobj.obj) {
             const obj = window.tmpobj.obj.obj
             inps.forEach(e=>e.updval(obj))
@@ -294,8 +289,13 @@ window.tmpobj.copy = function(manif) {
             collinp.value = ""
             collinp.disabled = true
         }
+        if (!init) dev.refreshDebugOverlays()
     }
-    window.tmpobj.updinps()
+    window.tmpobj.updcolls = function() {
+        const out = JSON.parse(collinp.value)
+        updatemanif({ colliders: out })
+    }
+    window.tmpobj.updinps(true)
 }
 
 

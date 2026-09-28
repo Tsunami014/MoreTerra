@@ -140,16 +140,11 @@ window.tmpobj.permanentise = function() {
     window.tmpobj.obj = null
 }
 
-window.tmpobj.create = function(type="template", obj, inplace=false) {
-    window.tmpobj.remove(!inplace)
-    var tmptyp;
-    if (inplace) {
-        tmptyp = obj.type
-    } else {
-        tmptyp = 'temptyp_' + Date.now()
-        MANIF.sprites[tmptyp] = structuredClone(MANIF.sprites[type])
-        main.assetManager.loadManifSprite(tmptyp)
-    }
+window.tmpobj.create = function(type="template", obj) {
+    const tmptyp = 'temptyp_' + Date.now()
+    MANIF.sprites[tmptyp] = structuredClone(MANIF.sprites[type])
+    window.tmpobj.remove()
+    main.assetManager.loadManifSprite(tmptyp)
     const mesh = main.assetManager.createSprite(tmptyp)
     if (!mesh) {
         console.warn('[MoreTerra] Temp sprite failed to instantiate!')
@@ -157,9 +152,10 @@ window.tmpobj.create = function(type="template", obj, inplace=false) {
     }
     var telep = false
     if (!obj) {
-        obj = { id: 'tempobj_' + Date.now(), type: tmptyp, x: 0, z: 0, rotation: 0, scale: 1, flipX: false, baseFade: false }
+        obj = { id: 'tempobj_' + Date.now(), x: 0, z: 0, rotation: 0, scale: 1, flipX: false, baseFade: false }
         telep = true
     }
+    obj.type = tmptyp
     main.scene.add(mesh)
     main.levelLoader.getLevelObjects().set(obj.id, mesh)
     main.levelLoader.getCurrentLevel().objects.push(obj)
@@ -193,19 +189,19 @@ window.tmpobj.teleport = function() {
 function updatemanif(patch) {
     const { obj, mesh } = window.tmpobj.obj
     Object.assign(MANIF.sprites[obj.type], patch)
-    window.tmpobj.create(obj.type, obj, true)
+    window.tmpobj.create(obj.type, obj)
 }
 function updateboth(patch) {
     const { obj, _ } = window.tmpobj.obj
     Object.assign(obj, patch)
     Object.assign(MANIF.sprites[obj.type], patch)
-    window.tmpobj.create(obj.type, obj, true)
+    window.tmpobj.create(obj.type, obj)
 }
 
-window.tmpobj.remove = function(rmmanif=true) {
+window.tmpobj.remove = function() {
     if (!window.tmpobj.obj) return;
     const { obj, mesh } = window.tmpobj.obj
-    if (rmmanif) delete MANIF.sprites[obj.type]
+    delete MANIF.sprites[obj.type]
     const objs = main.levelLoader.getCurrentLevel().objects
     objs.splice(objs.indexOf(obj), 1)
     main.levelLoader.getLevelObjects().delete(obj.id)

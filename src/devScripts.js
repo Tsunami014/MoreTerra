@@ -174,6 +174,13 @@ window.tmpobj.create = function(type, obj) {
         window.tmpobj.updinps()
     }
 }
+window.tmpobj.duplicate = function() {
+    if (!window.tmpobj.obj) return;
+    const obj = structuredClone(window.tmpobj.obj.obj)
+    window.tmpobj.permanentise()
+    window.tmpobj.create(obj.type, obj)
+    window.tmpobj.teleport()
+}
 
 function updateMesh(obj, mesh) {
     mesh.position.x = obj.x
@@ -607,8 +614,13 @@ window.dev.updNearestObjVisible = function() {
     lastNear = near
     _clearDebugGroup('_nearestObjGroup');
     if (!near) {
+        console.log('[Terraformed] [nearest] No nearest object!')
         return
     }
+    const aliases = main.assetManager.manifest.spriteAliases
+    const al = Object.keys(aliases).find(k=>aliases[k] === near.type)
+    const altxt = al? " ("+al+")" : ""
+    console.log('[Terraformed] [nearest] Nearest object type: '+near.type+altxt+', id: '+near.id)
 
     const THREE = _getDebugThreeClasses();
     if (!THREE) return console.warn('[Terraformed] No local player yet');

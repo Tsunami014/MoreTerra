@@ -16,6 +16,8 @@ A client-side mod for [Terra](terra.hackclub.com)!
 ## Extra info for developers
 - When fiddling around with new objects, it's best to load a testing level (or even just the current, to make it into a testing level) so server weirdness don't cause rubber banding issues.
 
+- The "Show nearest object" switch also console logs what the nearest object is
+
 - Terra likes loading every level that exists on startup, so in the Network tab if you filter for 'json' you should be able to see all levels (and also some extras like the manifest)
     - Note that all the Terra image assets need to be prefixed with `assets/`
     - Also note that Terra ground tiles need to be in the format `assets/sprites/terrain/$$.webp` (meaning some images end up being suffixed with `.webp.webp`, funly enough)

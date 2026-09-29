@@ -10,7 +10,8 @@ window.tfQuests = {
     if (progress) room.dispatchMessage('quest.progress', progress)
   },
   clear_all_progress: function() {
-    this._progress = []
+    this._progress = {}
+    this.save()
     this.refresh()
   },
   save: function() {

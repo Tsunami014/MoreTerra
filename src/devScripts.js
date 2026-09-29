@@ -614,7 +614,7 @@ window.dev.updNearestObjVisible = function() {
     if (!THREE) return console.warn('[Terraformed] No local player yet');
 
     const material = new THREE.MeshBasicMaterial({
-        color: 0xff33ff, transparent: true, opacity: 0.9, depthWrite: false, side: 2,
+        color: 0xff33ff, transparent: true, opacity: 0.7, depthWrite: false, side: 2,
     });
 
     const points = _circlePoints(near.x, near.z, DOT_RADIUS*2, 16);
@@ -625,4 +625,28 @@ window.dev.updNearestObjVisible = function() {
     ];
 
     main._nearestObjGroup = { meshes: allMeshes, materials: [material] };
+}
+
+window.dev.updTempObjVisible = function(visible) {
+    _clearDebugGroup('_tmpObjGroup');
+    if (!visible || !window.tmpobj.obj) {
+        return
+    }
+    const obj = window.tmpobj.obj.obj
+
+    const THREE = _getDebugThreeClasses();
+    if (!THREE) return console.warn('[Terraformed] No local player yet');
+
+    const material = new THREE.MeshBasicMaterial({
+        color: 0x112299, transparent: true, opacity: 0.7, depthWrite: false, side: 2,
+    });
+
+    const points = _circlePoints(obj.x, obj.z, DOT_RADIUS*1.5, 16);
+    const allMeshes = [
+        ..._drawEdgeLoop(THREE.Mesh, THREE.PlaneGeometry, material, points, {
+            thickness: DOT_RADIUS*1.5 * 2, y: 0.08,
+        })
+    ];
+
+    main._tmpObjGroup = { meshes: allMeshes, materials: [material] };
 };

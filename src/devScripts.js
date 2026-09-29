@@ -305,7 +305,7 @@ window.tmpobj.copy = function(manif) {
 const camzinp = document.getElementById("camzoominp")
 camzinp.onchange = ()=>{
     const lvl = main.levelLoader.getCurrentLevel()
-    if (lvl) lvl.cameraZoom = camzinp.value??1.2
+    if (lvl) lvl.cameraZoom = camzinp.value||1.2
 }
 function fixczinp() {
     const lvl = main.levelLoader.getCurrentLevel()

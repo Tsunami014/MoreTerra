@@ -39,6 +39,8 @@ function patchGameCanvas(data) {
         .replace(/(?=this\.networkClient\.sendMove)/, "networkMove()&&")
         // Override reading the object's action
         .replace(/(\w+)(\.action\.type),/, "checkApply($1)||$1$2,")
+        // Move the camera down when the overlay is visible
+        .replace(/(?<=cameraLookAtZ ?\+=[^,]+)\w+\.mesh\.position\.z(?=[^a-zA-Z0-9._])/, "($&+extraCamZ())")
         // Add an action type that does nothing
         .replace(/(?=open_devlog_terminal:)/, ` everythings_fine: () => {}, `)
         // Add a UI element to quickly open devlogs

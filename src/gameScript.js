@@ -152,6 +152,14 @@ function check() {
 }
 
 
+const devopts = document.getElementById('devopts')
+const objopts = document.getElementById('objopts')
+
+function extraCamZ() {
+  if (devopts.style.display == "none") return 0
+  return 1.75
+}
+
 function syncPos() {
   const playr = main.players.get(main.localPlayerId)
   playr.prevPhysX = playr.serverX
@@ -193,18 +201,16 @@ function getExtraInfo(t) {
 }
 
 function forceHideDbug() {
-  document.getElementById('devopts').style.display = "none"
-  document.getElementById('objopts').style.display = "none"
+  devopts.style.display = "none"
+  objopts.style.display = "none"
 }
 function toggleDbug() {
   const active = document.activeElement
   if (active && active != document.body) {return}
-  const dbuginf = document.getElementById('devopts')
-  dbuginf.style.display = dbuginf.style.display == ""? "none" : ""
-  document.getElementById('objopts').style.display = "none"
+  devopts.style.display = devopts.style.display == ""? "none" : ""
+  objopts.style.display = "none"
 }
 window.toggleObjOpts = function() {
-  const objopts = document.getElementById('objopts')
   objopts.style.display = objopts.style.display == ""? "none" : ""
 }
 

@@ -1,7 +1,64 @@
 var main = null;
-var outsky = null;
-var insky = [0, 0, 0];
-function setMain(nmain) {
+
+window.tfQuests = {
+  _last: {},
+  _progress: {}, // quest id -> [step index (-1 for completed), completed tasks from this step]
+  refresh: function() {
+    const room = main.networkClient.getRoom()
+    const { defs, progress } = this._last
+    if (defs) room.dispatchMessage('quest.definitions', defs)
+    if (progress) room.dispatchMessage('quest.progress', progress)
+  },
+  clear_all_progress: function() {
+    this._progress = []
+    this.refresh()
+  },
+  save: function() {
+    localStorage.setItem("tf_quests", JSON.stringify(this._progress))
+  },
+
+  start: function(qid) {
+    this._progress[qid] = [0, []]
+    this.refresh()
+  },
+  completeTask: function(qid, tid) {
+    this._progress[qid][1].push(tid)
+    this.refresh()
+  },
+  completeStep: function(qid) {
+    this._progress[qid] = [this._progress[qid]+1, []]
+    this.refresh()
+  },
+  completeQuest: function(qid) {
+    this._progress[qid] = [-1, []]
+    this.refresh()
+  },
+
+  getDefs: function() {
+    return QUESTS.map(q=>{
+      const [up2, donesteps] = this._progress[q.questId] ?? [0, []]
+      return {
+        questId: q.questId, title: q.title,
+        currentStep: q.allSteps[up2],
+        completedSteps: q.allSteps.slice(0, up2)
+      }
+    })
+  },
+  getProgress: function() {
+    return Object.entries(this._progress).map(([qid, [up2, donesteps]]) => {
+      return {
+        questId: qid, completed: up2 == -1,
+        currentStepIndex: up2 == -1? QUESTS[qid].allSteps.length-1 : up2,
+        completedTasks: donesteps
+      }
+    });
+  },
+}
+try {
+  tfQuests._progress = JSON.parse(localStorage.getItem("tf_quests")) ?? {}
+} catch (e) {}
+
+function setMain(nmain, netclient) {
   main = nmain;
   const oem = main.emit
   main.emit = function(e, ...args) {
@@ -17,9 +74,26 @@ function setMain(nmain) {
     await oll.call(this, ...args)
     fixczinp()
   }
-  console.log("[Terraformed] Injected the GameCanvas!")
   console.log(main)
+
+  const room = netclient.getRoom()
+  const proto = Object.getPrototypeOf(room)
+  const olddm = proto.dispatchMessage
+  proto.dispatchMessage = function (type, msg) {
+    if (type === 'quest.definitions') {
+      tfQuests._last.defs = msg
+      msg = { ...msg, quests: [...msg.quests, ...structuredClone(tfQuests.getDefs())] }
+    } else if (type === 'quest.progress') {
+      tfQuests._last.progress = msg
+      tfQuests.save()
+      msg = { ...msg, progress: [...msg.progress, ...structuredClone(tfQuests.getProgress())] }
+    }
+    return olddm.call(this, type, msg)
+  };
+
+  console.log("[Terraformed] Injected the GameCanvas!")
 }
+
 function check() {
   if (main === null) {
     console.error("[Terraformed] Not ready!");
@@ -97,6 +171,9 @@ function networkMove() {
   return !inTerraformed();
 }
 
+
+var outsky = null;
+var insky = [0, 0, 0];
 
 async function clearLevel() {
   main.npcs.forEach((e) => {

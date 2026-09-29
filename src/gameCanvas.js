@@ -13,7 +13,7 @@ function patchGameCanvas(data) {
 
     const out = pref + dataPref + data
         // Pick up the main class when networkClient is created
-        .replace(/(?<=this\.networkClient ?=)/, "setMain(this)||")
+        .replace(/(?<=this\.networkClient ?= ?)(\w+)/, "setMain(this, $1)||$1")
         // Make ctrl keys also sprint, and add more keybinds
         .replace(/(?<=,\s*sprint: ?\[)([^\]]+\]),?/, "`ControlLeft`,`ControlRight`,$1,tf_printpos:[`KeyP`],tf_dbug:[`KeyT`],tf_updpos:[`KeyM`],")
         // Implement handler for extra keybinds

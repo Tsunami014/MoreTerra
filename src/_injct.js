@@ -18,8 +18,8 @@ function modifyJSON(url, js) {
     if (js.npcs && js.npcs.length > 0 && 'id' in js.npcs[0]) {
         js.npcs.map(npc=>{
             var labl;
-            if (npc.name.startsWith("~")) {
-                labl = npc.name.slice(1)
+            if (npc.label) {
+                labl = npc.label
             } else {
                 labl = "talk to "+npc.name
             }

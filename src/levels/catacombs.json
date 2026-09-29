@@ -255,6 +255,20 @@
     }
   ],
   "exitZones": [
+    {
+      "id": "ez_totown",
+      "x": 6.0418,
+      "z": -5.9151,
+      "width": 1.5,
+      "depth": 3,
+      "rotation": 0.2,
+      "targetLevelId": "moletown",
+      "targetSpawnTag": "intro",
+      "requiredQuest": {
+        "questId": "tfq_intro",
+        "stepId": "tfq_intro_2"
+      }
+    }
   ],
   "terrain": {
     "gridCols": 1,

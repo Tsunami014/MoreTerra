@@ -1,4 +1,5 @@
 {
+  // NOTE: With IDs, you can probably fill it with whatever you like
   "id": "mminit",
   "name": "mminit",
   "width": 20,
@@ -54,7 +55,46 @@
     // ...
   ],
   "colliders": [], // Assumedly, these are extra colliders probably in the same format as object colliders
-  "npcs": [], // NPCs come from the server unfortunately, so you need to use objects instead to replicate the functionality.
+  "npcs": [ // Fun fact; NPCs are handled by the server, this is an entirely client-side reimplementation where they are converted to objects
+    {
+      "id": "1776908551433_6539txf",
+      "name": "Mystereeple", // What will be displayed when talking
+      "label": "have a chat to Mystereeple", // Optional, overrides the default "talk to ${name}"
+      "sprite": "mystereeple", // The sprite to use
+      "x": -6,
+      "z": -6,
+      "rotation": 0,
+      "scale": 1,
+
+      // The dialogue tree is a list of nodes that are connected to each other by their ids.
+      "dialogueTree": [
+        { // No node type = from NPC
+          "id": "a",
+          "text": "Hello!",
+          "nextNodeId": "a.5"
+        },
+        {
+          "id": "a.5",
+          "text": "~~\n{ type: 'tf_dosomething' }", // Perform an action
+          // The text must be prefixed with `~~(anything here)\n`
+          // Each line is ran as an action and is parsed as json
+          "nextNodeId": "b"
+        },
+        {
+          "id": "b",
+          "text": "",
+          "nodeType": "player",
+          "choices": [
+            {
+              "label": "Hi!",
+              "nextNodeId": "" // Blank node = stop chatting
+            }
+          ]
+        }
+      ]
+    }
+    // ...
+  ],
   "exitZones": [ // Rectangle areas where when stepped on causes the user to teleport somewhere else
     {
       "id": "1776904603928_i7j1w6j",
@@ -67,11 +107,11 @@
       "targetLevelId": "moletown",
       "targetSpawnTag": "intro",
       // Optional for blocking the user for quests
-      "blocking": true,
+      "blocking": true, // Physical wall if not complete yet
       "lockedMessage": "I can't leave yet!",
       "requiredQuest": {
         "questId": "1789150019600_7a64bzi",
-        "stepId": "" // The step in the quest you must be... up to? past? for this to let you through
+        "stepId": "" // Blank = must just be started
       }
     }
   ],

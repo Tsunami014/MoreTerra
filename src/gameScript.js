@@ -18,25 +18,66 @@ window.tfQuests = {
   },
 
   start: function(qid) {
+    if (!this._progress[qid]) this.restart(qid)
+  },
+  restart: function(qid) {
     this._progress[qid] = [0, []]
     this.refresh()
   },
-  completeTask: function(qid, tid) {
-    this._progress[qid][1].push(tid)
+  completeTask: function(qid, tid, checkDone=true) {
+    if (!this._progress[qid]) {
+      this._progress[qid] = [0, [tid]]
+    } else {
+      this._progress[qid][1].push(tid)
+    }
+    if (checkDone) {
+      const [up2, donetasks] = progr
+      if (!QUESTS[qid].allSteps[up2].tasks.some(
+        it=>donetasks.contains(it.id)
+      )) {
+        return completeStep(qid)
+      }
+    }
     this.refresh()
   },
-  completeStep: function(qid) {
-    this._progress[qid] = [this._progress[qid]+1, []]
+  completeStep: function(qid, checkDone=true) {
+    if (!this._progress[qid]) {
+      this._progress[qid] = [0, []]
+    } else {
+      const [up2, donetasks] = progr
+      if (checkDone && up2+1 >= QUESTS[qid].allSteps.length-1) {
+        return completeQuest(qid)
+      }
+      this._progress[qid] = [up2+1, donetasks]
+    }
     this.refresh()
   },
   completeQuest: function(qid) {
-    this._progress[qid] = [-1, []]
+    if (!this._progress[qid]) {
+      this._progress[qid] = [-1, []]
+    } else {
+      this._progress[qid] = [-1, this._progress[qid][1]]
+    }
     this.refresh()
+  },
+
+  getProgress: function(qid) {
+    const progr = this._progress[qid]
+    if (!progr) return null
+    const [up2, donetasks] = progr
+    const q = QUESTS[qid]
+    const done = up2 == -1
+    return {
+      completed: done,
+      donesteps: done? q.allSteps : q.allSteps.slice(0, up2),
+      curstepid: done? null : q.allSteps[up2].id,
+      donetasks: donetasks,
+    }
   },
 
   getDefs: function() {
     return QUESTS.map(q=>{
-      const [up2, donesteps] = this._progress[q.questId] ?? [0, []]
+      const [up2, donetasks] = this._progress[q.questId] ?? [0, []]
       return {
         questId: q.questId, title: q.title,
         currentStep: q.allSteps[up2],
@@ -45,11 +86,11 @@ window.tfQuests = {
     })
   },
   getProgress: function() {
-    return Object.entries(this._progress).map(([qid, [up2, donesteps]]) => {
+    return Object.entries(this._progress).map(([qid, [up2, donetasks]]) => {
       return {
         questId: qid, completed: up2 == -1,
         currentStepIndex: up2 == -1? QUESTS[qid].allSteps.length-1 : up2,
-        completedTasks: donesteps
+        completedTasks: donetasks
       }
     });
   },
@@ -236,7 +277,7 @@ async function loadLevel(lvlId, spawn) {
   dev.refreshDebugOverlays()
 }
 
-export async function teleport(to, spawn) {
+export async function teleport(to, spawn, then) {
   if (!check()) return;
   const lvlId = localStorage.getItem("lastLevelId")
   if (to === "") { to = lvlId; }
@@ -252,15 +293,17 @@ export async function teleport(to, spawn) {
     r = (n.x + 1) / 2,
     i = (-n.y + 1) / 2;
   main.setInputEnabled(!1);
-  let c = main.sceneTransition,
-    l = main.onTransitionStateChange;
-  c.play(
+  let onchng = main.onTransitionStateChange
+  main.sceneTransition.play(
     r, i,
     async () => {
-        l?.(!0), await loadLevel(lvlId, spawn), main.inputEnabled = true;
+      onchng?.(!0)
+      await loadLevel(lvlId, spawn)
+      main.inputEnabled = true
+      if (then) then()
     },
     () => {
-        l?.(!1);
+        onchng?.(!1)
     }
   )
 }
@@ -272,11 +315,12 @@ function nxtNpcDialog(npc, id) {
     if (d.id == id) {
       const nt = d.nodeType || "npc";
       if (nt == "npc") {
-        if (d.text.startsWith("~~ACTION")) {
+        if (d.text.startsWith("~~")) {
           // Split by newline
-          d.text.split(String.fromCharCode(10)).forEach(txt=>{
-            if (txt.startsWith("~")) checkApply({action: {type: txt.slice(1)}})
+          d.text.split(String.fromCharCode(10)).slice(1).forEach(txt=>{
+            checkApply({action: JSON.parse(txt)})
           })
+          nxtNpcDialog(npc, d.nextNodeId)
           return;
         }
         NpcDialog({ name: npc.name, img: npc.sprite+".webp" }, d.text, ()=>{
@@ -300,16 +344,27 @@ function runNpc(npc) {
 
 
 function checkApply(obj) {
-  if (obj.action.type.startsWith("tf_")) {
-    let spl = obj.action.type.split("_").slice(1)
-    if (spl[0] == "enter") {
-      teleport("catacombs", "")
-    } else if (spl[0] == "exit") {
+  const act = obj.action
+  if (act.type.startsWith("tf_")) {
+    const cmd = act.type.split("_").slice(1)[0]
+    if (cmd == "enter") {
+      teleport("catacombs", "", ()=>{
+        tfQuests.start("tfq_intro")
+      })
+    } else if (cmd == "exit") {
       teleport("", "")
-    } else if (spl[0] == "npc") {
-      runNpc(obj.action.data)
+    } else if (cmd == "npc") {
+      runNpc(act.data)
+    } else if (cmd == "startQ") {
+      tfQuests.start(act.qid)
+    } else if (cmd == "completeQtask") {
+      tfQuests.completeTask(act.qid, act.qid)
+    } else if (cmd == "completeQstep") {
+      tfQuests.completeStep(act.qid)
+    } else if (cmd == "completeQuest") {
+      tfQuests.completeQuest(act.qid)
     } else {
-      console.warn("[Terraformed] Unknown object action: "+spl[0])
+      console.warn("[Terraformed] Unknown object action: "+cmd)
     }
     return "everythings_fine"
   }

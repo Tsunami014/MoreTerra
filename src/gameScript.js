@@ -76,6 +76,12 @@ window.tfQuests = {
       donetasks: donetasks,
     }
   },
+  getNextTasks: function() {
+    return Object.entries(this._progress).reduce((acc, [qid, [up2, donetasks]]) => {
+      if (up2 == -1) return acc
+      return [...acc, ...QUESTS[qid].allSteps[up2].tasks.filter(it=>!donetasks.includes(it))]
+    }, []);
+  },
 
   getDefs: function() {
     return Object.entries(QUESTS).map(([qid, q])=>{
@@ -101,10 +107,19 @@ try {
   tfQuests._progress = JSON.parse(localStorage.getItem("tf_quests")) ?? {}
 } catch (e) {}
 
+var exiting = false
 function setMain(nmain, netclient) {
   main = nmain;
   const oem = main.emit
   main.emit = function(e, ...args) {
+    if (e == "exitZoneIntercept" && inTerraformed()) {
+      if (!exiting) {
+        exiting = true;
+        teleport(args[0].targetLevelId, args[0].targetSpawnTag ?? "",
+          ()=>{ exiting = false; });
+      }
+      return true
+    }
     const out = oem.call(this, e, ...args)
     if (e == "afterLevelTransition") {
       return out.then(()=>{

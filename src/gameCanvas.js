@@ -33,8 +33,6 @@ function patchGameCanvas(data) {
         .replace(/this\.colliders,/g, "checkColls($&),")
         // Override getting the exit zones
         .replace(/getExitZones\(\) ?{/g, "$&if(!useExits) { return []; }")
-        // Wrap setting the exit zone handler
-        .replace(/(?<=onExitZoneIntercept ?=) ?(.+?)(?=[,)};])/g, "wrapExitZone($1)")
         // Override sending movement to the network
         .replace(/(?=this\.networkClient\.sendMove)/, "networkMove()&&")
         // Override reading the object's action

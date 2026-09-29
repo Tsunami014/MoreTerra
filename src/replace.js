@@ -35,5 +35,6 @@ const PATCH = {
   LEVELS: {
   prefix: "levels/", data: [
     "catacombs.json",
+    "courtyard.json",
 ]}}
 PATCH.IMGS.data.push('portal.webp')

@@ -1,0 +1,54 @@
+{
+  "id": "courtyard",
+  "name": "Courtyard",
+  "width": 20,
+  "height": 20,
+  "boundsPolygon": [
+  ],
+  "levelType": "outdoor",
+  "cameraZoom": 1,
+  "music": "town",
+  "spawn": {
+    "x": 0,
+    "z": 0
+  },
+  "spawns": [
+    {
+      "id": "spawn_default",
+      "tag": "default",
+      "x": 0,
+      "z": 0,
+      "isPrimary": true
+    }
+  ],
+  "objects": [
+  ],
+  "colliders": [],
+  "npcs": [
+  ],
+  "exitZones": [
+  ],
+  "terrain": {
+    "gridCols": 1,
+    "gridRows": 1,
+    "cellSize": 20,
+    "tiles": [
+      [ "ground" ]
+    ],
+    "groundTiles": [
+      [ null ]
+    ]
+  },
+  "lights": [
+    {
+      "type": "ambient",
+      "color": "#deddda",
+      "intensity": 2.8
+    },
+    {
+      "type": "sun",
+      "color": "#b5835a",
+      "intensity": 1
+    }
+  ]
+}

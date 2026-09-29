@@ -2,6 +2,7 @@ var main = null;
 
 window.tfQuests = {
   _last: {},
+  _synced: false,
   _progress: {}, // quest id -> [step index (-1 for completed), completed tasks from this step]
   refresh: function() {
     const room = main.networkClient.getRoom()
@@ -120,18 +121,24 @@ function setMain(nmain, netclient) {
 
   const room = netclient.getRoom()
   const proto = Object.getPrototypeOf(room)
-  const olddm = proto.dispatchMessage
-  proto.dispatchMessage = function (type, msg) {
-    if (type === 'quest.definitions') {
-      tfQuests._last.defs = msg
-      msg = { ...msg, quests: [...msg.quests, ...structuredClone(tfQuests.getDefs())] }
-    } else if (type === 'quest.progress') {
-      tfQuests._last.progress = msg
-      tfQuests.save()
-      msg = { ...msg, progress: [...msg.progress, ...structuredClone(tfQuests.getProgress())] }
+  if (!proto.__tfPatched) {
+    proto.__tfPatched = true;
+
+    const olddm = proto.dispatchMessage
+    proto.dispatchMessage = function (type, msg) {
+      if (type === 'quest.definitions') {
+        tfQuests._last.defs = msg
+        msg = { ...msg, quests: [...msg.quests, ...structuredClone(tfQuests.getDefs())] }
+      } else if (type === 'quest.progress') {
+        tfQuests._last.progress = msg
+        tfQuests.save()
+        const silent = !tfQuests._synced
+        tfQuests._synced = true
+        msg = { ...msg, silent, progress: [...msg.progress, ...structuredClone(tfQuests.getProgress())] }
+      }
+      return olddm.call(this, type, msg)
     }
-    return olddm.call(this, type, msg)
-  };
+  }
 
   console.log("[Terraformed] Injected the GameCanvas!")
 }

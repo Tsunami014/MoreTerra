@@ -14,6 +14,8 @@ function patchGameCanvas(data) {
     const out = pref + dataPref + data
         // Pick up the main class when networkClient is created
         .replace(/(?<=this\.networkClient ?= ?)(\w+)/, "setMain(this, $1)||$1")
+        // Don't show new quest banner if silent
+        .replace(/\.onMessage\(.quest\.progress.,[( ]*(\w+)[^{]+{/, "$&!$1.silent&&")
         // Make ctrl keys also sprint, and add more keybinds
         .replace(/(?<=,\s*sprint: ?\[)([^\]]+\]),?/, "`ControlLeft`,`ControlRight`,$1,tf_printpos:[`KeyP`],tf_dbug:[`KeyT`],tf_updpos:[`KeyM`],")
         // Implement handler for extra keybinds

@@ -154,6 +154,10 @@ function check() {
 
 function syncPos() {
   const playr = main.players.get(main.localPlayerId)
+  playr.prevPhysX = playr.serverX
+  playr.prevPhysZ = playr.serverZ
+  playr.physicsState.x = playr.serverX
+  playr.physicsState.z = playr.serverZ
   playr.state.velX = 0
   playr.state.velZ = 0
   playr.errorX = 0
@@ -216,7 +220,15 @@ export function inTerraformed() {
   return !getCurrentLvl()[1]
 }
 
+var uovaf = false
 function networkMove() {
+  if (!uovaf) {
+    uovaf = true
+    setTimeout(()=>{
+      uovaf = false
+      dev.updNearestObjVisible()
+    }, 100)
+  }
   return !inTerraformed();
 }
 

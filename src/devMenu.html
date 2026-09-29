@@ -58,6 +58,11 @@
             <input type="checkbox" class="dbcb" onchange="dev.setBuildGridVisible(this.checked)">
             Show build grid
         </label>
+        <br>
+        <label>
+            <input type="checkbox" class="dbcb" id="nearobjcb" onchange="dev.updNearestObjVisible()">
+            Show nearest object
+        </label>
         <br><br>
         <label>
             <input type="checkbox" id="pointlightcb" onchange="dev.setPointLightsVisible(this.checked)">
@@ -67,12 +72,14 @@
         <span>Debug element</span>
         <button onclick="tmpobj.remove()">Remove</button>
         <br>
-        <input id="elmIdInp" type="text" placeholder="Element to copy">
+        <input id="elmIdInp" type="text" placeholder="Object type to copy">
         <button onclick="tmpobj.create(document.getElementById('elmIdInp').value)">
             Copy
         </button>
-        <button onclick="tmpobj.create('template')">Use sample</button>
-        <button onclick="tmpobj.create('template_ez')">Use sample exit-zone shaped</button>
+        <button onclick="tmpobj.create('template')">Sample</button>
+        <button onclick="tmpobj.create('template_ez')">ExitZ Sample</button>
+        <br>
+        <button onclick="tmpobj.takeover()">Override closest</button>
         <br>
         <button onclick="tmpobj.teleport()">Warp</button>
         <button onclick="tmpobj.permanentise()">Permanent</button>

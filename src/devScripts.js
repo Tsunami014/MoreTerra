@@ -539,3 +539,90 @@ window.dev.setSpawnPointsVisible = function(visible) {
 window.dev.setBuildGridVisible = function(visible) {
     main.setBuildGridVisible(visible);
 };
+
+
+//// -- Nearest object --
+
+function getNearestObject() {
+    const lvl = main.levelLoader.getCurrentLevel()
+    const p = main.players.get(main.localPlayerId)
+    if (!lvl || !p) return null
+    const tmp = window.tmpobj.obj?.obj
+    let best = null, bestD = Infinity
+    for (const o of lvl.objects) {
+        if (o === tmp) continue
+        const dx = o.x - p.renderX, dz = o.z - p.renderZ
+        const d = dx * dx + dz * dz
+        if (d < bestD) { bestD = d; best = o }
+    }
+    return best
+}
+
+window.tmpobj.takeover = function() {
+    if (!check()) return;
+    const near = getNearestObject()
+    if (!near) {
+        console.warn("[Terraformed] No object to take over!")
+        return
+    }
+    window.tmpobj.remove(false)
+
+    const origType = near.type
+    const objs = main.levelLoader.getCurrentLevel().objects
+    objs.splice(objs.indexOf(near), 1)
+    main.interactableSprites.delete(near.id)
+
+    const mesh = main.levelLoader.getLevelObjects().get(near.id)
+    if (mesh) {
+        main.levelLoader.getLevelObjects().delete(near.id)
+        main.scene.remove(mesh)
+        main.disposeObject(mesh)
+    } else {
+        main.levelLoader.spawnLevelObjects(main.scene)
+    }
+
+    window.tmpobj.create(origType, near)
+    if (!window.tmpobj.obj) {
+        console.warn("[Terraformed] Takeover failed, restoring the original object")
+        objs.push(near)
+        main.levelLoader.spawnLevelObjects(main.scene)
+        main.colliders = main.levelLoader.getColliders()
+        dev.refreshDebugOverlays()
+        return
+    }
+
+    console.log("[Terraformed] Took over", near.id, "(" + origType + ")")
+}
+
+var lastNear = null
+const nobjcb = document.getElementById('nearobjcb')
+window.dev.updNearestObjVisible = function() {
+    if (!nobjcb.checked) {
+        _clearDebugGroup('_nearestObjGroup');
+        lastNear = null
+        return
+    }
+    const near = getNearestObject()
+    if (near && near === lastNear) return;
+    lastNear = near
+    _clearDebugGroup('_nearestObjGroup');
+    if (!near) {
+        return
+    }
+
+    const THREE = _getDebugThreeClasses();
+    if (!THREE) return console.warn('[Terraformed] No local player yet');
+
+    const material = new THREE.MeshBasicMaterial({
+        color: 0xff33ff, transparent: true, opacity: 0.9, depthWrite: false, side: 2,
+    });
+
+    const points = _circlePoints(near.x, near.z, DOT_RADIUS*2, 16);
+    const allMeshes = [
+        ..._drawEdgeLoop(THREE.Mesh, THREE.PlaneGeometry, material, points, {
+            thickness: DOT_RADIUS * 4, y: 0.08,
+        })
+    ];
+
+    main._nearestObjGroup = { meshes: allMeshes, materials: [material] };
+};

@@ -40,7 +40,7 @@ const MANIF = {
         },
         portal: {
             path: "/tf/portal.webp",
-            width: 0.8,
+            width: 1,
             height: 2.2,
             anchor: { x: 0.5, y: 0 },
         },

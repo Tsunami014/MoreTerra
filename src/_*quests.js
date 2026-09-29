@@ -1,5 +1,5 @@
-const QUESTS = [
-    { questId: 'tfq_intro', title: 'Where are you?',
+const QUESTS = {
+    tfq_intro: { title: 'Where are you?',
         allSteps: [
             {
                 id: 'tfq_intro_1',
@@ -16,4 +16,4 @@ const QUESTS = [
             },
         ],
     },
-]
+}

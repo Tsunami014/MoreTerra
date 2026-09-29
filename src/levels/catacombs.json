@@ -224,7 +224,11 @@
       "dialogueTree": [
         {
           "id": "a",
-          "text": "",
+          "text": "What are you looking for?",
+          "nextNodeId": "a-usr"
+        },
+        {
+          "id": "a-usr",
           "nodeType": "player",
           "choices": [
             {
@@ -232,8 +236,12 @@
               "nextNodeId": "b-1"
             },
             {
-              "label": "Where am I?",
+              "label": "Where are we?",
               "nextNodeId": "b-2"
+            },
+            {
+              "label": "Anything else?",
+              "nextNodeId": "c"
             },
             {
               "label": "Goodbye",
@@ -244,12 +252,22 @@
         {
           "id": "b-1",
           "text": "I'm nobody important",
-          "nextNodeId": "a"
+          "nextNodeId": "a-usr"
         },
         {
           "id": "b-2",
           "text": "We're in the catacombs, under a castle",
-          "nextNodeId": "a"
+          "nextNodeId": "a-usr"
+        },
+        {
+          "id": "c",
+          "text": "The only other thing is this wall behind me... I wonder what's behind it...",
+          "nextNodeId": "c-end"
+        },
+        {
+          "id": "c-end",
+          "text": "~~\n{'type':'tf_completeQstep', 'qid':'tfq_intro'}",
+          "nextNodeId": ""
         }
       ]
     }
@@ -266,7 +284,7 @@
       "targetSpawnTag": "intro",
       "requiredQuest": {
         "questId": "tfq_intro",
-        "stepId": "tfq_intro_2"
+        "stepId": "tfq_intro_1"
       }
     }
   ],

@@ -4,50 +4,39 @@ const DIALOGS = {
 
 var then;
 
-function slowread(txt) {
-    function out(e) {
-        var i = 0;
-        const id = setInterval(()=>{
-            e.innerText = txt.slice(0, i++)
-            if (i > txt.length) clearInterval(id);
-        }, 10);
+function slowread(txt, e) {
+    var i = 0;
+    const id = setInterval(()=>{
+        e.innerText = txt.slice(0, i++)
+        if (i > txt.length) clearInterval(id);
+    }, 20);
 
-        var clickhandle
-        function handler(event) {
-            if (event !== "click" && event.code !== 'Space') { return; }
-            if (i <= txt.length) {
-                i = txt.length+1;
-                e.innerText = txt;
-                clearInterval(id);
-                return;
-            }
-            then();
-            document.removeEventListener("keydown", handler);
-            document.removeEventListener("click", clickhandle);
+    var clickhandle
+    function handler(event) {
+        if (event !== "click" && event.code !== 'Space') { return; }
+        if (i <= txt.length) {
+            i = txt.length+1;
+            e.innerText = txt;
+            clearInterval(id);
+            return;
         }
-        var clickhandle = ()=>{handler("click")}
-        document.addEventListener("keydown", handler);
-        document.addEventListener("click", clickhandle);
+        then();
+        document.removeEventListener("keydown", handler);
+        document.removeEventListener("click", clickhandle);
     }
-    return out
-}
+    var clickhandle = ()=>{handler("click")}
+    document.addEventListener("keydown", handler);
+    document.addEventListener("click", clickhandle);
 
-function btn(num) {
-    function out(e) {
-        e.onclick = ()=>{
-            then(num)
-        }
-    }
-    return out
+    return e
 }
 
 
-function elem({ tag = "div", cls, text, fn, ...props }, children = []) {
+function elem({ tag = "div", cls, text, ...props }, children = []) {
     const e = Object.assign(document.createElement(tag), props);
     if (cls) e.className = cls;
     if (text) e.innerText = text;
     children.forEach(child => e.appendChild(child));
-    if (fn) fn(e);
     return e;
 }
 
@@ -57,17 +46,13 @@ function buildUI(thn, childr, cls) {
     const container = document.createElement("div");
     container.className = "OVERLAY " + (cls??LABLS.overlay);
     main.inputEnabled = false
-    then = (out)=>{
+    then = (...args)=>{
         main.inputEnabled = true
         container.remove()
-        if (thn) thn(out)
+        if (thn) thn(...args)
     }
 
     childr.forEach(child => container.appendChild(child));
-    container.querySelectorAll('.closebtn').forEach(c=>{
-        c.onclick = then
-    })
-
     parent.insertBefore(container, parent.lastElementChild)
 }
 
@@ -85,7 +70,7 @@ function NpcDialog({name, img}, txt, thn) {
             elem({ cls: LABLS.container }, [
                 elem({ cls: LABLS.nameTag, text: name }),
                 elem({ cls: LABLS.textBox }, [
-                    elem({ cls: LABLS.text, fn: slowread(txt) }),
+                    slowread(txt, elem({ cls: LABLS.text })),
                     elem({ cls: LABLS.actions }, [
                         elem({ cls: LABLS.prompt, text: "Press Space or click to continue" })
                     ])
@@ -101,7 +86,12 @@ function Choices(choices, thn) {
             elem({ cls: LABLS.container }, [
                 elem({ cls: LABLS.nameTag, text: "Player" }),
                 elem({ cls: LABLS.choicesContainer }, choices.map((choice, idx)=>{
-                    return elem({ tag: "button", cls: LABLS.choiceButton, text: choice, fn: btn(idx) });
+                    return elem({
+                        tag: "button",
+                        cls: LABLS.choiceButton,
+                        text: choice,
+                        onclick: ()=>{ then(idx) }
+                    })
                 }))
             ]),
             elem({ cls: LABLS.playerPortraitContainer }, [
@@ -209,11 +199,11 @@ async function LvlEditOverlay() {
                 elem({ cls: UILABLS.tabSpacer }),
                 elem({ tag: "button", cls: UILABLS.tab }, [
                     elem({
-                        id: "closebtn",
-                        cls: UILABLS.closeIcon+' closebtn',
+                        cls: UILABLS.closeIcon,
                         tag: "img",
                         src: "/assets/sprites/ui/exit.webp",
-                        alt: "Close"
+                        alt: "Close",
+                        onclick: ()=>{ then() }
                     })
                 ])
             ]),
@@ -233,7 +223,7 @@ async function LvlEditOverlay() {
                                 else dat = main.levelLoader.getCurrentLevel()
                                 if (!dat) console.error("Unable to parse level data!")
                                 window.dev.execWorld(dat)
-                                document.getElementById("closebtn").onclick()
+                                then()
                             }
                         }),
                     ])

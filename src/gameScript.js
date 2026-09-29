@@ -32,11 +32,11 @@ window.tfQuests = {
       this._progress[qid][1].push(tid)
     }
     if (checkDone) {
-      const [up2, donetasks] = progr
+      const [up2, donetasks] = this._progress[qid]
       if (!QUESTS[qid].allSteps[up2].tasks.some(
         it=>donetasks.contains(it.id)
       )) {
-        return completeStep(qid)
+        return this.completeStep(qid)
       }
     }
     this.refresh()
@@ -45,9 +45,9 @@ window.tfQuests = {
     if (!this._progress[qid]) {
       this._progress[qid] = [0, []]
     } else {
-      const [up2, donetasks] = progr
-      if (checkDone && up2+1 >= QUESTS[qid].allSteps.length-1) {
-        return completeQuest(qid)
+      const [up2, donetasks] = this._progress[qid]
+      if (checkDone && up2 >= QUESTS[qid].allSteps.length-1) {
+        return this.completeQuest(qid)
       }
       this._progress[qid] = [up2+1, donetasks]
     }
@@ -77,10 +77,10 @@ window.tfQuests = {
   },
 
   getDefs: function() {
-    return QUESTS.map(q=>{
-      const [up2, donetasks] = this._progress[q.questId] ?? [0, []]
+    return Object.entries(QUESTS).map(([qid, q])=>{
+      const [up2, donetasks] = this._progress[qid] ?? [0, []]
       return {
-        questId: q.questId, title: q.title,
+        questId: qid, title: q.title,
         currentStep: q.allSteps[up2],
         completedSteps: q.allSteps.slice(0, up2)
       }
@@ -319,7 +319,7 @@ function nxtNpcDialog(npc, id) {
         if (d.text.startsWith("~~")) {
           // Split by newline
           d.text.split(String.fromCharCode(10)).slice(1).forEach(txt=>{
-            checkApply({action: JSON.parse(txt)})
+            checkApply({action: JSON.parse(txt.replaceAll("'", '"'))})
           })
           nxtNpcDialog(npc, d.nextNodeId)
           return;

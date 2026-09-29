@@ -1,3 +1,15 @@
+// Prevent shift+arrows from being annoying when moving
+window.addEventListener('keydown', function(e) {
+  if (e.shiftKey && ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+    const targetTag = e.target.tagName.toLowerCase();
+    if (targetTag === 'input' || targetTag === 'textarea' || e.target.isContentEditable) {
+      return;
+    }
+    e.preventDefault();
+  }
+})
+
+
 // From injct.js: `modifyJSON` & `hook`
 const origFetch = window.fetch;
 window.fetch = async function (...args) {

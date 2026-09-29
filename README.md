@@ -3,7 +3,7 @@ A client-side mod for [Terra](terra.hackclub.com)!
 
 ## Features
 - **A whole new world to explore!** See the well behind the cidery to travel...
-- Hold ctrl to run as well as shift (stops from highlighting everything all the time)
+- Hopefully fixed shift to sprint to prevent it from selecting everything
 - A convenient UI button to open the devlogs from anywhere
 
 ### Dev features

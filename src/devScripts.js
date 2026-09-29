@@ -141,7 +141,7 @@ window.tmpobj.permanentise = function() {
     window.tmpobj.obj = null
 }
 
-window.tmpobj.create = function(type, obj) {
+window.tmpobj.create = async function(type, obj) {
     const tmptyp = 'temptyp_' + Date.now()
     var old = MANIF.sprites[type]
     if (!old) old = main.assetManager.manifest.sprites[type]
@@ -150,8 +150,12 @@ window.tmpobj.create = function(type, obj) {
         return
     }
     MANIF.sprites[tmptyp] = structuredClone(old)
+    const pth = MANIF.sprites[tmptyp].path
+    if (!pth.startsWith('/')) {
+        MANIF.sprites[tmptyp].path = '/assets/'+pth
+    }
     window.tmpobj.remove(false)
-    main.assetManager.loadManifSprite(tmptyp)
+    await main.assetManager.loadManifSprite(tmptyp)
     const mesh = main.assetManager.createSprite(tmptyp)
     if (!mesh) {
         console.warn('[Terraformed] Temp sprite failed to instantiate!')
@@ -174,11 +178,12 @@ window.tmpobj.create = function(type, obj) {
         window.tmpobj.updinps()
     }
 }
-window.tmpobj.duplicate = function() {
+window.tmpobj.duplicate = async function() {
     if (!window.tmpobj.obj) return;
     const obj = structuredClone(window.tmpobj.obj.obj)
+    obj.id = 'tempobj_' + Date.now()
     window.tmpobj.permanentise()
-    window.tmpobj.create(obj.type, obj)
+    await window.tmpobj.create(obj.type, obj)
     window.tmpobj.teleport()
 }
 
@@ -208,16 +213,16 @@ window.tmpobj.teleport = function() {
     const p = main.players.get(main.localPlayerId);
     updatelvl({ x: parseFloat(p.renderX.toFixed(4)), z: parseFloat(p.renderZ.toFixed(4)) });
 }
-function updatemanif(p) {
+async function updatemanif(p) {
     const { obj, mesh } = window.tmpobj.obj
     patch(MANIF.sprites[obj.type], p)
-    window.tmpobj.create(obj.type, obj)
+    await window.tmpobj.create(obj.type, obj)
 }
-function updateboth(p) {
+async function updateboth(p) {
     const obj = window.tmpobj.obj.obj
     patch(obj, p)
     patch(MANIF.sprites[obj.type], p)
-    window.tmpobj.create(obj.type, obj)
+    await window.tmpobj.create(obj.type, obj)
 }
 
 window.tmpobj.remove = function(upd=true) {
@@ -225,7 +230,8 @@ window.tmpobj.remove = function(upd=true) {
     const { obj, mesh } = window.tmpobj.obj
     delete MANIF.sprites[obj.type]
     const objs = main.levelLoader.getCurrentLevel().objects
-    objs.splice(objs.indexOf(obj), 1)
+    const idx = objs.indexOf(obj)
+    if (idx != -1) objs.splice(idx, 1)
     main.levelLoader.getLevelObjects().delete(obj.id)
     main.scene.remove(mesh)
     main.disposeObject(mesh)
@@ -565,7 +571,7 @@ function getNearestObject() {
     return best
 }
 
-window.tmpobj.takeover = function() {
+window.tmpobj.takeover = async function() {
     if (!check()) return;
     const near = getNearestObject()
     if (!near) {
@@ -588,7 +594,7 @@ window.tmpobj.takeover = function() {
         main.levelLoader.spawnLevelObjects(main.scene)
     }
 
-    window.tmpobj.create(origType, near)
+    await window.tmpobj.create(origType, near)
     if (!window.tmpobj.obj) {
         console.warn("[Terraformed] Takeover failed, restoring the original object")
         objs.push(near)

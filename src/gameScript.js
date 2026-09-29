@@ -107,8 +107,10 @@ function setMain(nmain, netclient) {
   main.emit = function(e, ...args) {
     const out = oem.call(this, e, ...args)
     if (e == "afterLevelTransition") {
-      console.log(out)
-      return out.then(dev.refreshDebugOverlays)
+      return out.then(()=>{
+        tmpobj.remove()
+        dev.refreshDebugOverlays()
+      })
     }
     return out
   };
@@ -305,6 +307,7 @@ async function loadLevel(lvlId, spawn) {
 
 export async function teleport(to, spawn, then) {
   if (!check()) return;
+  tmpobj.remove()
   const lvlId = localStorage.getItem("lastLevelId")
   if (to === "") { to = lvlId; }
   await main.assetManager.ensureEssential(to)
